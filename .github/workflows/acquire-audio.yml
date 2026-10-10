@@ -5,7 +5,7 @@ on:
     branches: [arena/01a0dd5d-runawayy-game]
     paths: [.github/workflows/acquire-audio.yml]
 permissions:
-  contents: read
+  contents: write
 jobs:
   acquire:
     runs-on: ubuntu-latest
@@ -32,3 +32,10 @@ jobs:
           name: smallhours-selected-soundtrack
           path: assets/audio/
           retention-days: 7
+      - name: Publish verified local assets to the session branch
+        run: |
+          git config user.name 'Small Hours asset builder'
+          git config user.email 'actions@users.noreply.github.com'
+          git add assets/audio
+          git commit -m 'Install three official Scott Buckley tracks with source hashes and 96k game encodes'
+          git push origin HEAD:arena/01a0dd5d-runawayy-game
