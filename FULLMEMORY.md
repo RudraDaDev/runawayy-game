@@ -2,13 +2,35 @@
 
 The complete working memory of this project: what the player asked for (every turn), standing rules, design decisions, current state, the next steps, what failed, research sources, and all technical facts. **A new session should read this file plus `FULLGAME.md` before doing anything.**
 
-- Repo: https://github.com/rudrachitambare/runawayy-game (branch `main`)
-- Project root in workspace: `/home/user/runawayy-game/` (was `/home/user/smallhours/`; tests still hardcode the old path) · play by opening `src/index.html`
+- Repo: https://github.com/rudrachitambare/runawayy-game (session branch `arena/01a0dd5d-runawayy-game`)
+- Project root in workspace: `/home/user/runawayy-game/` (was `/home/user/smallhours/`; current driver uses the repository path) · play by opening `src/index.html`
 - Game info / design doc: `FULLGAME.md` · this file: working memory
 
 ---
 
-## 1. CURRENT STATE (read first)
+## Latest state and active request (2026-10-10; supersedes historical pending work)
+
+- Completed baseline: `e80a2fc` (turn 61), exhaustion/collapse changes and gas-station cash loads; `SmallHours.html` built and pushed.
+- Active task: **update the markdowns only**, recording the approved **v1.5** plan. The user has not said go to resume implementation. Earlier requested audio work was interrupted and then explicitly moved back into planning.
+- The full approved roadmap is [V1_5.md](V1_5.md). Read it before working on this release. Planned v1.1 was renamed to **v1.5**, not a separate release. Studio: **BrokenHours Studio**.
+- Main menu now explicitly includes **Saves, Previous Runs and Memories**, alongside New Game, Continue, Settings and Credits.
+- User approved the assistant's additional suggestions: scene continue/skip/pause and reduced motion; readable font size/text speed with instant text; earned-memory browsing; ending replay; contextual companion reactions and quiet visual moments; graceful audio failure/retry; crowded/long-content UI testing; distinctive visual motif; safe old-save/archive handling; final scene/text/mechanics consistency checks.
+- All planned items remain unimplemented. Do not label documentation, proposed assets or research as shipped features.
+- Preserve standing rules, particularly no group splits/jealousy, same-age innocent romance, no visible stat deltas/scrollbars, no re-asking known facts, village police exemptions and no new hunger warnings. Travelling companions do not text/call Sam from beside them: fix their presence and in-person interaction, not by removing this rule.
+- Git/GitHub authentication is configured. Use git/gh normally; never request/store tokens. Work/push only on `arena/01a0dd5d-runawayy-game`.
+- Sandbox recovery: if HEAD is stale `d467fc4` but files appear modified/untracked, fetch the session branch and compare worktree contents to its tracked files before changing the index. In this documentation turn all contents exactly matched fetched `e80a2fc`, so `git reset --mixed FETCH_HEAD` restored branch/index bookkeeping without changing any worktree files. Do not blindly hard-reset user changes.
+
+### Audio research and interrupted work
+
+Selected Scott Buckley tracks: **The Long Dark**, **There is a Place**, **Intervention (No Piano Melody mix)**. Official pages confirm CC BY 4.0 and commercial use with attribution; links, credit format and packaging requirements are in `V1_5.md`.
+
+The earlier direct curl download failed with `SSL_ERROR_SYSCALL`. That command was stopped; no downloaded tracks or game audio implementation were completed. Test setup launched in the same command was also interrupted and must not be assumed complete. No music listening test was performed in-session.
+
+Integration facts already inspected: `src/phone.js` owns `SH.Audio` and phone sound settings; `src/main.js` calls `SH.Audio.init()` on begin/continue; `src/ui.js` and `src/ui2.js` bind the sound button; `src/mobile.js` handles mobile tabs; `src/saves.js` owns slots/import/export. `build.py` currently inlines CSS/JS only; account explicitly for local audio paths and offline/download packaging when implementation is authorized.
+
+---
+
+## 1. HISTORICAL STATE (earlier snapshot; latest state above)
 
 - **Part 1 DONE** (commit 149ab03).
 - **E2 DONE (turn 19):** transport network + a ~112-place Atlas + the drive-bug fix. See FULLGAME §6. Script order after endx_core: routes, routes_go, routes_web, routes_end, atlas_map.
@@ -578,3 +600,9 @@ New `src/power.js` (after logic.js):
 - Exhaustion (src/exhaust.js, state.js longRun now calls SH.Exhaust.hit()): after 5+ days on the run, an hourly warning (log + toast) when health < 50, fullness < 35 or energy < 30, at most once every 8h. The first time the daily check fails, Sam collapses instead (dialog "Your body decides": 5h pass, health −8, energy +25, stress +10) with a 20h grace. You're only found (exhausted, which is still talkable) if it fails again within 3 days of that collapse. Villages are still exempt. Fixed the day-9 no-roof clause (it checked G.base.level, which doesn't exist; now it checks G.base). The found intro reads "Too many days of this."
 - Gas stations in away towns: "Load cash onto PocketPal" ($1 fee; the log names the station). Bk.loadCash(amt, where).
 - Tests: tests/t61*.drv.js.
+
+## v1.5 planning follow-up: menus, memories, scenes and approved suggestions
+
+The user requested music/SFX, a new dark-only UI, bug/popup fixes, richer writing without em dashes, optimization, BrokenHours Studio branding and a proper responsive main menu. They then added detailed endings, seeded character appearances and clothing-aware visuals; ending title cards/scenes/music; companion tracking/visibility outside Harlow; visual/text memory montages and more appropriate story scenes. They renamed the entire update from v1.1 to **v1.5**.
+
+Latest request: "in main menu add saves and prev runs and memories. and r=ur suggestions. and update the markdowns". Interpreted as adding the main-menu destinations and approving the preceding polish suggestions. Consolidated in `V1_5.md`, linked from `FULLGAME.md` and `README.md`. **Documentation updated, gameplay unchanged; wait for go.**

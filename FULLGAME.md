@@ -7,6 +7,28 @@ Vanilla JS + canvas (no React). Entertainment, **not** a guide for real runaways
 
 ---
 
+## Next release: v1.5 (approved plan, not built)
+
+**Studio: BrokenHours Studio.** The planned v1.1 update has been renamed **v1.5** in full. The authoritative consolidated checklist is [V1_5.md](V1_5.md), updated 2026-10-10. The sections below retain historical feature/progress information and must not be treated as the latest pending-work list.
+
+Approved scope:
+- Scene-aware music and small SFX, smooth fades, separate saved audio controls, mobile-safe playback, graceful failure handling and verified local assets/credits.
+- A distinctive dark-only visual identity, consistent figures/faces/icons, responsive desktop/mobile UI, readable text, fixed popups and performance/bug work.
+- Proper main menu: **New Game, Continue, Saves, Previous Runs, Memories, Settings, Credits**; version/studio branding, completed-run archive and read-only ending replay.
+- Seeded, save-stable Sam appearances with visible equipped clothes and consistent portraits/scene figures; appropriate NPC variety.
+- Companions tracked and visible beyond Harlow, usable in-person interactions, contextual reactions and quiet shared moments. Present companions still do not text/call Sam; remote messaging must work under existing phone rules.
+- More detailed, playthrough-aware writing and endings; replace player-facing em dashes with suitable punctuation/rewording.
+- Ending title cards and outcome scenes once the outcome is settled, followed by visual/text memory montages and expanded existing ending text. Add scenes at meaningful story moments, not every routine action.
+- Earned-memory browsing during runs and from the main menu; no fabricated events or undiscovered spoilers.
+- Continue/skip/pause and reduced-motion scene controls, text-size/speed settings (including instant text), old-save compatibility and archive backups.
+- Regression testing, changelog, screenshots, release description, packaging and verification of source/built/published versions.
+
+The selected music is Scott Buckley's **The Long Dark**, **There is a Place**, and **Intervention (No Piano Melody mix)**, all CC BY 4.0 with attribution. Downloads and implementation have **not** been completed. See the roadmap for official sources and licence details.
+
+**Documentation-only planning for now. Build only when the user says go.** Do not alter established gameplay rules or introduce hunger warnings.
+
+---
+
 ## 1. What is BUILT (as of turn 10)
 
 ### Core
