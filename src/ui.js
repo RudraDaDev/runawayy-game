@@ -68,7 +68,7 @@
     const G = SH.G, h = SH.hour(), d = SH.day(), rows = [];
     const R = (i, t) => rows.push(`<div class="trow"><span>${i}</span><span>${t}</span></div>`);
     if (G.phase === 'home') {
-      const shift = { D: 'day shift, 7–3', E: 'evening shift, 3–11', N: 'night shift, 11pm–7', DD: 'double, 7am–11pm', OFF: 'day off' }[SH.MOM_SHIFTS[d]] || '—';
+      const shift = { D: 'day shift, 7–3', E: 'evening shift, 3–11', N: 'night shift, 11pm–7', DD: 'double, 7am–11pm', OFF: 'day off' }[SH.MOM_SHIFTS[d]] || '·';
       R('🏫', SH.isWeekday() ? (h < 15 ? 'School 8:00–3:00' + (h >= 8 && G.loc !== 'school' ? ' · <b class="lateflag">you\'re missing it</b>' : '') : 'School\'s out') : 'No school today');
       R('👩', 'Mom: ' + shift);
       const rd = (SH.RICK_DAY && SH.RICK_DAY[Math.min(d, SH.RICK_DAY.length - 1)]) || 0;

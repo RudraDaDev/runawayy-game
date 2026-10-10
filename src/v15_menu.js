@@ -9,6 +9,7 @@
   function safeHTML(html) {
     const t = document.createElement('template'); t.innerHTML = html;
     t.content.querySelectorAll('script,iframe,object,embed,form,button,input,textarea,link,style').forEach(e => e.remove());
+    t.content.querySelectorAll('foreignObject,animate,animateMotion,animateTransform,set,use,image').forEach(e => e.remove());
     t.content.querySelectorAll('*').forEach(e => [...e.attributes].forEach(a => { if (/^on/i.test(a.name) || ['src','srcdoc','href','style','id'].includes(a.name)) e.removeAttribute(a.name); }));
     return t.innerHTML;
   }
@@ -31,6 +32,7 @@
     if (!d || d.format !== 'smallhours-history' || d.version !== 1 || !Array.isArray(d.runs) || d.runs.length > 200) throw Error('Not a supported history backup.');
     return d.runs.map(r => {
       if (!r || typeof r.id !== 'string' || typeof r.title !== 'string' || !Array.isArray(r.memories) || r.memories.length > 160 || typeof r.html !== 'string' || r.html.length > 500000) throw Error('A run in this backup is incomplete or invalid.');
+      if (!r.scene || !Array.isArray(r.scene.people) || r.scene.people.some(a => !a || !a.look || typeof a.name !== 'string') || r.memories.some(m => !m || typeof m.title !== 'string' || typeof m.text !== 'string' || !m.scene || !Array.isArray(m.scene.people) || m.scene.people.some(a => !a || !a.look || typeof a.name !== 'string'))) throw Error('The visual records in this backup are invalid.');
       const clean = copy(r); clean.html = safeHTML(clean.html); return clean;
     });
   };
@@ -51,6 +53,34 @@
     wire && wire(e); $('#menuClose').focus();
   }
   MN.overlay = overlay;
+  const modalOpen = SH.UI.modalOpen;
+  SH.UI.modalOpen = function () { return !!($('#menuOverlay') || $('#saveOv') || (SH.Presentation && SH.Presentation.active)) || modalOpen.apply(this, arguments); };
+  const playable = d => d && !d.ended && d.phase !== 'end';
+  const hasSave = SH.hasSave;
+  SH.hasSave = () => hasSave() && playable(SH.Saves.read(0));
+  const restore = SH.Saves.restore;
+  SH.Saves.restore = function (data) {
+    if (!playable(data)) { SH.UI.toast('This is a completed chapter, not a playable save. See Previous Runs.'); return false; }
+    if (SH.hasSave() && !confirm('Loading replaces the autosave. Export it or save it to a slot first if you want to keep it. Continue?')) return false;
+    return restore.apply(this, arguments);
+  };
+  const writeSave = SH.Saves.write;
+  SH.Saves.write = function (slot) {
+    if (!playable(SH.G)) { SH.UI.toast('Completed chapters are in Previous Runs.'); return false; }
+    if (slot && SH.Saves.read(slot) && !confirm('Replace the story in slot ' + slot + '? Export it first if you want to keep it.')) return false;
+    return writeSave.apply(this, arguments);
+  };
+  const savesOpen = SH.Saves.open;
+  SH.Saves.open = function (inGame) {
+    const r = savesOpen.call(this, !!inGame && playable(SH.G));
+    document.querySelectorAll('[data-ld]').forEach(b => {
+      const d = SH.Saves.read(+b.dataset.ld);
+      if (d && !playable(d)) { b.disabled = true; b.textContent = 'Completed'; b.title = 'Completed chapters are read-only, not playable saves.'; }
+    });
+    const container = document.querySelector(inGame && playable(SH.G) ? '#modal .slots' : '#saveOv .slots');
+    if (container) container.insertAdjacentHTML('afterend', '<p class="muted" style="font-size:12px;line-height:1.6">Playable saves are separate from Previous Runs. Export backups before clearing this browser or changing devices.</p>');
+    return r;
+  };
   MN.settings = function () {
     const v = SH.Settings.values;
     const toggle = (id, title) => `<label class="pref-row"><span>${title}</span><input type="checkbox" data-pref="${id}" ${v[id] ? 'checked' : ''}></label>`;
@@ -62,7 +92,7 @@
     });
   };
   MN.credits = function () {
-    overlay('Credits', `<div class="credits-title">SMALL HOURS</div><p>Created by <b>BrokenHours Studio</b>.</p><p>Vanilla JavaScript, canvas figures and scenes. Small sound effects synthesized in-game; no external SFX samples.</p><h3>Selected soundtrack</h3>${[['The Long Dark','the-long-dark'],['There is a Place','there-is-a-place'],['Intervention (No Piano Melody mix)','intervention']].map(([n, slug]) => `<p>‘${n}’ by Scott Buckley, released under <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY 4.0</a>. <a href="https://www.scottbuckley.com.au/library/${slug}/" target="_blank" rel="noopener">www.scottbuckley.com.au</a>.</p>`).join('')}<p class="muted">Music integration is in progress. A track is never replaced with a different composition if its local file is missing. See AUDIO_CREDITS.md for asset provenance and packaging status.</p><h3>Content note · 16+</h3><p>This is fiction about a twelve-year-old, not instructions for running away. It includes family conflict, non-graphic abuse, bullying, homelessness and grooming risk.</p><p>If this is close to home: India <b>1098 / 112</b>; US National Runaway Safeline <b>1-800-786-2929</b> and crisis <b>988</b>; UK Childline <b>0800 1111</b>.</p><p class="muted">v1.5 preview. Your saves, previous runs and memories are stored locally in this browser. Export backups before clearing browser data or changing devices.</p>`);
+    overlay('Credits', `<div class="credits-title">SMALL HOURS</div><p>Created by <b>BrokenHours Studio</b>.</p><p>Vanilla JavaScript, canvas figures and scenes. Small sound effects synthesized in-game; no external SFX samples.</p><h3>Selected soundtrack</h3>${[['The Long Dark','the-long-dark'],['There is a Place','there-is-a-place'],['Intervention (No Piano Melody mix)','intervention']].map(([n, slug]) => `<p>‘${n}’ by Scott Buckley, released under <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY 4.0</a>. <a href="https://www.scottbuckley.com.au/library/${slug}/" target="_blank" rel="noopener">www.scottbuckley.com.au</a>.</p>`).join('')}<p class="muted">Three local game copies are encoded at 96 kbps with metadata removed. Playback fades near repeat boundaries; these compositions are not seamless loops. See AUDIO_CREDITS.md for source hashes and licence details.</p><h3>Content note · 16+</h3><p>This is fiction about a twelve-year-old, not instructions for running away. It includes family conflict, non-graphic abuse, bullying, homelessness and grooming risk.</p><p>If this is close to home: India <b>1098 / 112</b>; US National Runaway Safeline <b>1-800-786-2929</b> and crisis <b>988</b>; UK Childline <b>0800 1111</b>.</p><p class="muted">v1.5 preview. Your saves, previous runs and memories are stored locally in this browser. Export backups before clearing browser data or changing devices.</p>`);
   };
   MN.runs = function () {
     const runs = AR.read().concat(AR.pending ? [AR.pending] : []);
@@ -78,7 +108,7 @@
     });
   };
   MN.memories = function (run) {
-    const g = SH.G, current = g && g.v15, list = run ? run.memories : current ? current.memories : [], title = run ? `${run.name}'s story #${run.seed}` : g ? `${g.name}'s current story` : 'Earned memories';
+    const g = SH.G || SH.Saves.read(0), current = g && g.v15, list = run ? run.memories : current ? current.memories : [], title = run ? `${run.name}'s story #${run.seed}` : g ? `${g.name}'s current story #${(g.story || {}).seed}` : 'Earned memories';
     const runs = AR.read();
     overlay('Memories', `<h3>${esc(title)}</h3><p class="muted">These records belong to this story alone.${(run ? run.incomplete : current && current.incomplete) ? ' This older save has incomplete visual history; missing scenes are not invented.' : ''}</p>${list && list.length ? list.map((m, i) => `<button class="history-row" data-memory="${i}"><span><b>${esc(m.title)}</b><small>${esc(m.scene && m.scene.place)} · ${esc(m.scene && m.scene.date)}</small></span><span>View ›</span></button>`).join('') : '<div class="empty-state"><p>No visual memories recorded in this story yet.</p></div>'}${!run && runs.length ? `<h3>Archived stories</h3>${runs.map((r, i) => `<button class="history-row" data-archived="${i}">${esc(r.name)} · #${esc(r.seed)} · ${esc(r.title)}</button>`).join('')}` : ''}`, e => {
       e.querySelectorAll('[data-memory]').forEach(b => b.onclick = () => { const m = list[+b.dataset.memory]; SH.Presentation.open([{ title: m.title, text: m.text, scene: m.scene }], () => {}, true); });
@@ -99,12 +129,23 @@
     const snd = $('#sndBtn'); if (snd) { snd.onclick = MN.settings; snd.title = 'Music and sound settings'; }
     return r;
   };
+  document.addEventListener('keydown', e => {
+    const root = $('#menuOverlay') || $('#saveOv'); if (!root || SH.Presentation.active) return;
+    if (e.key === 'Escape') { e.preventDefault(); root.remove(); }
+    if (/^[1-9mMpP?]$/.test(e.key) && !/INPUT|TEXTAREA/.test((document.activeElement || {}).tagName)) { e.preventDefault(); e.stopImmediatePropagation(); }
+    if (e.key === 'Tab') {
+      const items = [...root.querySelectorAll('button:not(:disabled),input,select,a[href]')];
+      if (items.length && e.shiftKey && document.activeElement === items[0]) { e.preventDefault(); items.at(-1).focus(); }
+      else if (items.length && !e.shiftKey && document.activeElement === items.at(-1)) { e.preventDefault(); items[0].focus(); }
+    }
+  }, true);
   window.addEventListener('DOMContentLoaded', () => {
     document.body.classList.add('v15');
+    const continueBtn = $('#contBtn'), slotsBtn = $('#slotsBtn');
     const box = $('.tbox'), logo = $('.logo'), rows = [...box.children].filter(e => e.classList.contains('row'));
     const setup = document.createElement('section'); setup.id = 'newGameSetup'; setup.className = 'hidden';
     rows.forEach(r => setup.appendChild(r));
-    const continueBtn = $('#contBtn'), slotsBtn = $('#slotsBtn'); if (continueBtn) continueBtn.remove(); if (slotsBtn) slotsBtn.remove();
+    if (continueBtn) continueBtn.remove(); if (slotsBtn) slotsBtn.remove();
     const studio = document.createElement('div'); studio.className = 'studio'; studio.textContent = 'BROKENHOURS STUDIO'; logo.before(studio);
     const nav = document.createElement('nav'); nav.className = 'main-menu'; nav.setAttribute('aria-label', 'Main menu');
     nav.innerHTML = `<button class="btn primary" id="newGameBtn">New Game <span>Start another story</span></button><button class="btn" id="menuContinue">Continue <span>${SH.hasSave() ? 'Return to your last save' : 'No autosave yet'}</span></button><button class="btn" id="menuSaves">Saves</button><button class="btn" id="menuRuns">Previous Runs</button><button class="btn" id="menuMemories">Memories</button><button class="btn" id="menuSettings">Settings</button><button class="btn" id="menuCredits">Credits</button>`;

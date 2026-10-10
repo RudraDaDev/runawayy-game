@@ -32,7 +32,7 @@
   /* ---------- claims: what you say about yourself ---------- */
   const NAMEBAD = /^(a|an|the|not|so|just|fine|okay|ok|good|here|there|scared|sad|sorry|tired|hungry|lost|alone|home|going|from|with|staying|visiting|new|back|done|sure|really|in|at|safe|cold|waiting|looking|leaving|running|serious|kidding|joking|bored|hurt|sick|only|still|also|gonna|trying|like|nobody|nothing|no|yes|yeah|nope|idk|what|who|why|hi|hey|hello|thanks|twelve|eleven|thirteen|ten|fourteen|fifteen)$/i;
   const NUMW = { ten: 10, eleven: 11, twelve: 12, thirteen: 13, fourteen: 14, fifteen: 15, sixteen: 16, seventeen: 17, eighteen: 18, nineteen: 19, twenty: 20 };
-  const PLACE = "([a-z][a-z .'-]{1,24}?)(?=[.,!?]|$| and | but | because | with | to see| tonight| tomorrow| for )";
+  const PLACE = "([a-z][a-z .'-]{1,24}?)(?=[.!?]|$| and | but | because | with | to see| tonight| tomorrow| for )";
   N.claims = function (raw) {
     const r = String(raw || ''), t = r.toLowerCase().replace(/\bim\b/g, "i'm"), f = {};
     let m = r.match(/\b(?:my name is|my name's|name's|call me|i go by|the name's)\s+([A-Za-z][A-Za-z'-]{1,14})/i) || r.match(/\b(?:i'?m|I am)\s+([A-Z][a-z'-]{1,14})\b(?!\s*(?:years|yrs))/) || r.match(/\b(?:no,? |wait,? )+it'?s\s+([A-Z][a-z'-]{1,14})\b/);
@@ -43,7 +43,7 @@
     m = t.match(new RegExp("\\b(?:going to|heading to|on my way to|trying to get to|want to go to|traveling to|headed to|going up to|going down to)\\s+(?:see\\s+)?" + PLACE));
     if (m && !/^(be|do|sleep|bed|get|go|school|stay|eat|the bathroom|bathroom|buy|try|call|tell|pay|ask|talk|need|have|run|walk|find|make|take|look|wait|work|say|kill|die|cry|hit|hurt|leave|miss)\b/.test(m[1].trim()) && !/\bhome\b/.test(m[1])) f.going = m[1].trim().replace(/^the /, '');
     m = t.match(/\b(?:i'm|i am|we're|we are|i'm here|i'm staying|staying)\s+with\s+(my\s+[a-z]+|[a-z]+(?: and [a-z]+)?)/); if (m && !/^(you|it|that|him|her|them)$/.test(m[1])) f.with = m[1];
-    m = t.match(/\bmy (mom|dad|mother|father|parents|aunt|uncle|grandma|grandpa|folks)\s+(?:is|are|'s|'re)\s+((?:in|at|out|over|parking|getting|waiting|inside|outside|coming|picking|on|just|working|back|busy|asleep)[a-z ,']{0,36}?)(?=[.!?]|$| so | but )/); if (m) f.parents = `${m[1]} ${/s$/.test(m[1]) || m[1] === 'folks' ? 'are' : 'is'} ${m[2].trim()}`;
+    m = t.match(/\bmy (mom|dad|mother|father|parents|aunt|uncle|grandma|grandpa|folks)\s+(?:is|are|'s|'re)\s+((?:in|at|out|over|parking|getting|waiting|inside|outside|coming|picking|on|just|working|back|busy|asleep)[a-z,']{0,36}?)(?=[.!?]|$| so | but )/); if (m) f.parents = `${m[1]} ${/s$/.test(m[1]) || m[1] === 'folks' ? 'are' : 'is'} ${m[2].trim()}`;
     m = t.match(/\b(?:i'm|i am|we're)\s+(visiting (?:my )?[a-z]+(?: [a-z]+)?|homeschooled|new here|new in town|on (?:a )?(?:field|school|band|class) trip|staying at the campground|here for the summer|doing a school project|on vacation)/); if (m) f.story = m[1];
     m = t.match(/\bi go to\s+([a-z .'-]{2,30}?(?:school|academy|middle|elementary|junior high))\b/); if (m) f.school = m[1];
     return f;
@@ -182,7 +182,7 @@
       if (stranger(k) && typeof opts.first === 'string') {
         const nm = rec.f.name && rec.f.name.v;
         if (nm && rec.n > 0 && !opts.first.includes(nm)) opts.first = pick([`${nm}! `, `Hey, ${nm}. `, `${nm}, right? `]) + opts.first.replace(/^(well,? )?(hey|hi|hello)( there)?[.!,]?\s*/i, '');
-        else if (!rec.n && p && /village|small|town/.test(p.tier || '')) { const tw = TOWN(p.id); if (tw.name && tw.name.by !== k) { const who = String(tw.name.by).split(':')[1]; const wn = who ? who.split(/[ ,]/)[0] : 'Someone'; opts.first = `You must be ${tw.name.v}. ${wn} mentioned you.` + (tw.story ? ` ${cap(tw.story.v)}, right?` : '') + ' ' + opts.first.replace(/\b(what'?s your name|who are you)[^?]*\?\s*/i, '').replace(/\s*I don'?t think I know you\.?/i, ''); rec.f.name = { v: tw.name.v, t: G().t, heard: wn }; if (tw.story && !rec.f.story) rec.f.story = { v: tw.story.v, t: G().t, heard: wn }; } }
+        else if (!rec.n && p && /village|small|town/.test(p.tier || '')) { const tw = TOWN(p.id); if (tw.name && tw.name.by !== k) { const who = String(tw.name.by).split(':')[1]; const wn = who ? who.split(/[,]/)[0] : 'Someone'; opts.first = `You must be ${tw.name.v}. ${wn} mentioned you.` + (tw.story ? ` ${cap(tw.story.v)}, right?` : '') + ' ' + opts.first.replace(/\b(what'?s your name|who are you)[^?]*\?\s*/i, '').replace(/\s*I don'?t think I know you\.?/i, ''); rec.f.name = { v: tw.name.v, t: G().t, heard: wn }; if (tw.story && !rec.f.story) rec.f.story = { v: tw.story.v, t: G().t, heard: wn }; } }
       }
       if (typeof opts.first === 'string') { opts.first = MI.noReask(k, opts.first); const key = askOf(opts.first); if (key) { rec.lastAsk = key; rec.lastAskT = G().t; } }
     } catch (e) { console.warn('mind2 open', e); }

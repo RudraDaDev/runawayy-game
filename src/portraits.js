@@ -73,6 +73,7 @@
   function hat(L) {
     const c = L.hatc || '#333';
     if (L.hat === 'beanie') return `<path d="M29 40 Q28 17 50 16 Q72 17 71 40Z" fill="${c}"/><rect x="28" y="35" width="44" height="7" rx="3" fill="${shade(c, 0.8)}"/><circle cx="50" cy="14" r="4" fill="${shade(c, 1.2)}"/>`;
+    if (L.hat === 'cap') return `<path d="M29 38Q30 19 50 19Q70 19 71 38Z" fill="${c}"/><path d="M27 37H77" stroke="${c}" stroke-width="6" stroke-linecap="round"/>`;
     if (L.hat === 'wrap') return `<path d="M28 40 Q24 12 50 11 Q76 12 72 40 Q62 30 50 31 Q38 30 28 40Z" fill="${c}"/><path d="M34 22 Q50 30 66 20 M30 32 Q50 24 70 32" stroke="${shade(c, 0.7)}" stroke-width="2.4" fill="none"/><circle cx="64" cy="16" r="6" fill="${c}"/>`;
     if (L.hat === 'police') return `<path d="M30 32 Q30 18 50 17 Q70 18 70 32Z" fill="${c}"/><rect x="26" y="30" width="48" height="6" rx="2" fill="#10182e"/><circle cx="50" cy="25" r="3.5" fill="#e7c65a"/>`;
     if (L.hat === 'conductor') return `<rect x="31" y="18" width="38" height="14" rx="3" fill="${c}"/><rect x="27" y="30" width="46" height="5" rx="2" fill="#162646"/><rect x="42" y="22" width="16" height="4" rx="1" fill="#e7c65a"/>`;

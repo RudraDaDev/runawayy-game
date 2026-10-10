@@ -276,7 +276,7 @@
     ];
     E.show('grandma', 'Wind Chimes', `41 Larkspur Lane · ${p.name}`, intro.concat([
       '"Mijo. Mijo. Look at you. You walked here? You WALKED here?" She pulls you inside by both hands. "Sit. Eat. Then talk. In that order."',
-      'She calls your mom from the kitchen with the door closed. You hear her voice rise and fall — angry, then crying, then very quiet. When she comes out, her eyes are red. "Your mother is coming tomorrow. Alone. And you\'re staying here as long as you need. That\'s not a question, it\'s a fact."',
+      'She calls your mom from the kitchen with the door closed. You hear her voice rise and fall, angry, then crying, then very quiet. When she comes out, her eyes are red. "Your mother is coming tomorrow. Alone. And you\'re staying here as long as you need. That\'s not a question, it\'s a fact."',
       'You sleep in the room with the quilt she made when you were born. The wind chimes play all night. For the first time in months, nothing else does.']));
   };
 })(window.SH);

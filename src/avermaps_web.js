@@ -50,7 +50,7 @@
     if (t && t.id !== f.id) {
       const J = best(f, t), ms = A.modes(f, t).filter((m) => /walk|bike|scoot|kick|drive/.test(m.k));
       h += `<div class="wsec">${esc(f.name)} → ${esc(t.name)} · ${A.miles(f, t)} mi ${dir(f, t)}</div>` + (J.length ? J.map((jr) => SH.Rides ? SH.Rides.jrow(jr, t) : '').join('') : B.note('No bus or train connects these today.', 'warn'));
-      h += ms.map((m) => B.row({ icon: m.k === 'walk' ? '🚶' : m.k === 'bike' ? '🚲' : m.k === 'drive' ? '🚗' : '🛴', t: esc(m.n), sub: m.blocked ? esc(m.blocked) : esc(m.note || ''), right: m.blocked ? '—' : `${Math.floor(m.mins / 60)}h ${m.mins % 60}m` })).join('');
+      h += ms.map((m) => B.row({ icon: m.k === 'walk' ? '🚶' : m.k === 'bike' ? '🚲' : m.k === 'drive' ? '🚗' : '🛴', t: esc(m.n), sub: m.blocked ? esc(m.blocked) : esc(m.note || ''), right: m.blocked ? '·' : `${Math.floor(m.mins / 60)}h ${m.mins % 60}m` })).join('');
     }
     return h + '</div></div>';
   }

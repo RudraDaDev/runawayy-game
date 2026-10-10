@@ -167,6 +167,7 @@
     if (bag) { L.rr(x, -15 * s, -58 * s - bob, 9 * s, 22 * s, 3); x.fillStyle = T('#2c6e8a'); x.fill(); }
     L.rr(x, -9 * s, -60 * s - bob, 18 * s, 32 * s, 6 * s); x.fillStyle = T(lk.top); x.fill();
     x.strokeStyle = T(lk.top); x.lineWidth = 5 * s; x.beginPath(); x.moveTo(-7 * s, -54 * s - bob); x.lineTo(-7 * s - sw * 0.7, -34 * s - bob); x.moveTo(7 * s, -54 * s - bob); x.lineTo(7 * s + sw * 0.7, -34 * s - bob); x.stroke();
+    if (lk.gloves) { x.fillStyle = T(lk.gloves); x.fillRect(-9 * s - sw * 0.7, -37 * s - bob, 5 * s, 5 * s); x.fillRect(5 * s + sw * 0.7, -37 * s - bob, 5 * s, 5 * s); }
     x.fillStyle = T(lk.skin); x.fillRect(-2.5 * s, -64 * s - bob, 5 * s, 5 * s); x.beginPath(); x.arc(1 * s, -72 * s - bob, 9 * s, 0, 7); x.fill();
     x.fillStyle = T(lk.hair); x.beginPath(); x.arc(0, -75 * s - bob, 9.4 * s, Math.PI * 0.95, Math.PI * 2.1); x.fill(); if (lk.long) x.fillRect(-9 * s, -76 * s - bob, 5 * s, 14 * s);
     if (lk.cap) { x.fillStyle = T(lk.cap); x.beginPath(); x.arc(0, -76 * s - bob, 9.6 * s, Math.PI, 0); x.fill(); x.fillRect(2 * s, -78 * s - bob, 12 * s, 3); }
@@ -192,7 +193,7 @@
     if (c.width !== Math.round(CW * dpr) || c.height !== Math.round(CH * dpr)) { c.width = Math.round(CW * dpr); c.height = Math.round(CH * dpr); }
     const k = Math.max(CH / (VH * 1.32), Math.min(CH / VH, CW / MINW)), vw = CW / k, W = Math.max(Math.round(vw), MINW), oy = CH / k - VH; const oldW = ST.view.W; ST.view = { k, vw, W, H, oy };
     if (oldW !== W && SH.G) { ST.key = ''; ST.build(); }
-    H = VH; const dt = Math.min(0.1, lastT ? time - lastT : 0.033); lastT = time;
+    H = VH; const dt = SH.Settings && SH.Settings.values.reducedMotion ? 0.15 : Math.max(0, Math.min(0.1, lastT ? time - lastT : 0.033)); lastT = time;
     const key = [G.loc, G.phase, G.phase === 'home' && G.loc === 'home' ? G.room || 'bedroom' : '', W, Math.round(k * dpr * 100), Math.floor(G.t / 10), SH.cond(), SH.momWhere ? SH.momWhere() : '', SH.rickWhere ? SH.rickWhere() : ''].join('|');
     const V = S.v2; if (V.key !== key) { if (V.loc !== G.loc) { V.walkers = []; V.cars = []; V.loc = G.loc; } V.cache = L.buildStatic(W, H, dpr * k); V.key = key; }
     const { c: sc, E } = V.cache; E.inside = !!E.inside;

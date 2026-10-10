@@ -57,7 +57,7 @@
   const WHY = {
     jordan: { stay: ['bc my mom literally checks the garage now. she has like a sixth sense. and she said if she finds u she HAS to call ur mom', 'ok real talk my mom would call ur mom in like 4 seconds. it\'s not that i don\'t want u here'], def: ['idk it\'s just a lot rn', 'bc... idk. i\'m scared i\'ll get u caught'] },
     lily: { def: ['because!!', 'because mom said. and because i said.'] },
-    okafor: { stay: ['Because I\'m an adult you know from school, and there are rules about that — good ones, even when they feel like a wall. They exist to protect kids. What I can do is help you find a place tonight that\'s actually set up for this.'], def: ['Fair question. I\'d rather tell you the truth than something easy: I have to keep you safe, and sometimes that means I can\'t do the thing you asked.'] },
+    okafor: { stay: ['Because I\'m an adult you know from school, and there are rules about that, good ones, even when they feel like a wall. They exist to protect kids. What I can do is help you find a place tonight that\'s actually set up for this.'], def: ['Fair question. I\'d rather tell you the truth than something easy: I have to keep you safe, and sometimes that means I can\'t do the thing you asked.'] },
     mom: { def: ['Because I\'m your mother and I need to know you\'re safe. That\'s the whole reason. That\'s every reason.'] },
     grandma: { def: ['Because I love you, mijo. That\'s the only reason I ever have for anything.'] },
     rick: { def: ['Because I said so.', 'Don\'t start.'] },
@@ -69,9 +69,9 @@
   /* real answers for requests the core adults used to deflect */
   const ASK = {
     okafor: {
-      stay: (c) => { c.mem._refused = 'stay'; return 'I can\'t have you stay with me. I wish the answer were different. But I can help you find somewhere safe tonight — there\'s a youth line that finds beds for kids, and they don\'t call anyone without talking to you first. Want me to dial it with you?'; },
-      food: (c) => { if (c.mem._fed) return 'That was my last granola bar, I\'m afraid. But the cafeteria does breakfast free before first bell — nobody asks why you\'re there.'; c.mem._fed = 1; return { say: 'Here. *slides open a drawer full of granola bars* I keep these for exactly this. Take two. Take three. No, I don\'t want to hear about it.', fx: { full: 14 } }; },
-      advice: () => 'Honestly? The next right thing is somewhere warm tonight, and one adult who knows where you are. That could be your grandma. It could be me. It could be the youth line. It doesn\'t have to be home — not tonight. What feels least scary?',
+      stay: (c) => { c.mem._refused = 'stay'; return 'I can\'t have you stay with me. I wish the answer were different. But I can help you find somewhere safe tonight, there\'s a youth line that finds beds for kids, and they don\'t call anyone without talking to you first. Want me to dial it with you?'; },
+      food: (c) => { if (c.mem._fed) return 'That was my last granola bar, I\'m afraid. But the cafeteria does breakfast free before first bell, nobody asks why you\'re there.'; c.mem._fed = 1; return { say: 'Here. *slides open a drawer full of granola bars* I keep these for exactly this. Take two. Take three. No, I don\'t want to hear about it.', fx: { full: 14 } }; },
+      advice: () => 'Honestly? The next right thing is somewhere warm tonight, and one adult who knows where you are. That could be your grandma. It could be me. It could be the youth line. It doesn\'t have to be home, not tonight. What feels least scary?',
     },
     jordan: {
       food: (c) => (c.mem._fed ? 'bro i already gave u my pop tarts 😭 i can bring more tmrw' : (c.mem._fed = 1, { say: 'omg wait yes. i have pop tarts and like half a lunchable. meet me by the bike rack? or i can leave it in our mailbox', fx: {} })),
@@ -115,7 +115,7 @@
             r.say = teen(id) ? pick(['same answer tbh. ' + first.toLowerCase(), 'still no, sorry. ' + first.toLowerCase()]) : pick([`Same answer, I'm afraid. ${first}`, `That part doesn't change, I'm sorry. ${first}`]);
           }
           // never the exact same line twice in a row
-          if (prevNpc && r.say.trim() === prevNpc.t.trim()) r.say = teen(id) ? pick(['like i said. ' + r.say.toLowerCase(), 'bro i just said that 😭']) : pick([`Like I said — ${r.say.charAt(0).toLowerCase() + r.say.slice(1)}`, 'I just told you, hon. ' + r.say]);
+          if (prevNpc && r.say.trim() === prevNpc.t.trim()) r.say = teen(id) ? pick(['like i said. ' + r.say.toLowerCase(), 'bro i just said that 😭']) : pick([`Like I said, ${r.say.charAt(0).toLowerCase() + r.say.slice(1)}`, 'I just told you, hon. ' + r.say]);
           if (REFUSE.test(r.say) && an.has && an.has('stay')) c.mem._refused = 'stay';
           else if (an.has && !an.has('stay') && !/^(why|how come)/.test(t)) c.mem._refused = REFUSE.test(r.say) ? 'def' : null;
           h.push({ who: 'me', t: an.carried || an.t, raw: an.carried || an.raw || an.t, meta, I: STRONG.filter((k) => an.has && an.has(k)) }); h.push({ who: 'npc', meta, t: r.say.replace(/\*[^*]+\*\s*/g, '') });

@@ -14,7 +14,7 @@
       grandma: 'Sweetheart, I love you more than anything. Please stay with me on the phone. I\'m calling your mother and we are getting you help. You are not alone.',
       okafor: 'Thank you for telling me. That took courage. I\'m not going to leave you alone with this. We\'re going to make a safety plan together, right now, and call your family together.',
       lily: 'what does that mean? are you sick? i\'ll get mom. MOM!',
-      rick: '...What? Hey. Hey. Kid, don\'t say stuff like that. I\'m— I\'m calling your mother.',
+      rick: '...What? Hey. Hey. Kid, don\'t say stuff like that. I\'m... I\'m calling your mother.',
     };
     return m[who] || 'Hey. Stop. That matters more than anything else right now. You deserve help, and there are people whose whole job is to help with exactly this. Let\'s get you to one of them.';
   }
@@ -71,7 +71,7 @@
       if (c.explode) return R(pk(c, 'boom', ['WHAT did you just say to me?! In MY house?!', 'You want to say that again? Say it again. I dare you.']), { rel: -12, stress: 18 }, { end: true, narr: 'He\'s on his feet. The can hits the wall. Lily starts crying upstairs.' });
       return R(pk(c, 'host', ['Watch your mouth.', 'You don\'t get to talk to me like that. I put a roof over your head.', 'Keep going. See what happens.']), { rel: -6, stress: 8 });
     }
-    if (an.has('respect') || (an.has('sorry') && dr < 2)) { c.mem.anger = Math.max(0, c.mem.anger - 1); return R(pk(c, 'resp', ['...Yeah. Okay.', 'Fine. Just— fine. Go do your homework.', 'Hm. At least somebody in this house listens.']), { rel: 3, stress: -2 }, { end: c.turn >= 2 }); }
+    if (an.has('respect') || (an.has('sorry') && dr < 2)) { c.mem.anger = Math.max(0, c.mem.anger - 1); return R(pk(c, 'resp', ['...Yeah. Okay.', 'Fine. Just... fine. Go do your homework.', 'Hm. At least somebody in this house listens.']), { rel: 3, stress: -2 }, { end: c.turn >= 2 }); }
     if (an.has('sorry')) return R(pk(c, 'sor', ['Everybody\'s sorry. Nobody DOES anything.', 'Sorry doesn\'t pay the phone bill.']), { rel: 0, stress: 3 });
     if (an.has('sad') || an.has('tired')) {
       if (dr <= 1) { SH.flag('rickHuman'); return R(pk(c, 'sad0', ['...Look, kid. It\'s a rough time for everybody. I worked at that plant nineteen years. Nineteen. And they did it by email.', 'Yeah, well. Me too. ...Go to bed. I\'ll keep the TV down.']), { rel: 4, stress: -2 }); }
@@ -134,7 +134,7 @@
     if (an.has('selfharm')) return R(careLine('grandma'), { rel: 6 }, { flags: ['grandmaKnows'] });
     if (an.has('disclose') || an.has('scared')) { SH.flag('grandmaKnows'); SH.flag('grandmaOffer'); return R('Oh, sweetheart. I was afraid of something like this. Is your mother safe? Are you safe, right now? You listen to me: if you ever need to, you call me and I will come get you. Any hour. I\'m 140 miles away and I still drive like I\'m thirty.', { rel: 8, stress: -8 }); }
     if (G.phase === 'run' && (an.has('stay') || an.has('run') || an.has('help') || an.has('meet') || an.has('scared') || /\b(come get me|pick me up|can i come)\b/.test(an.t))) {
-      SH.flag('grandmaComing'); return R('Where are you? No— don\'t tell me, tell me when I\'m close. Go somewhere warm with people around. Stay there. I\'m getting my keys right now. Three hours. I\'ll call your mother from the road. You did the right thing calling me.', { rel: 12, stress: -15 }, { end: true });
+      SH.flag('grandmaComing'); return R('Where are you? No... don\'t tell me, tell me when I\'m close. Go somewhere warm with people around. Stay there. I\'m getting my keys right now. Three hours. I\'ll call your mother from the road. You did the right thing calling me.', { rel: 12, stress: -15 }, { end: true });
     }
     if (an.has('stay') || an.has('run')) { SH.flag('grandmaOffer'); SH.flag('grandmaAddr'); return R('You can always come here. Always. 41 Larkspur Lane, Cedar Falls. But promise me you won\'t do anything foolish. You call me first. I\'ll come get you myself.', { rel: 5 }); }
     if (/\b(address|where do you live|where you live)\b/.test(an.t)) { SH.flag('grandmaAddr'); return R('41 Larkspur Lane, Cedar Falls. The yellow house with too many wind chimes. Why do you ask, mijo?', {}); }
@@ -156,16 +156,16 @@
       c.mem.d++;
       if (disclosedHard(an) || c.mem.d >= 2) {
         SH.flag('toldCounselor'); SH.flag('knowsHarbor');
-        return R('Thank you for telling me. I believe you. I want to be honest with you, because you deserve honesty: when a student tells me they might not be safe at home, I have to let people whose job is to help know. That\'s called being a mandated reporter. I won\'t do it behind your back — we\'ll do it together, and you\'ll have a say. Is that okay?', { rel: 12, stress: -12 }, { end: c.turn >= 2 });
+        return R('Thank you for telling me. I believe you. I want to be honest with you, because you deserve honesty: when a student tells me they might not be safe at home, I have to let people whose job is to help know. That\'s called being a mandated reporter. I won\'t do it behind your back, we\'ll do it together, and you\'ll have a say. Is that okay?', { rel: 12, stress: -12 }, { end: c.turn >= 2 });
       }
       const r = N.reflect(an.t);
       return R((r ? 'It sounds like ' + r + '. ' : '') + 'That sounds really hard. Can you tell me what a bad night at home looks like?', { rel: 4 });
     }
     if (SH.f('toldCounselor') && (an.has('secret') || /\b(don't|do not|please don't) (call|tell)|\bnot (call|tell)\b|he'll (kill|hurt)|make it worse\b/.test(an.t))) return R(pk(c, 'fear', ['I hear how scared you are about what happens next. That fear makes total sense. I won\'t do anything behind your back: I\'ll tell you every step before it happens. And I will not send you home to a situation that isn\'t safe tonight.', 'The people I call aren\'t there to get anyone in trouble for fun, and not you at all. Their job is to make sure you\'re safe. You get to be in the room. You get to talk. That\'s a promise.']), { rel: 3, stress: -6 });
     if (an.has('run')) { SH.flag('knowsHarbor'); SH.flag('okaforCard'); return R('It sounds like part of you wants to be anywhere but home. That makes sense to me. Can I tell you about some options that aren\'t "disappear"? There\'s a place called Harbor House, by the river. And there\'s me. I\'m writing my cell on this card.', { rel: 6 }, { narr: 'She hands you a card. You now know about Harbor House.', give: 'card' }); }
-    if (an.has('deflect') || an.has('no')) { c.mem.def++; if (c.mem.def >= 2) { SH.flag('okaforCard'); return R('That\'s okay. You don\'t have to tell me anything today. But here — my card. My cell is on the back. My door is always open, even when it looks closed.', { rel: 3 }, { end: true, give: 'card' }); } return R('Mm. "' + an.raw.slice(0, 30) + '." You look exhausted though. How are you sleeping?', {}); }
+    if (an.has('deflect') || an.has('no')) { c.mem.def++; if (c.mem.def >= 2) { SH.flag('okaforCard'); return R('That\'s okay. You don\'t have to tell me anything today. But here, my card. My cell is on the back. My door is always open, even when it looks closed.', { rel: 3 }, { end: true, give: 'card' }); } return R('Mm. "' + an.raw.slice(0, 30) + '." You look exhausted though. How are you sleeping?', {}); }
     if (an.has('bully')) { SH.flag('okaforBully'); return R('Tyler Brandt. I\'ve heard that name before. I\'m going to talk to his teachers and move his lunch period. You shouldn\'t have to manage that alone.', { rel: 6, stress: -5 }); }
-    if (an.has('sad') || an.has('angry') || an.has('tired')) { const r = N.reflect(an.t); return R((r ? N.cap(r) + '. ' : '') + pk(c, 'sad', ['I hear that. What\'s been the hardest part?', 'That\'s a heavy thing to carry at twelve. Where do you feel it most — school, home, somewhere else?', 'You\'re allowed to feel that. What would help, even a little?']), { rel: 4, stress: -4 }); }
+    if (an.has('sad') || an.has('angry') || an.has('tired')) { const r = N.reflect(an.t); return R((r ? N.cap(r) + '. ' : '') + pk(c, 'sad', ['I hear that. What\'s been the hardest part?', 'That\'s a heavy thing to carry at twelve. Where do you feel it most, school, home, somewhere else?', 'You\'re allowed to feel that. What would help, even a little?']), { rel: 4, stress: -4 }); }
     if (an.has('hostile')) return R('You\'re allowed to be angry. Even at me. I\'m not going anywhere.', { rel: 1 });
     if (an.has('school')) return R('Your grades dropped this quarter. That usually isn\'t about math. What changed?', {});
     if (an.has('joke')) return R('Ha. Humor\'s a good shield. I use it too. What\'s it shielding?', { rel: 2 });
@@ -192,8 +192,8 @@
   B.wren = function (an, c) {
     const G = SH.G; c.mem.story = c.mem.story || 0;
     if (an.has('selfharm')) return R('Hey. No. I\'ve known two people who... no. We\'re walking to Harbor House right now. I\'ll come with you. Get up.', { rel: 10 }, { flags: ['knowsHarbor', 'wrenEscort'], end: true });
-    if (an.has('shelter') || an.has('plan') || an.has('help')) { SH.flag('knowsHarbor'); return R('Harbor House. 212 Wharf, east side of the river. Porch light\'s always on. They\'ll call your family in a few days — unless home\'s dangerous, then they call CPS instead. I stayed there a week once. Should\'ve stayed longer.', { rel: 4 }); }
-    if (an.has('run')) return R(pk(c, 'run', ['Everybody thinks it\'ll be like a movie. It\'s mostly being cold and bored and scared. You get used to the cold. The other two, not so much.', 'Real talk? If home is just annoying, go home. If it\'s dangerous, go to Harbor. The in-between — this, here — eats people.']), { rel: 3 });
+    if (an.has('shelter') || an.has('plan') || an.has('help')) { SH.flag('knowsHarbor'); return R('Harbor House. 212 Wharf, east side of the river. Porch light\'s always on. They\'ll call your family in a few days, unless home\'s dangerous, then they call CPS instead. I stayed there a week once. Should\'ve stayed longer.', { rel: 4 }); }
+    if (an.has('run')) return R(pk(c, 'run', ['Everybody thinks it\'ll be like a movie. It\'s mostly being cold and bored and scared. You get used to the cold. The other two, not so much.', 'Real talk? If home is just annoying, go home. If it\'s dangerous, go to Harbor. The in-between, this, here, eats people.']), { rel: 3 });
     if (an.has('disclose')) { SH.flag('wrenKnows'); return R('Yeah. Mine was my mom\'s boyfriend too. It\'s always somebody\'s boyfriend. You\'re not crazy and it\'s not your fault.', { rel: 8, stress: -5 }); }
     if (an.has('meet') || an.has('dex')) return R('Listen to me. Nobody offering a ride or a room at 2 AM is being nice. Nobody. Especially online dudes. That\'s how kids disappear for real.', { rel: 3 });
     if (an.has('food') && G.rel.wren >= 15 && !c.mem.fed) { c.mem.fed = true; SH.st('full', 18); return R('Here. Half a sub. Don\'t make it weird.', { rel: 4, mood: 4 }, { narr: 'Wren tosses you half a sandwich. (+18 fullness)' }); }
@@ -210,7 +210,7 @@
     if (an.has('selfharm')) return R('Oh, honey. Okay. Pie\'s on me and I\'m sitting down right here with you. I\'m calling someone who can help. You\'re not alone in this booth.', { rel: 10 }, { flags: ['doloresHelp'], end: true });
     if (an.has('disclose') || an.has('scared') || an.has('run') || /\b(nowhere|no where|can't go home|don't have anywhere)\b/.test(an.t)) {
       SH.flag('knowsHarbor'); SH.flag('doloresOffer');
-      return R('Tell you what, hon. Pie\'s on the house. And there\'s a place on Wharf Street — Harbor House. Good people. I get off at six. I\'ll drive you myself. You sit here where it\'s warm till then.', { rel: 10, stress: -6 }, { narr: 'Dolores slides a slice of cherry pie across the counter. (+15 fullness)', food: 15 });
+      return R('Tell you what, hon. Pie\'s on the house. And there\'s a place on Wharf Street, Harbor House. Good people. I get off at six. I\'ll drive you myself. You sit here where it\'s warm till then.', { rel: 10, stress: -6 }, { narr: 'Dolores slides a slice of cherry pie across the counter. (+15 fullness)', food: 15 });
     }
     if (an.has('lie') || /\b(waiting for|my mom('s| is) coming|meeting)\b/.test(an.t)) { c.mem.sus++; return R(c.mem.sus > 1 || G.s.hyg < 35 ? 'Sure, hon. Third time you\'ve said that. I raised four kids. Try again.' : 'Uh-huh. Well, she can find you right here in the warm.', {}); }
     if (an.has('food') || an.has('money')) return R(G.money < 3 ? 'Kitchen\'s throwing out fries anyway. Here.' : 'Pancakes are $4.50. Coffee\'s bottomless but you\'re too young so it\'s hot chocolate.', { rel: 2 }, G.money < 3 ? { food: 10 } : {});
@@ -272,15 +272,15 @@
 
   /* ---------------- MRS. PIKE ---------------- */
   B.tanya = function (an, c) {
-    if (an.has('disclose') || an.has('scared') || an.has('selfharm')) { SH.flag('toldTanya'); return R('Oh, sweetheart. Okay. I still have to call someone — the law says adults can\'t hide a kid, and I wouldn\'t want to. But I\'m calling the child welfare line, not just your stepfather. And you\'re staying for pancakes.', {}, { end: true }); }
-    return R(pk(c, 'fb', ['Honey, your mom has been calling everyone. I have to call her. But talk to me first — why\'d you leave?', 'You\'re not in trouble with me. Jordan, go get a blanket.', 'Is something going on at home? You can tell me.']), {}, { end: c.turn >= 3 });
+    if (an.has('disclose') || an.has('scared') || an.has('selfharm')) { SH.flag('toldTanya'); return R('Oh, sweetheart. Okay. I still have to call someone, the law says adults can\'t hide a kid, and I wouldn\'t want to. But I\'m calling the child welfare line, not just your stepfather. And you\'re staying for pancakes.', {}, { end: true }); }
+    return R(pk(c, 'fb', ['Honey, your mom has been calling everyone. I have to call her. But talk to me first, why\'d you leave?', 'You\'re not in trouble with me. Jordan, go get a blanket.', 'Is something going on at home? You can tell me.']), {}, { end: c.turn >= 3 });
   };
 
   /* ---------------- LIGHTHOUSE (in-game crisis text line) ---------------- */
   B.lighthouse = function (an, c) {
     const G = SH.G;
     if (an.has('selfharm')) return R('I\'m really glad you reached out. Your safety matters most right now. Are you somewhere with other people? If you\'re in immediate danger, please call emergency services. (Real world: 988 in the US, 112/1098 in India, 116 123 UK.) I\'m staying right here with you.', {}, { flags: ['toldLighthouse'] });
-    if (an.has('disclose') || an.has('scared')) { SH.flag('toldLighthouse'); return R('Thank you for telling me. No one deserves to feel unsafe at home. Are you safe right now, this minute? I can help you think through options — a trusted adult, a youth shelter like Harbor House, or a relative you trust.', {}); }
+    if (an.has('disclose') || an.has('scared')) { SH.flag('toldLighthouse'); return R('Thank you for telling me. No one deserves to feel unsafe at home. Are you safe right now, this minute? I can help you think through options, a trusted adult, a youth shelter like Harbor House, or a relative you trust.', {}); }
     if (an.has('shelter') || (an.has('yes') && c.mem.offered)) { SH.flag('knowsHarbor'); SH.flag('harborPickup'); return R('I\'ve let Harbor House know you\'re coming. If you can\'t get there safely, they can send an outreach worker to meet you at a public place. Stay somewhere lit and warm. You did something brave tonight.', {}, { end: true }); }
     if (G.phase === 'run' && !c.mem.offered) { c.mem.offered = true; return R('It sounds like you\'re out tonight. Would you like me to connect you with Harbor House? It\'s a youth shelter, open 24/7. You can just say yes.', {}); }
     const r = N.reflect(an.t);

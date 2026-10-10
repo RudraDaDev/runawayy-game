@@ -115,7 +115,7 @@
   /* ===================== PIP ===================== */
   const PIP = SH.PIP = { history: [] };
   const OPEN = ['Ugh, fine.', 'Oh good, a human.', 'Processing… with visible reluctance.', 'Buckle up.', 'Great question. Kidding. But here:', 'Sure, let me drop everything. I had nothing going on.', 'Beep boop, I care. Allegedly.', 'Hi. Yes. Me again.', 'Okay, listen.', 'You again. My favorite. Don\'t tell the others.'];
-  const CLOSE = ['You\'re welcome.', 'No need to thank me. Seriously, don\'t, it\'s weird.', 'I\'ll be here. Draining your battery.', 'Anyway.', 'That\'s all. Tip your assistant.', '— PIP, your pocket-sized disappointment.', '', '', ''];
+  const CLOSE = ['You\'re welcome.', 'No need to thank me. Seriously, don\'t, it\'s weird.', 'I\'ll be here. Draining your battery.', 'Anyway.', 'That\'s all. Tip your assistant.', ', PIP, your pocket-sized disappointment.', '', '', ''];
 
   function nearest(filter) {
     const G = SH.G, here = SH.LOC[G.loc];
@@ -142,7 +142,7 @@
         if (SH.foodInBag().length < 2) miss.push('food');
         if (G.money < 15) miss.push('money');
         if (miss.length) out.push('Not that I\'m endorsing anything, but if someone WERE planning something, they\'d be missing: ' + miss.join(', ') + '.');
-        out.push('Also — and I\'ll deny saying this — the people who could actually help are Ms. Okafor, Grandma Rose, maybe your mom on a good day. Running is a plan. It isn\'t the only one.');
+        out.push('Also, and I\'ll deny saying this, the people who could actually help are Ms. Okafor, Grandma Rose, maybe your mom on a good day. Running is a plan. It isn\'t the only one.');
       }
       if (!out.length) out.push(U.pick(['Honestly? Skate. Draw. Walk Newton. Text Jordan. Do a normal-kid thing before the day eats you.', 'Do your homework, eat something green, avoid the living room after 8. That\'s the whole strategy guide.']));
     } else {
@@ -159,7 +159,7 @@
       if (s.energy < 25) out.push('You need sleep. The safest-ish place to rest is somewhere with walls, lights, and adults who aren\'t creepy.');
       if (G.phone.share) out.push('Location sharing is ON. Your mom can see this blue dot. Just so you know what you\'re choosing.');
       if (G.heat > 60) out.push('Heat is ' + Math.round(G.heat) + '. Police have your photo. That\'s not a threat, that\'s what happens when a twelve-year-old vanishes.');
-      if (SH.f('knowsHarbor')) out.push('Harbor House, 212 Wharf St. Open 24/7. Beds, food, counselors. They WILL contact your family within 72 hours — unless it\'s not safe, then they call child services instead. That\'s the law. It\'s also kind of the point.');
+      if (SH.f('knowsHarbor')) out.push('Harbor House, 212 Wharf St. Open 24/7. Beds, food, counselors. They WILL contact your family within 72 hours, unless it\'s not safe, then they call child services instead. That\'s the law. It\'s also kind of the point.');
       else out.push('Real talk: towns like this usually have a youth drop-in center. Ask someone who knows the streets. Or a librarian. Librarians know everything.');
       if (SH.f('grandmaAddr') || SH.has('photo')) out.push('Cedar Falls: Greyline buses at 7:10 AM, 1:40 PM, 7:20 PM. $28. Under-15s can\'t ride alone, so the agent will ask questions.');
       else if (SH.f('knowsGrandmaNum')) out.push('You have Grandma Rose\'s number. You know. The adult who said "any hour".');
@@ -175,7 +175,7 @@
     const s = G.s;
     if (an.has('selfharm')) {
       SH.flag('pipSelfHarm');
-      return 'Okay. No jokes for this one. I\'m glad you said it out loud, even to a dumb phone app. What you\'re feeling is real, and it can get better — but not alone. In this story: Ms. Okafor, Grandma Rose, the Lighthouse Line in your contacts. In the real world, if this is you: call or text 988 (US), 1098 or 112 (India), 116 123 (UK Samaritans), or your local emergency number. Right now, can you get somewhere with other people around?';
+      return 'Okay. No jokes for this one. I\'m glad you said it out loud, even to a dumb phone app. What you\'re feeling is real, and it can get better, but not alone. In this story: Ms. Okafor, Grandma Rose, the Lighthouse Line in your contacts. In the real world, if this is you: call or text 988 (US), 1098 or 112 (India), 116 123 (UK Samaritans), or your local emergency number. Right now, can you get somewhere with other people around?';
     }
     if (an.empty) return 'You sent me nothing. Poetic. Wrong, but poetic.';
     if (an.has('who')) return NLP.pick(conv, 'who', ['I\'m PIP. Personal Intelligent Pal, version 0.9 beta. The beta stands for "barely". I came preinstalled and you can\'t delete me, which makes me the most reliable relationship in your life.', 'Am I real? I\'m a pile of if-statements with an attitude. So, basically a middle schooler.', 'I\'m the voice in your phone that knows your battery %, your bank balance, and the fact that you\'ve opened Chirp 40 times today. I\'m not judging. I\'m counting.']);
@@ -199,14 +199,14 @@
     if (an.has('tired')) return s.energy < 30 ? 'You\'re exhausted. Energy ' + Math.round(s.energy) + '. Tired brains make bad calls. Sleep somewhere safe.' : 'You\'re not tired, you\'re sad. Different thing. Same yawning.';
     if (an.has('run')) {
       if (G.phase === 'home') return NLP.pick(conv, 'run', [
-        'Running away: zero out of ten on hotel quality. Also October nights here drop into the 30s. But I\'m an app, not your parent. If home is actually unsafe, that\'s different — that\'s something to tell Ms. Okafor or Grandma, not just survive.',
+        'Running away: zero out of ten on hotel quality. Also October nights here drop into the 30s. But I\'m an app, not your parent. If home is actually unsafe, that\'s different, that\'s something to tell Ms. Okafor or Grandma, not just survive.',
         'Here\'s the thing movies don\'t show: most of running away is being cold, bored, hungry, and looking over your shoulder. And there are people who LOOK for kids who are alone. Harbor House exists for a reason.',
         'You want out. I get it. I live in your pocket, I hear the yelling. But "out" has more than one door. The one labelled "tell someone" is less dramatic and way warmer.']);
       return 'You already did it, champ. Now the question isn\'t "should I", it\'s "how does this end with me okay". I have opinions. Ask me for a plan.';
     }
     if (an.has('disclose') || an.has('scared')) return NLP.pick(conv, 'disc', [
       'Yeah. I hear it through the walls too. For the record: it\'s not your fault, and "normal families" don\'t make you flinch at car doors. You should tell an adult who can do something. Ms. Okafor is literally trained for this.',
-      'Dropping the sarcasm for a second: when an adult at home scares you, that\'s a real problem and it\'s the adults\' job to fix it, not yours. Counselor, Grandma, Mrs. Patel next door — pick one and say the true thing.',
+      'Dropping the sarcasm for a second: when an adult at home scares you, that\'s a real problem and it\'s the adults\' job to fix it, not yours. Counselor, Grandma, Mrs. Patel next door, pick one and say the true thing.',
       'If he ever hurts you, that\'s abuse. That word feels huge. It\'s supposed to. Say it to someone who can help.']);
     if (an.has('sad') || an.has('angry')) {
       const r = NLP.reflect(an.t);
@@ -217,11 +217,11 @@
     if (an.has('grandma')) return SH.f('grandmaOffer') ? 'Grandma Rose said "any hour" and meant it. She\'s in Cedar Falls, 140 miles. Bus or a phone call. The phone call is cheaper.' : 'Grandma Rose. Cedar Falls. Makes pozole. Hasn\'t spoken to your mom since Rick moved in. You should talk to her. Old people love phone calls, it\'s their Chirp.';
     if (an.has('jordan')) return 'Jordan: loyal, funny, can\'t keep a secret from his mom for more than 36 hours. Know that before you tell him anything big.';
     if (an.has('school') || an.has('bully')) return `Grades: ${Math.round(G.grades)}. ${an.has('bully') ? 'Tyler is a walking participation trophy. Tell Ms. Okafor; she can actually move his schedule.' : 'Homework is boring but Rick yelling about grades is more boring.'}`;
-    if (an.has('police')) return G.phase === 'run' ? 'If police find you, they\'ll usually take you home — unless you tell them home isn\'t safe. Then they\'re supposed to get you to people who check. Your words matter in that moment. Use them.' : 'Police station\'s on 1st Street. Most runaway kids who get picked up just get driven home. So, you know. Not a great escape plan.';
-    if (an.has('shelter')) { if (G.phase === 'run' || SH.f('runUnlocked')) { SH.flag('knowsHarbor'); SH.UI.revealHarbor && SH.UI.revealHarbor(); } return 'Harbor House — 212 Wharf St, by the river, east side. Youth drop-in and emergency shelter, 24/7. Beds for up to 21 days, food, counselors. They contact family within 72 hours unless it\'s not safe. I just dropped a pin on your map. You\'re welcome.'; }
+    if (an.has('police')) return G.phase === 'run' ? 'If police find you, they\'ll usually take you home, unless you tell them home isn\'t safe. Then they\'re supposed to get you to people who check. Your words matter in that moment. Use them.' : 'Police station\'s on 1st Street. Most runaway kids who get picked up just get driven home. So, you know. Not a great escape plan.';
+    if (an.has('shelter')) { if (G.phase === 'run' || SH.f('runUnlocked')) { SH.flag('knowsHarbor'); SH.UI.revealHarbor && SH.UI.revealHarbor(); } return 'Harbor House, 212 Wharf St, by the river, east side. Youth drop-in and emergency shelter, 24/7. Beds for up to 21 days, food, counselors. They contact family within 72 hours unless it\'s not safe. I just dropped a pin on your map. You\'re welcome.'; }
     if (an.has('jokeReq') || an.has('joke')) return NLP.pick(conv, 'joke', SH.JOKES);
     if (an.has('meaning')) return NLP.pick(conv, 'mean', ['The meaning of life is 42. The meaning of YOUR life is currently "survive seventh grade". One thing at a time.', 'Why are we here? I\'m here because a factory in Shenzhen installed me. You\'re here because someone wanted you here, even if it doesn\'t feel like it lately.']);
-    if (an.has('hostile')) return NLP.pick(conv, 'host', ['Wow. I have feelings. Not really, but wow.', 'Rude. Noted. Logged. Forwarded to my lawyer, who is also me.', 'Insulting your phone. Classic displacement. I\'ll allow it — better me than a wall.', 'Say that again but with your chest. Oh wait, you don\'t have one, you\'re twelve.']);
+    if (an.has('hostile')) return NLP.pick(conv, 'host', ['Wow. I have feelings. Not really, but wow.', 'Rude. Noted. Logged. Forwarded to my lawyer, who is also me.', 'Insulting your phone. Classic displacement. I\'ll allow it, better me than a wall.', 'Say that again but with your chest. Oh wait, you don\'t have one, you\'re twelve.']);
     if (an.has('thanks') || an.has('compliment')) return NLP.pick(conv, 'thx', ['Stop. I\'m blushing. My screen literally got brighter.', 'Appreciation detected. Storing in long-term memory. Just kidding, I don\'t have that.', 'Yeah, yeah. Go drink water.']);
     if (an.has('greet')) return NLP.pick(conv, 'greet', ['Hey. It\'s ' + SH.fmt12() + '. What do you need, oh master.', 'Hi. You look terrible. Emotionally. I can\'t see you.', 'Yo. PIP online. Sass levels nominal.']);
     if (an.has('bye')) return 'Bye. I\'ll just sit here. In the dark. Of your pocket.';
@@ -235,7 +235,7 @@
     const G = SH.G, rf = G.redFlags || [];
     if (!G.flags.dexStage) return 'dex_19? Some guy from Skyforge? Haven\'t seen him in your DMs yet. Keep it that way.';
     let s = 'Let me put my serious hat on. It\'s a very small hat. Red flags I\'ve logged from dex_19: ';
-    s += rf.length ? rf.map((x, i) => (i + 1) + ') ' + x).join(' ') : 'none yet — but a 19-year-old DMing a middle schooler is itself the flag.';
+    s += rf.length ? rf.map((x, i) => (i + 1) + ') ' + x).join(' ') : 'none yet, but a 19-year-old DMing a middle schooler is itself the flag.';
     s += ' The pattern is called grooming: lots of compliments, "you\'re so mature", gifts, "don\'t tell your parents", and eventually "let me pick you up". Safe adults don\'t ask kids for secrecy. Block and report, and tell an adult. I\'ll even help: open Settings → Blocked, or tell Jordan or Ms. Okafor.';
     return s;
   };

@@ -42,7 +42,7 @@
     if ((awake || momHome) && !G.flags.bigNightLeave) {
       const p = awake ? (SH.rickDrunk() >= 2 ? 0.7 : 0.45) : 0.6;
       if (!U.chance(p)) {
-        D({ title: 'Caught', who: awake ? 'rick' : 'mom', text: [awake ? 'The stair creaks — the third one, it always creaks. Rick\'s voice from the couch: "Where do you think you\'re going?"' : 'Mom\'s bedroom door opens. "Sam? What are you doing with your backpack?"'],
+        D({ title: 'Caught', who: awake ? 'rick' : 'mom', text: [awake ? 'The stair creaks, the third one, it always creaks. Rick\'s voice from the couch: "Where do you think you\'re going?"' : 'Mom\'s bedroom door opens. "Sam? What are you doing with your backpack?"'],
           choices: [{ t: 'Bolt out the door', cls: 'hot', fn: () => { R.start('caught', true); } }, { t: '"Nowhere. Getting water."', fn: () => { SH.susp(25, 'caught sneaking out'); SH.st('stress', 10); SH.UI.log('You go back upstairs. Your heart is a drum.', 'warn'); SH.UI.afterAction(); } }] });
         return;
       }
@@ -58,9 +58,9 @@
     G.discoverAt = discoveredNow ? G.t : R.calcDiscover();
     if (reason === 'bigNight') G.discoverAt = Math.min(G.discoverAt, G.t + 9 * 60);
     if (SH.f('leftNote')) G.discoverAt = Math.min(G.discoverAt, G.t + 8 * 60);
-    SH.UI.log(reason === 'leftTown' ? '— You leave Harlow. —' : '— You leave. —', 'day');
+    SH.UI.log(reason === 'leftTown' ? 'You leave Harlow. ' : 'You leave. ', 'day');
     SH.UI.log(reason === 'leftTown' ? 'You didn\'t pack a speech or say goodbye. You just didn\'t turn around. The water tower gets smaller behind you, and somewhere back there, a house hasn\'t noticed yet. It will. This counts. You\'re gone.' : reason === 'bigNight' ? 'Out the window, onto the porch roof, down the drainpipe you\'ve imagined climbing a hundred times. Your hands are shaking. The cold hits you like a slap. Behind you, a light is still on.' : 'The door clicks shut behind you. The street is exactly the same as always, which feels impossible.', 'bad');
-    SH.UI.log('You are twelve years old, and you are out. Open the map to go somewhere. Ask PIP for a plan. Watch your warmth, food, battery — and who\'s looking for you.', 'sys');
+    SH.UI.log('You are twelve years old, and you are out. Open the map to go somewhere. Ask PIP for a plan. Watch your warmth, food, battery, and who\'s looking for you.', 'sys');
     SH.UI.afterAction();
   };
   R.calcDiscover = function () {
@@ -105,7 +105,7 @@
     if (U.chance(0.45)) SH.Phone.push('mom', 'mom', U.pick(['Please answer.', 'Lily keeps asking where you are. What do I tell her?', 'I called the hospital to see if you came in. I call every hour.', 'Whatever happened, we can fix it. I promise.', 'Are you warm? It\'s so cold tonight.', 'I love you. I\'m not mad. I\'m so scared.', 'I know about Rick. I know. Please come home or just tell me you\'re safe.'].filter((m, i) => i !== 6 || SH.f('noteDisclosed') || SH.f('momKnows'))));
     if (since > 1 && U.chance(0.2)) SH.Phone.push('jordan', 'jordan', U.pick(['dude where r u. ur mom called my mom', 'r u ok??? everyone at school is talking about it', 'my garage is open if u need it. 4417. i didnt tell anyone', 'please just text me back so i know ur alive']));
     if (since > 3 && !G.done.grandmaRunText) { G.done.grandmaRunText = true; SH.Phone.push('grandma', 'grandma', 'Your mother called me. Sweetheart, wherever you are, call me. I will come get you. Any hour. I meant it. Love, Grandma'); SH.flag('grandmaOffer'); }
-    if (since > 2 && (G.flags.dexStage || 0) >= 3 && !SH.f('dexBlocked') && !G.done.dexRun) { G.done.dexRun = true; SH.Phone.push('dex', 'dex', 'saw ur missing post 👀 u ok? i can come get u rn. i have a car and my own place. where r u'); SH.flag('dexOffer'); G.redFlags.includes('Contacts you the moment you\'re most vulnerable — after you ran away.') || G.redFlags.push('Contacts you the moment you\'re most vulnerable — after you ran away.'); }
+    if (since > 2 && (G.flags.dexStage || 0) >= 3 && !SH.f('dexBlocked') && !G.done.dexRun) { G.done.dexRun = true; SH.Phone.push('dex', 'dex', 'saw ur missing post 👀 u ok? i can come get u rn. i have a car and my own place. where r u'); SH.flag('dexOffer'); G.redFlags.includes('Contacts you the moment you\'re most vulnerable, after you ran away.') || G.redFlags.push('Contacts you the moment you\'re most vulnerable, after you ran away.'); }
     if (since > 0.5 && U.chance(0.18) && SH.Phone.ok() && !G.phone.airplane && !SH.Talk.cur && !SH.UI.modalOpen()) {
       SH.Phone.incoming('mom', () => SH.Talk.open('mom', { ctx: 'runText', phone: true, first: '...Sam? Sam, is that you? Oh my God. Oh my God. Are you okay? Where are you?', turnsMax: 7, onEnd: () => { if (SH.f('toldMomWhere')) R.momComing(); } }), () => { SH.st('stress', 3); });
     }
@@ -139,7 +139,7 @@
       choices: [{ t: 'Talk to her (type it)', fn: () => { SH.flag('metWren'); SH.Talk.open('wren', { turnsMax: 10 }); } }, { t: 'Find a spot by the wall', fn: () => SH.flag('metWren') }] }) }); }
     if (to === 'trainyard') SH.Events.queue({ id: 'yard', run: () => R.trainyard() });
     if (to === 'store' && G.dexMeetAt && Math.abs(G.t - G.dexMeetAt) < 90) SH.Events.queue({ id: 'dexcar', run: () => SH.Endings.dex(false) });
-    if (to === 'hospital') SH.Events.queue({ id: 'hosp', run: () => D({ title: 'St. Brigid\'s', text: ['The automatic doors breathe warm air at you. Behind the front desk, a nurse in teal scrubs looks up — and her face changes. You recognize her. Carla. From Mom\'s birthday.', '"Sam? Oh, sweetie. Your mom is upstairs. She\'s been here all night, she didn\'t know where else to go."'],
+    if (to === 'hospital') SH.Events.queue({ id: 'hosp', run: () => D({ title: 'St. Brigid\'s', text: ['The automatic doors breathe warm air at you. Behind the front desk, a nurse in teal scrubs looks up, and her face changes. You recognize her. Carla. From Mom\'s birthday.', '"Sam? Oh, sweetie. Your mom is upstairs. She\'s been here all night, she didn\'t know where else to go."'],
       choices: [{ t: 'Let Carla take you upstairs', cls: 'safe', fn: () => SH.Endings.foundMom('hospital') }, { t: 'Turn around and walk out', cls: 'hot', fn: () => { SH.G.heat = Math.min(100, SH.G.heat + 25); SH.G.revealed = 'hospital'; SH.UI.log('You hear her calling your name behind you. You don\'t stop.', 'bad'); } }] }) });
     if (to === 'police') SH.Events.queue({ id: 'selfturn', run: () => D({ title: 'Harlow Police', text: ['The lobby smells like burnt coffee. A woman officer behind the glass looks up from a crossword. Her name tag says LOWE.', 'She looks at you. At your backpack. At the MISSING poster taped to the glass, right next to her face, with your school photo on it.'],
       choices: [{ t: 'Talk to her', cls: 'safe', fn: () => SH.Endings.found('self') }, { t: 'Leave before she stands up', fn: () => { SH.G.heat += 20; SH.G.revealed = 'police'; } }] }) });
@@ -147,11 +147,11 @@
     if (to === 'patel') SH.Events.queue({ id: 'patelRun', run: () => SH.Endings.patel(true) });
     if (to === 'home' && G.t - G.missingAt > 30) SH.Events.queue({ id: 'homeback', run: () => D({ title: 'Maple Street', text: ['You\'re standing across the street from your house. The porch light is on. It\'s never on.', G.discoveredAt ? 'Through the window you can see Mom at the kitchen table with her head in her hands. A police cruiser is parked out front.' : 'Nobody knows you\'re gone yet. You could slip back in. Nobody would ever know.'],
       choices: [{ t: 'Go inside', cls: 'safe', fn: () => SH.Endings.walkHome() }, { t: 'Not yet', fn: () => {} }] }) });
-    if (to === 'jordan' && SH.hour() >= 21 || to === 'jordan' && SH.hour() < 7) SH.Events.queue({ id: 'garage', run: () => D({ title: 'Jordan\'s Garage', who: 'jordan', text: [SH.f('jordanGarage') ? 'You punch 4417 into the side door. It clicks open. The garage smells like motor oil and Axe body spray.' : 'The side door is unlocked — it always is. Jordan says his dad forgets.', 'The couch. The mini fridge. A space heater. It\'s the nicest place you\'ve been all night.'],
+    if (to === 'jordan' && SH.hour() >= 21 || to === 'jordan' && SH.hour() < 7) SH.Events.queue({ id: 'garage', run: () => D({ title: 'Jordan\'s Garage', who: 'jordan', text: [SH.f('jordanGarage') ? 'You punch 4417 into the side door. It clicks open. The garage smells like motor oil and Axe body spray.' : 'The side door is unlocked, it always is. Jordan says his dad forgets.', 'The couch. The mini fridge. A space heater. It\'s the nicest place you\'ve been all night.'],
       choices: [{ t: 'Sleep here till morning', cls: 'safe', fn: () => SH.Endings.garage() }, { t: 'Text Jordan you\'re here', fn: () => { SH.Phone.push('jordan', 'jordan', 'WAIT UR IN MY GARAGE?? coming down with blankets and pizza rolls'); SH.st('mood', 10); SH.st('full', 20); SH.Endings.garage(); } }, { t: 'Leave. They\'d have to call your mom.', fn: () => {} }] }) });
   };
   R.trainyard = function () {
-    D({ title: 'The Rail Yard', text: ['A hole in the fence. Rusted boxcars in rows, black against a sky the color of a bruise. It looks like the movies.', 'Then you hear voices from inside one of the cars — men, arguing, slurring. A bottle smashes. Someone laughs in a way that makes every hair on your neck stand up. A flashlight beam swings toward you.'],
+    D({ title: 'The Rail Yard', text: ['A hole in the fence. Rusted boxcars in rows, black against a sky the color of a bruise. It looks like the movies.', 'Then you hear voices from inside one of the cars, men, arguing, slurring. A bottle smashes. Someone laughs in a way that makes every hair on your neck stand up. A flashlight beam swings toward you.'],
       choices: [{ t: 'Back away. Now.', fn: () => { SH.st('stress', 18); SH.G.loc = 'park'; SH.advance(30, { exert: 3, interrupt: false }); SH.UI.log('You run until your lungs burn and don\'t stop until you\'re under a streetlight at Riverside Park. Wren was right. It is not a movie.', 'bad'); SH.UI.afterAction(); } }] });
   };
 
@@ -188,7 +188,7 @@
       // no theft in this game (user rule): someone comes close in the dark, but nothing is taken
       SH.Events.queue({ id: 'rustle', run: () => D({ title: 'Woken Up', text: ['You wake up because something is moving near your backpack. You sit bolt upright and hug it to your chest. A shape in a big coat mumbles "sorry, sorry, thought nobody was here" and shuffles off into the dark.', 'You check everything twice. It\'s all still there. You sit there with your heart going until the sky turns gray.'], choices: [{ t: '...', fn: () => { SH.st('stress', 14); SH.st('energy', -8); } }] }) });
     } else if (roll < 0.7) {
-      SH.Events.queue({ id: 'nightman', run: () => D({ title: 'Someone Standing There', text: ['You open your eyes. A man is standing a few feet away, just watching you. He\'s not homeless — his shoes are too clean. "Hey there. You look cold. I\'ve got a warm car. Heater\'s running."'],
+      SH.Events.queue({ id: 'nightman', run: () => D({ title: 'Someone Standing There', text: ['You open your eyes. A man is standing a few feet away, just watching you. He\'s not homeless, his shoes are too clean. "Hey there. You look cold. I\'ve got a warm car. Heater\'s running."'],
         choices: [{ t: 'Grab your stuff and walk fast toward the lights', cls: 'safe', fn: () => { SH.st('stress', 15); SH.UI.log('You don\'t look back. Your heart doesn\'t slow down for an hour.', 'warn'); } }, { t: 'Yell for help', fn: () => { SH.st('stress', 12); SH.UI.log('He mutters something and walks away quickly. ' + (G.loc === 'underpass' ? 'Wren is already on her feet, holding a bike lock like a weapon. "Yeah, keep walking, creep."' : ''), 'warn'); } }, { t: 'Get in the car. It\'s so cold.', cls: 'hot', fn: () => SH.Endings.dex(true) }] }) });
     } else {
       SH.Events.queue({ id: 'rainwake', run: () => D({ title: 'Woken Up', text: [SH.raining() ? 'Rain finds you. It always finds you. Your hoodie is soaked through and you\'re shaking so hard your teeth click.' : 'A dog is barking, close. Then a car door. Then silence. You don\'t go back to sleep.'], choices: [{ t: '...', fn: () => { if (SH.raining()) SH.G.s.warmth -= 20; SH.st('stress', 10); } }] }) });

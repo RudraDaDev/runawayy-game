@@ -28,7 +28,9 @@
     const o = Object.assign({}, l), changes = g.look || {}, fit = v.outfit;
     if (changes.hair) o.style = 'buzz';
     if (changes.dye) o.hair = '#a47eb0';
-    if (changes.glasses) o.glasses = '#aaa08e';
+    if (changes.glasses || fit.glasses) o.glasses = '#aaa08e';
+    o.legs = fit.legs === 'x_sweats' ? '#65616b' : '#39372f'; o.shoe = fit.shoes === 'x_boots' ? '#786049' : '#aaa396';
+    o.gloves = fit.hands === 'x_gloves' ? '#70664f' : null;
     const tops = { x_hoodie2: ['#74766d', 'hoodie'], x_rainjacket: ['#68765b', 'jacket'], x_sweats: ['#65616b', 'hoodie'] };
     if (tops[fit.top]) [o.shirt, o.top] = tops[fit.top];
     if (fit.hat) { o.hat = fit.hat === 'x_cap' ? 'cap' : 'beanie'; o.hatc = '#8b735b'; }
@@ -37,13 +39,13 @@
   V.body = function (id, fallback) {
     const p = V.look(id); if (!p) return fallback;
     const fit = id === 'sam' ? V.ensure(SH.G).outfit : {};
-    return { skin: p.skin, hair: p.hair, top: p.shirt, legs: fit.legs === 'x_sweats' ? '#65616b' : '#39372f', shoe: fit.shoes === 'x_boots' ? '#786049' : '#aaa396', long: /pony|bob|curly|bun|pigtails/.test(p.style), cap: p.hat ? p.hatc || p.shirt : null, glasses: p.glasses, tall: p.young === 2 ? 0.7 : p.young ? 0.86 : 1 };
+    return { skin: p.skin, hair: p.hair, top: p.shirt, legs: fit.legs === 'x_sweats' ? '#65616b' : '#39372f', shoe: p.shoe || (fit.shoes === 'x_boots' ? '#786049' : '#aaa396'), long: /pony|bob|curly|bun|pigtails/.test(p.style), cap: p.hat ? p.hatc || p.shirt : null, glasses: p.glasses, gloves: p.gloves, tall: p.young === 2 ? 0.7 : p.young ? 0.86 : 1 };
   };
-  const categories = { x_hoodie2: 'top', x_rainjacket: 'top', x_sweats: 'legs', x_boots: 'shoes', x_cap: 'hat', x_beanie: 'hat', x_gloves: 'hands', x_socks: 'socks' };
+  const categories = { x_hoodie2: 'top', x_rainjacket: 'top', x_sweats: 'legs', x_boots: 'shoes', x_cap: 'hat', x_beanie: 'hat', x_gloves: 'hands', x_socks: 'socks', x_glasses: 'glasses' };
   V.equip = function (id) {
     const g = SH.G, slot = categories[id];
     if (!g || !slot || !(g.bag || []).concat(g.owned || []).includes(id)) return false;
-    V.ensure(g).outfit[slot] = id;
+    const fit = V.ensure(g).outfit; if (fit[slot] === id) return true; fit[slot] = id;
     SH.Memories && SH.Memories.record('outfit:' + id + ':' + g.t, 'A different outline', 'You put on the ' + SH.ITEMS[id].n + '.', 'outfit');
     return true;
   };
@@ -57,7 +59,7 @@
   const migrate = SH.migrate;
   SH.migrate = function (g) { const r = migrate.apply(this, arguments); V.ensure(g); return r; };
   const newGame = SH.newGame;
-  SH.newGame = function () { const r = newGame.apply(this, arguments); V.ensure(SH.G).incomplete = false; return r; };
+  SH.newGame = function () { const r = newGame.apply(this, arguments); const h = V.ensure(SH.G); delete h.people.sam; V.ensure(SH.G); h.incomplete = false; return r; };
 
   const C = SH.Companions = {};
   C.ids = function (g = SH.G) { return g && (g.phase === 'run' || g.phase === 'end') ? [...new Set((g.party || []).concat(g.rkids || []))].filter(id => SH.NPCS_META[id]) : []; };
@@ -72,11 +74,28 @@
     const ids = C.ids(); if (!ids.length) return;
     const g = SH.G, n = ids.map(id => SH.NPCS_META[id].n).join(' and '), p = SH.LOC[g.loc];
     SH.advance(10, { interrupt: false }); if (g.ended) return;
-    const line = `${n} stays beside you. ${SH.raining() ? 'Rain ticks against the nearest roof. You both listen.' : SH.isDark() ? 'For a little while, neither of you needs to fill the dark with words.' : 'Someone shifts their bag to make a little more room. The quiet is shared, not empty.'}`;
+    const line = `${n} ${ids.length > 1 ? 'stay' : 'stays'} beside you. ${SH.raining() ? 'Rain ticks against the nearest roof. You listen together.' : SH.isDark() ? 'For a little while, neither of you needs to fill the dark with words.' : 'Someone shifts their bag to make a little more room. The quiet is shared, not empty.'}`;
     SH.UI.log(line, 'good');
     SH.Memories.record('quiet:' + SH.day() + ':' + g.loc, 'The quiet beside you', line, 'shared', ids);
     SH.UI.dialog({ title: p ? p.name : 'A little while', text: [line], choices: [{ t: 'Stay together. Keep going.', fn: () => {} }] });
   };
+  // Co-present friends answer about the place they are in, not an old home routine.
+  Object.keys(SH.Friends.KIDS).concat('jordan').forEach(id => {
+    const brain = SH.Brain[id]; if (!brain) return;
+    SH.Brain[id] = function (an, c) {
+      if (C.has(id) && c.ctx !== 'homesick' && !an.has('selfharm') && !an.has('disclose') && !an.has('run') && !an.has('stay')) {
+        const t = an.t || '';
+        if (/\b(how are you|how r u|how you doing|how's it going|what are you doing|wyd)\b/.test(t)) {
+          c.mem._v15Small = (c.mem._v15Small || 0) + 1;
+          const place = SH.G.away ? SH.Atlas.here().name : 'here';
+          return { say: c.mem._v15Small === 1 ? `Still getting used to ${place}. I'm glad you're here, though.` : "A little tired. Still here. We don't have to have a plan for every minute.", fx: {} };
+        }
+        if (/\b(where are you|where r u|are you there|u there)\b/.test(t)) return { say: "Right here. I'm not going anywhere on my own.", fx: {} };
+        if (/\b(look at|this place|this town|the rain|it's raining|it is raining)\b/.test(t)) return { say: SH.raining() ? "Yeah. The rain sounds different here. Everything does." : "Yeah. I keep noticing small things. The signs. The way people say hello.", fx: {} };
+      }
+      return brain.apply(this, arguments);
+    };
+  });
   const where = SH.World.where, present = SH.World.present;
   SH.World.where = function (id, t) { if (C.has(id)) return { loc: SH.G.loc, act: 'with you', place: SH.G.away || 'p0' }; return where.apply(this, arguments); };
   SH.World.present = function (loc = SH.G.loc) { return [...new Set(present.apply(this, arguments).concat(loc === SH.G.loc ? C.ids() : []))]; };
@@ -89,6 +108,7 @@
       out.acts = out.acts.filter(a => a.label !== label);
       out.acts.push({ label, sub: 'With you, here. Talk in person.', fn: () => C.talk(id) });
     });
+    if (!out.acts.some(a => a.label === 'What you wear')) out.acts.push({ label: 'What you wear', sub: 'Your clothes, your outline.', fn: V.wardrobe });
     if (C.ids().length) out.acts.push({ label: 'Share a quiet moment', sub: 'Ten minutes together. No need to say anything.', fn: C.quiet });
     return out;
   };

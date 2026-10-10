@@ -47,7 +47,7 @@
     // Dex
     if (G.flags.dexStage) out.push(['dex_19', f('dexReported') || f('jordanKnowsDex') || key === 'dex' || key === 'dexNo' ? 'dex_19 was not nineteen. He was thirty-one. When police traced his account, they found he had been messaging eleven other kids in three states. Your report was the one that started it.' : 'dex_19 is still out there, still "nineteen," still telling some other kid they\'re mature for their age. You think about that sometimes. You wish you\'d told someone.']);
     // Wren
-    if (f('metWren')) out.push(['Wren', key === 'harbor' ? 'Wren showed up at Harbor House four days after you did. "Don\'t make it weird," she said. You made it a little weird. She\'s in the transitional living program now. She sends you book recommendations.' : 'You never saw Wren again. Sometimes you walk past the underpass and look. There\'s a new mural there — a purple-haired girl reading a book. You hope it\'s her.']);
+    if (f('metWren')) out.push(['Wren', key === 'harbor' ? 'Wren showed up at Harbor House four days after you did. "Don\'t make it weird," she said. You made it a little weird. She\'s in the transitional living program now. She sends you book recommendations.' : 'You never saw Wren again. Sometimes you walk past the underpass and look. There\'s a new mural there, a purple-haired girl reading a book. You hope it\'s her.']);
     return out;
   }
   function moments() {
@@ -67,8 +67,26 @@
     const chip = (a, b) => `<div class="scard"><small>${a}</small><b>${b}</b></div>`;
     return `<div class="sgrid">${chip('Seed', '#' + P.seed)}${chip('You were', T.n)}${chip('Breaking point', C.n)}${chip('Side stories', P.subplots.map((k) => SH.SUBPLOTS[k].n).join(' · '))}</div>`;
   }
+  // Additional detail is drawn from recorded play, not invented rewards or missing scenes.
+  function runDetails(key, sub) {
+    const g = SH.G, h = g.v15, out = [];
+    if (!h) return out;
+    const members = SH.Companions ? SH.Companions.ids() : (g.party || []);
+    if (members.length) {
+      const names = members.map(id => SH.NPCS_META[id].n).join(' and ');
+      out.push(`When you think about the road, ${names} ${members.length === 1 ? 'is' : 'are'} part of it now. Not a voice coming through a phone, but someone who stood beside you in places neither of you knew. The ending does not erase those hours.`);
+    }
+    const talks = (h.memories || []).filter(m => m.kind === 'conversation');
+    if (talks.length) {
+      const last = talks[talks.length - 1];
+      out.push(`There was a conversation at ${last.scene.place} that you can still put yourself inside. ${last.scene.time}, ${last.scene.date}. The exact words are kept in your memories. You do not have to remember everything perfectly to know it happened.`);
+    }
+    const leaving = (h.memories || []).find(m => m.key.startsWith('tag:ranAway'));
+    if (leaving) out.push(`The clothes, the place, the hour you left: a small record of a very large decision. That version of you is still there in your memories. ${/never found/i.test(sub) ? 'The story outside Harlow kept going. Being out of sight did not make those first hours disappear.' : 'Reaching this point does not make leaving simpler, or turn everything before it into a mistake. It was part of how you got here.'}`);
+    return out;
+  }
   EN.show = function (key, title, sub, paras) {
-    paras = (paras || []).map(SH.nm); title = SH.nm(title); sub = SH.nm(sub);
+    paras = (paras || []).concat(runDetails(key, sub || '')).map(SH.nm); title = SH.nm(title); sub = SH.nm(sub);
     const G = SH.G; if (G.ended) return; G.ended = true; G.endKey = key; G.phase = 'end';
     SH.UI.closeMap();
     const md = document.querySelector('#modal'); md.classList.remove('hidden');
@@ -78,7 +96,7 @@
       <div class="ending"><small style="color:var(--muted);letter-spacing:3px">ENDING</small><h1>${title}</h1><div style="color:var(--muted);font-style:italic">${sub}</div></div>
       <div class="epi">${paras.map((p) => `<p>${p}</p>`).join('')}
       <h4>After</h4>${ep.map(([w, t]) => `<p><b style="font-family:system-ui;font-size:13px;color:var(--amber)">${w}.</b> ${t}</p>`).join('')}
-      <h4>Moments</h4><div>${mo.map((x) => `<span class="stamp">${x}</span>`).join('') || '<span class="stamp">—</span>'}</div>
+      <h4>Moments</h4><div>${mo.map((x) => `<span class="stamp">${x}</span>`).join('') || '<span class="stamp">·</span>'}</div>
       <h4>This story</h4>${storyCard()}
       <h4>There are other ways this story goes</h4><p style="font-size:13.5px;color:var(--muted)">Every new story reshuffles the breaking point, the side stories, the weather, the timing, even who you are. And there are ${SH.EndX && SH.EndX.total ? SH.EndX.total() + ' endings' + (SH.EndX.seenList ? ` (you've seen ${SH.EndX.seenList().length})` : '') : 'a lot of endings'}. Some depend on who you tell, and exactly what you type when it matters.</p>
       <h4>If any of this is close to home</h4><div class="resources">This is fiction, but these are real, free and confidential:<br>
@@ -92,8 +110,8 @@
         ${G.story ? `<button class="btn" id="sameSeed">↻ Replay story #${G.story.seed}</button>` : ''}
         <button class="btn primary" id="newG">✦ New story</button></div></div>`;
     const ss = document.querySelector('#sameSeed'); if (ss) ss.onclick = () => { try { localStorage.removeItem('smallhours_save'); localStorage.setItem('sh_nextSeed', String(G.story.seed)); } catch (e) {} location.reload(); };
-    const rw = (s) => { SH.G = JSON.parse(s); SH.G.ended = false; if (SH.G.phase === 'end') SH.G.phase = 'home'; md.classList.add('hidden'); SH.Events.Q = []; SH.UI.log('— Rewound. —', 'day'); SH.UI.afterAction(); };
-    const a = document.querySelector('#rwLeft'); if (a) a.onclick = () => { const s = SH.getSnap('left'); const g = JSON.parse(s); g.phase = 'home'; SH.G = g; SH.G.ended = false; md.classList.add('hidden'); SH.Events.Q = []; SH.UI.log('— Rewound to the moment before you left. —', 'day'); SH.UI.afterAction(); };
+    const rw = (s) => { SH.G = JSON.parse(s); SH.G.ended = false; if (SH.G.phase === 'end') SH.G.phase = 'home'; md.classList.add('hidden'); SH.Events.Q = []; SH.UI.log('Rewound. ', 'day'); SH.UI.afterAction(); };
+    const a = document.querySelector('#rwLeft'); if (a) a.onclick = () => { const s = SH.getSnap('left'); const g = JSON.parse(s); g.phase = 'home'; SH.G = g; SH.G.ended = false; md.classList.add('hidden'); SH.Events.Q = []; SH.UI.log('Rewound to the moment before you left. ', 'day'); SH.UI.afterAction(); };
     const b = document.querySelector('#rwDay'); if (b) b.onclick = () => rw(snapDay);
     document.querySelector('#newG').onclick = () => { try { localStorage.removeItem('smallhours_save'); } catch (e) {} location.reload(); };
     try { localStorage.removeItem('smallhours_save'); } catch (e) {}
@@ -138,23 +156,23 @@
   EN.harbor = function (how) {
     const G = SH.G;
     D({ title: 'Harbor House', who: 'marcus', text: [how === 'outreach' ? 'A beat-up van with a lighthouse logo. A tall guy with a beard and a lanyard gets out, holding a thermos. "You must be ' + G.name + '. I\'m Marcus, from Harbor House. Hot cocoa? It\'s the good kind."' : how === 'dolores' ? 'Dolores drives you in her old Buick at 6:05 AM, the radio on low. She walks you up the porch steps and knocks. "Marcus, this one\'s special. Treat ' + G.name + ' right."' : 'A big old Victorian by the river. The porch light is on, like the flyer said. You knock before you can talk yourself out of it. A tall guy with a beard opens the door. "Hey. Come in. It\'s cold. I\'m Marcus."', 'Inside it smells like laundry and pasta. There\'s a couch with a quilt, a shelf of board games missing pieces, a kid about fifteen asleep in an armchair with headphones on.'],
-      choices: [{ t: 'Talk to Marcus (type it)', fn: () => SH.Talk.open('marcus', { ctx: 'intake', turnsMax: 6, noLeave: true, first: 'So. First things first — are you hurt anywhere? Then food. Then, if you want, you can tell me what\'s going on.', onEnd: () => EN.harborEnd(how) }) }] });
+      choices: [{ t: 'Talk to Marcus (type it)', fn: () => SH.Talk.open('marcus', { ctx: 'intake', turnsMax: 6, noLeave: true, first: 'So. First things first: are you hurt anywhere? Then food. Then, if you want, you can tell me what\'s going on.', onEnd: () => EN.harborEnd(how) }) }] });
   };
   EN.harborEnd = function (how) {
     const told = f('toldMarcus');
     EN.show('harbor', 'Porch Light', 'Harbor House · 212 Wharf St', [
-      'You sleep fourteen hours in a bed with sheets that smell like someone cared. When you wake up there\'s a toothbrush still in its packaging on the nightstand, and a note: "breakfast is whenever. — M"',
-      told ? 'Because you told Marcus the truth about home, Harbor House calls Children\'s Services instead of just calling your house. Ms. Hale from CFS comes on day two. On day four, there\'s a meeting — you, Mom, Marcus, Ms. Hale — in a room with a box of tissues and a bad painting of a sailboat. Rick is not invited.' : 'On day three, as the law says they must, Harbor House calls your mom. She comes that afternoon. Marcus sits in on the conversation, and when Mom starts to say "Rick is going through a lot," Marcus says, gently, "Let\'s hear from Sam first." And she does. She listens.',
+      'You sleep fourteen hours in a bed with sheets that smell like someone cared. When you wake up there\'s a toothbrush still in its packaging on the nightstand, and a note: "breakfast is whenever. Signed, M"',
+      told ? 'Because you told Marcus the truth about home, Harbor House calls Children\'s Services instead of just calling your house. Ms. Hale from CFS comes on day two. On day four, there\'s a meeting with you, Mom, Marcus and Ms. Hale in a room with a box of tissues and a bad painting of a sailboat. Rick is not invited.' : 'On day three, as the law says they must, Harbor House calls your mom. She comes that afternoon. Marcus sits in on the conversation, and when Mom starts to say "Rick is going through a lot," Marcus says, gently, "Let\'s hear from Sam first." And she does. She listens.',
       'You stay nine days. You learn to play a card game called Spit. You go to three family sessions. On the last day, Marcus gives you a keychain shaped like a lighthouse. "In case you ever need to find us again. Hope you don\'t. But in case."']);
   };
   EN.grandma = function (how) {
     const G = SH.G;
-    const intro = how === 'bus' ? ['Cedar Falls. The bus hisses into a station the size of your kitchen. You walk the address on the back of the photo — 41 Larkspur Lane — for forty minutes in the gray morning.', 'The yellow house. Too many wind chimes. You knock. The door opens, and Grandma Rose is in her robe with a spatula in her hand, and she drops it.']
+    const intro = how === 'bus' ? ['Cedar Falls. The bus hisses into a station the size of your kitchen. You walk the address on the back of the photo, 41 Larkspur Lane, for forty minutes in the gray morning.', 'The yellow house. Too many wind chimes. You knock. The door opens, and Grandma Rose is in her robe with a spatula in her hand, and she drops it.']
       : how === 'agent' ? ['The ticket agent dials the number you give her. You hear Grandma\'s voice through the receiver, tiny and loud: "Put my grandbaby on the phone RIGHT NOW."', 'Three hours later, a dented green station wagon with a CEDAR FALLS LIBRARY FRIENDS bumper sticker pulls up outside the depot. Grandma Rose gets out in her slippers.']
         : ['A dented green station wagon pulls into the lot with its high beams on. Grandma Rose gets out in her coat over her nightgown, in slippers, at 4 AM, after driving 140 miles.', 'She doesn\'t say anything. She just opens her arms.'];
     EN.show('grandma', 'Wind Chimes', '41 Larkspur Lane · Cedar Falls', intro.concat([
       '"Mijo. Mijo. Look at you. You\'re frozen. Get inside. There\'s pozole. There is always pozole."',
-      'She calls your mom from the kitchen with the door closed. You hear her voice rise and fall — angry, then crying, then very quiet. When she comes out, her eyes are red. "Your mother is coming tomorrow. Alone. And you\'re staying here as long as you need. That\'s not a question, it\'s a fact."',
+      'She calls your mom from the kitchen with the door closed. You hear her voice rise and fall, angry, then crying, then very quiet. When she comes out, her eyes are red. "Your mother is coming tomorrow. Alone. And you\'re staying here as long as you need. That\'s not a question, it\'s a fact."',
       'You sleep in the room with the quilt she made when you were born. The wind chimes play all night. For the first time in months, nothing else does.']));
   };
   EN.walkHome = function () {
@@ -177,7 +195,7 @@
       'Sometimes the body tells the truth before you\'re ready to. It isn\'t the way you would have chosen. But people are looking now.']); }
     EN.show('collapse', 'Cold', 'St. Brigid\'s Hospital · Pediatrics', ['The last thing you remember is the ground being surprisingly warm, which is how you know something is very wrong.',
       'You wake up in a bed with rails. There\'s a warming blanket that hums, an IV in the back of your hand, a monitor beeping your heart. A nurse in teal scrubs checks your chart and says, "Hypothermia, dehydration. You\'re lucky a jogger found you."',
-      'The door opens. It\'s Mom — in her own scrubs, from her own floor, three levels up. She\'s been working the whole time you were gone because she didn\'t know what else to do. She sits on the edge of your bed and puts her forehead against yours and doesn\'t say anything at all.',
+      'The door opens. It\'s Mom, in her own scrubs, from her own floor, three levels up. She\'s been working the whole time you were gone because she didn\'t know what else to do. She sits on the edge of your bed and puts her forehead against yours and doesn\'t say anything at all.',
       'A social worker comes by the next morning. She asks a lot of questions. You\'re too tired to lie, so you don\'t.']);
     SH.flag('toldPolice');
   };
@@ -188,7 +206,7 @@
       : ['The silver car is idling at the far end of the QuikMart lot. The man inside is not nineteen. He is maybe thirty-five, with a baseball cap pulled low. He smiles. "Hey, you. Get in, it\'s freezing."',
         'You get in. The locks click. He says, "Give me your phone, we don\'t want anyone tracking you, right?" and holds his hand out, and the way he says it is not a question.'];
     const end = watched && !stranger ? ['You never make it out of the parking lot. Two unmarked cars box him in. Doors fly open. Someone is yelling "HANDS! HANDS ON THE WHEEL!" A detective opens your door and says, very gently, "You\'re safe. We\'ve been watching this account since it was reported."']
-      : ['At the stoplight on Route 9, you remember everything Wren said, everything PIP flagged. You yank the door handle. It\'s locked — but the window button works. You scream. You scream like you have never screamed in your life, out the window, at a woman pumping gas.',
+      : ['At the stoplight on Route 9, you remember everything Wren said, everything PIP flagged. You yank the door handle. It\'s locked, but the window button works. You scream. You scream like you have never screamed in your life, out the window, at a woman pumping gas.',
         'She drops the nozzle and runs toward the car, phone already at her ear. The man swears, unlocks the doors to shove you out, and peels away. The woman wraps her coat around you on the curb until the police come. She read his license plate out loud to the dispatcher. Twice.'];
     EN.show('dex', stranger ? 'The Warm Car' : 'The Silver Car', 'The danger was real', para.concat(end, ['You are okay. Physically, you are okay. But you shake for three days, and for a long time after, you can\'t get into any car without checking the lock.',
       'Officer Lowe tells you, quietly, that you were lucky, and that most kids who get into that car are not. Then she tells you it was never your fault. Grown-ups who hunt for kids who are alone are the ones to blame. Always.']));
@@ -200,17 +218,17 @@
       choices: [{ t: 'Talk to her (type it)', fn: () => SH.Talk.open('tanya', { turnsMax: 4, noLeave: true, first: 'Oh, honey. Your mom has called here four times. Are you okay? What happened?', onEnd: () => EN.show(f('toldTanya') ? 'garageTold' : 'garage', 'Jordan\'s Garage', 'Birch Lane · pancakes', [
         'Mrs. Pike makes pancakes while she makes phone calls. Jordan sits next to you at the counter and shares his syrup without being asked, which from Jordan is basically a love letter.',
         f('toldTanya') ? 'She calls the child welfare hotline first, and your mom second. When your mom arrives, Mrs. Pike takes her onto the porch for twenty minutes. Your mom comes back in with a face like she\'s been slapped awake. "Rick\'s leaving," she says. "Today."' : 'She calls your mom. "It\'s the law, sweetheart, and it\'s also just right." Your mom arrives with Rick in the passenger seat. Mrs. Pike looks at Rick for a long time, and then at you, and quietly writes her cell number on your hand.',
-        'Before you leave, Jordan hugs you — an actual hug, not a bro hug — and says "text me every day or I\'m calling ur grandma." He means it.']) }) }] });
+        'Before you leave, Jordan hugs you, an actual hug, not a bro hug, and says "text me every day or I\'m calling ur grandma." He means it.']) }) }] });
   };
   EN.patel = function (fromRun) {
-    EN.show('patel', 'Next Door', '16 Maple St · Newton the beagle', [fromRun ? 'You knock on Mrs. Patel\'s back door. It\'s past midnight. The kitchen light comes on before your second knock.' : 'You run. Down the stairs, past Rick, out the front door, across the wet lawn in your socks. You pound on Mrs. Patel\'s door. It opens before your third knock — she was already awake. She heard.',
+    EN.show('patel', 'Next Door', '16 Maple St · Newton the beagle', [fromRun ? 'You knock on Mrs. Patel\'s back door. It\'s past midnight. The kitchen light comes on before your second knock.' : 'You run. Down the stairs, past Rick, out the front door, across the wet lawn in your socks. You pound on Mrs. Patel\'s door. It opens before your third knock, she was already awake. She heard.',
       'She pulls you inside, locks the door, and puts herself between you and the window. Newton the beagle presses his warm, old body against your legs. "Beta, sit. Tea. And then I am making a phone call, and you are not going to stop me."',
-      fromRun ? 'She calls your mother first. Then, while you drink your tea, she calls the child welfare line, and she reads them the notes she has kept — dates, times, what she heard through the wall — in a small notebook for the past year. "I\'m a scientist," she says. "I keep records."' : 'The police arrive in six minutes. They talk to Rick on the porch. They see the hole in the wall. They see your phone. Rick spends the night somewhere else, and a caseworker is at your door by noon.',
+      fromRun ? 'She calls your mother first. Then, while you drink your tea, she calls the child welfare line, and she reads them the notes she has kept, dates, times, what she heard through the wall, in a small notebook for the past year. "I\'m a scientist," she says. "I keep records."' : 'The police arrive in six minutes. They talk to Rick on the porch. They see the hole in the wall. They see your phone. Rick spends the night somewhere else, and a caseworker is at your door by noon.',
       'You sleep on her couch under an afghan, with Newton snoring on your feet. It is the safest you have felt in a year.']);
     SH.flag('patelSafe'); SH.flag('rickGone');
   };
   EN.call911 = function () {
-    D({ title: '911', text: ['"911, what is your emergency?" "My stepdad— he\'s drunk, he broke my phone, he punched the wall, he—" Your voice cracks. Lily\'s asleep across the hall.', '"Okay. You did the right thing calling. Are you in a room that locks? Stay on the line with me. Officers are on the way."'],
+    D({ title: '911', text: ['"911, what is your emergency?" "My stepdad... he\'s drunk, he broke my phone, he punched the wall, he..." Your voice cracks. Lily\'s asleep across the hall.', '"Okay. You did the right thing calling. Are you in a room that locks? Stay on the line with me. Officers are on the way."'],
       choices: [{ t: 'Stay on the line', cls: 'safe', fn: () => EN.show('call911', 'The Call', 'Harlow PD · Children\'s Services', ['You sit with your back against the door, phone pressed to your ear, the dispatcher\'s calm voice telling you about her dog to keep you talking. Blue lights sweep across your ceiling.',
         'They take Rick outside. You hear him shouting, then not. An officer knocks softly: "' + SH.G.name + '? I\'m Officer Lowe. You can open the door."', 'Mom leaves her shift in the middle of the night. She arrives in her scrubs and sees the hole in the wall six inches from your pillow and sits down right on the floor.',
         'A caseworker comes in the morning. Rick is served with an emergency protective order that afternoon. The hole in the wall stays for a while. Eventually, you and Mom patch it together, badly, and paint it blue.']) }] });

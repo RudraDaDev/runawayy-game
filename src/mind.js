@@ -12,7 +12,7 @@
   const NP = (id) => { const m = MS(); return (m.npc[id] = m.npc[id] || { met: SH.G.t, n: 0, qa: [], ops: {}, said: [] }); };
   const when = (t) => (SH.Mem && SH.Mem.when ? SH.Mem.when(t) : 'before');
   const cap = (s) => (s ? s.charAt(0).toUpperCase() + s.slice(1) : s);
-  const nm = (id) => { const m = SH.NPCS_META && SH.NPCS_META[String(id).split(':')[0]]; const p = String(id).split(':')[1]; return p ? p.split(/[ ,]/)[0] : m ? m.n.split(' ')[0] : id; };
+  const nm = (id) => { const m = SH.NPCS_META && SH.NPCS_META[String(id).split(':')[0]]; const p = String(id).split(':')[1]; return p ? p.split(/[,]/)[0] : m ? m.n.split(' ')[0] : id; };
   const fill = (tpl, o) => tpl.replace(/\{(\w+)\}/g, (_, k) => (o[k] != null ? o[k] : ''));
   const pick = (c, key, arr) => (c && N.pick ? N.pick(c, 'mind_' + key, arr) : U.pick(arr));
   const hash = (s) => { let h = 7; for (const ch of String(s)) h = (h * 31 + ch.charCodeAt(0)) >>> 0; return h; };

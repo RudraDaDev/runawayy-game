@@ -29,7 +29,7 @@
       g.later = { first: g.endKey, firstTitle: h1.textContent, t0: g.t, until: g.t + DAYS * 1440, beat: 0 };
       g.ended = false; g.endKey = null; g.phase = 'run';
       md.classList.add('hidden'); md.innerHTML = ''; md._later = 0; if (SH.Events) SH.Events.Q = [];
-      SH.UI.log(`— You keep going. Up to four more months, until ${SH.longDate ? SH.longDate(g.later.until) : 'spring'}. You can stop any time from “You & your group”. —`, 'day');
+      SH.UI.log(`, You keep going. Up to four more months, until ${SH.longDate ? SH.longDate(g.later.until) : 'spring'}. You can stop any time from “You & your group”. `, 'day');
       SH.UI.afterAction();
     };
   }
@@ -59,7 +59,7 @@
   K.daily.push(() => { const g = G(); if (!g.later || g.later.done || g.ended) return; const d = ex(g);
     if (g.t >= g.later.until) return setTimeout(() => finish(true), 60);
     const b = Math.floor(d / 30); if (b > g.later.beat) { g.later.beat = b;
-      SH.UI.log(`— ${b === 1 ? 'One month' : b === 2 ? 'Two months' : 'Three months'} since you decided to disappear. It's ${mon(g.t)}. ${{ winter: 'The cold is the whole job now.', spring: 'Things are turning green at the edges.', summer: 'The days are long and the nights are short and warm.', fall: 'The leaves are turning, again.' }[seas(g.t)]}${b === 3 ? ' One month left, if you want it.' : ''} —`, 'day'); } });
+      SH.UI.log(`, ${b === 1 ? 'One month' : b === 2 ? 'Two months' : 'Three months'} since you decided to disappear. It's ${mon(g.t)}. ${{ winter: 'The cold is the whole job now.', spring: 'Things are turning green at the edges.', summer: 'The days are long and the nights are short and warm.', fall: 'The leaves are turning, again.' }[seas(g.t)]}${b === 3 ? ' One month left, if you want it.' : ''},`, 'day'); } });
 
   /* ---------- the "later" endings ---------- */
   const shackHere = (c) => { const b = c.g.base; return b && b.shack && c.place && b.pid === c.place.id && b.up.filter((u) => /^sh_/.test(u)).length >= 5; };
@@ -79,7 +79,7 @@
     { k: 'laterFriends', on: ['later'], p: 4, w: (c) => c.n >= 1, t: c => c.n === 1 ? 'Still the Two of Us' : 'Still All of Us', sub: 'Months later. Never found. Not alone.',
       x: (c) => [`${wk(c)} after you meant to vanish, you and ${c.pl} are still out here, in ${c.town}, in ${whenNow(c)}. You've had exactly one real fight (about a sandwich) and a hundred small ones (about everything else), and every single morning you both woke up and chose to still be here.`,
         `You know things about each other now that nobody else will ever know. What ${c.n === 1 ? c.pl + ' is' : 'they\'re'} scared of. What you're scared of. What you both say in your sleep.`,
-        `Nobody finds you. Years from now, grown, you'll meet for coffee in some ordinary city and one of you will say "remember the—" and the other will already be laughing.`] },
+        `Nobody finds you. Years from now, grown, you'll meet for coffee in some ordinary city and one of you will say "remember the..." and the other will already be laughing.`] },
     { k: 'laterBase', on: ['later'], p: 3, w: (c) => !!c.g.base, t: 'A Place of My Own', sub: 'A base, a routine, a life. Never found.',
       x: (c) => [`It's ${whenNow(c)}. ${wk(c)} since you decided to stop being findable, and you're still at your ${c.g.base.type === 'barn' ? 'barn' : c.g.base.type === 'building' ? 'empty building' : 'camp'} outside ${c.town}. You know which floorboard creaks, which way the wind comes from, what time the school bus goes by on the road so you can be out of sight.`,
         `A routine is a kind of house, it turns out. You built one out of hours instead of boards.`,

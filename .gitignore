@@ -1,3 +1,6 @@
 node_modules/
 tests/shots/
 *.log
+
+__pycache__/
+SmallHours-v1.5*.zip

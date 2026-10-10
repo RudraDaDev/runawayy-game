@@ -26,12 +26,12 @@
     ],
     school: [
       { id: 's_trophy', ic: '🏆', l: 'Look at the trophy case', min: 4, texts: ['The trophy case: a 1998 state championship in something called "Quiz Bowl," a signed football, and a photo of a principal from the \'70s with a truly incredible mustache.'] },
-      { id: 's_board', ic: '📌', l: 'Read the bulletin board', min: 4, texts: () => ['HALLOWEEN DANCE — "UNDER THE SEA" — $5. MATHLETES MEET THURS. A flyer that just says "IS YOUR PHONE SPYING ON YOU?" with no other information.', 'A poster: "Feeling overwhelmed? Ms. Okafor\'s door is always open. Room 204." Someone has drawn a small heart on it. Someone else has drawn a smaller one next to it.', SH.G.phase === 'run' ? 'A new sheet on the board, printed fast: your school photo. "HAVE YOU SEEN ' + SH.G.name.toUpperCase() + '?" The tape is already peeling.' : 'A lost-and-found list: one retainer, a single Croc, a trumpet. Who loses a trumpet?'] },
+      { id: 's_board', ic: '📌', l: 'Read the bulletin board', min: 4, texts: () => ['HALLOWEEN DANCE, "UNDER THE SEA", $5. MATHLETES MEET THURS. A flyer that just says "IS YOUR PHONE SPYING ON YOU?" with no other information.', 'A poster: "Feeling overwhelmed? Ms. Okafor\'s door is always open. Room 204." Someone has drawn a small heart on it. Someone else has drawn a smaller one next to it.', SH.G.phase === 'run' ? 'A new sheet on the board, printed fast: your school photo. "HAVE YOU SEEN ' + SH.G.name.toUpperCase() + '?" The tape is already peeling.' : 'A lost-and-found list: one retainer, a single Croc, a trumpet. Who loses a trumpet?'] },
       { id: 's_vend', ic: '🥤', l: 'Vending machine', sub: '$1.50', cost: 1.5, min: 3, when: () => SH.hour() >= 7 && SH.hour() < 17, texts: ['The machine takes your dollar on the fourth try. The chips get stuck on the spiral. You shake it. A teacher sees. The chips fall. Worth it.', 'Cool Ranch. The machine gives you two bags by accident. Today is a good day, actually.'], fx: ['stat.full +10', 'stat.mood +3'] },
     ],
     store: [
       { id: 'q_browse', ic: '🧃', l: 'Browse the aisles', min: 8, texts: () => ['Aisle 3: fourteen kinds of beef jerky, a single sad bag of lentils, and a rack of phone chargers that all say "FITS ALL" and fit nothing.', 'You read the back of a cereal box. There\'s a maze. You solve it in your head. There\'s no prize.', 'A hot dog has been rotating on the roller grill since, as far as you can tell, the Bush administration.'] },
-      { id: 'q_board', ic: '📋', l: 'Read the corkboard', min: 3, texts: () => ['Business cards: a plumber, a psychic, a guy who will "haul anything." A tear-off flyer: "GUITAR LESSONS — CHEAP — I\'M PATIENT."', SH.G.reported ? 'Raj has taped your MISSING flyer next to the register. He looks at it, and then at you, and then very carefully at nothing.' : 'A photo of Raj\'s daughter at her graduation. He\'s put it up next to the lottery tickets. It\'s the best thing in the store.'] },
+      { id: 'q_board', ic: '📋', l: 'Read the corkboard', min: 3, texts: () => ['Business cards: a plumber, a psychic, a guy who will "haul anything." A tear-off flyer: "GUITAR LESSONS, CHEAP, I\'M PATIENT."', SH.G.reported ? 'Raj has taped your MISSING flyer next to the register. He looks at it, and then at you, and then very carefully at nothing.' : 'A photo of Raj\'s daughter at her graduation. He\'s put it up next to the lottery tickets. It\'s the best thing in the store.'] },
       { id: 'q_slushie', ic: '🧊', l: 'Slushie machine', sub: '$1.25', cost: 1.25, min: 4, texts: ['You mix every flavor. It turns a color that doesn\'t exist in nature. Brain freeze. Perfect.'], fx: ['stat.mood +5', 'stat.full +3'] },
     ],
     library: [
@@ -50,36 +50,36 @@
     ],
     diner: [
       { id: 'd_jukebox', ic: '🎵', l: 'Look at the jukebox', min: 3, texts: ['Every song on it is older than Mom. Somebody has picked "Don\'t Stop Believin\'" four times in a row.'] },
-      { id: 'd_menu', ic: '📜', l: 'Read the specials board', min: 3, texts: () => ['TODAY: MEATLOAF. PIE OF THE DAY: ' + U.pick(['LEMON', 'CHERRY', 'PECAN', 'BANANA CREAM']) + '. "COFFEE: BOTTOMLESS. LIKE MY PATIENCE." — Dolores'] },
+      { id: 'd_menu', ic: '📜', l: 'Read the specials board', min: 3, texts: () => ['TODAY: MEATLOAF. PIE OF THE DAY: ' + U.pick(['LEMON', 'CHERRY', 'PECAN', 'BANANA CREAM']) + '. "COFFEE: BOTTOMLESS. LIKE MY PATIENCE.", Dolores'] },
     ],
     laundromat: [
       { id: 'l_dryer', ic: '🌀', l: 'Watch a dryer spin', min: 15, texts: ['Somebody\'s red sock goes around and around and around. It\'s weirdly calming. You watch the whole cycle.', 'The dryers make the whole place warm. A lady folds towels into perfect squares and hums.'], fx: ['stat.stress -4', 'stat.warmth +6'] },
       { id: 'l_board', ic: '📋', l: 'Read the notices', min: 3, texts: ['"MACHINE 4 EATS QUARTERS." "MACHINE 4 IS FINE, STOP WRITING THIS." "MACHINE 4 ATE MY QUARTERS AGAIN." A war that has lasted years.'] },
     ],
     bus: [
-      { id: 'bd_board', ic: '🕐', l: 'Read the departures', min: 3, texts: () => ['CEDAR FALLS 6:10 · CAPITAL CITY 9:45 · MILLBROOK 14:20 — ' + (['rain', 'storm'].includes(SH.cond()) ? 'DELAYED' : 'ON TIME'), 'A sign by the ticket desk: "Passengers under 15 traveling alone require a signed Unaccompanied Minor form." Underlined. Twice.'] },
+      { id: 'bd_board', ic: '🕐', l: 'Read the departures', min: 3, texts: () => ['CEDAR FALLS 6:10 · CAPITAL CITY 9:45 · MILLBROOK 14:20, ' + (['rain', 'storm'].includes(SH.cond()) ? 'DELAYED' : 'ON TIME'), 'A sign by the ticket desk: "Passengers under 15 traveling alone require a signed Unaccompanied Minor form." Underlined. Twice.'] },
       { id: 'bd_vend', ic: '🥤', l: 'Vending machine', sub: '$2', cost: 2, min: 3, texts: ['Peanut butter crackers and a Sprite. Dinner of champions.'], fx: ['stat.full +12'] },
     ],
     hospital: [
       { id: 'h_lobby', ic: '💺', l: 'Sit in the lobby', min: 10, texts: ['A man sits holding balloons that say IT\'S A GIRL, crying the happy kind of crying. Across from him, a woman stares at the floor. Hospitals hold both at once.'], fx: ['stat.warmth +5'] },
     ],
     police: [
-      { id: 'pd_board', ic: '📌', l: 'Read the board by the door', min: 3, texts: () => ['Community notices, a bike registration form, and a poster: "Kids — if you ever feel unsafe at home, you can talk to us. You won\'t be in trouble."', SH.G.reported ? 'Your face, printed on regular paper, pinned in the middle of the board.' : 'A Neighborhood Watch flyer with a clip-art eye that\'s a little too intense.'] },
+      { id: 'pd_board', ic: '📌', l: 'Read the board by the door', min: 3, texts: () => ['Community notices, a bike registration form, and a poster: "Kids, if you ever feel unsafe at home, you can talk to us. You won\'t be in trouble."', SH.G.reported ? 'Your face, printed on regular paper, pinned in the middle of the board.' : 'A Neighborhood Watch flyer with a clip-art eye that\'s a little too intense.'] },
     ],
     underpass: [
-      { id: 'u_graffiti', ic: '🎨', l: 'Read the graffiti', min: 5, texts: ['"K+M 4EVER." "THE TRUTH IS OUT HERE." A really good painting of a whale. And small, near the ground: "it gets better — J."', 'Someone has written a whole poem on the concrete in Sharpie. It\'s about their mom. You read it twice.'] },
+      { id: 'u_graffiti', ic: '🎨', l: 'Read the graffiti', min: 5, texts: ['"K+M 4EVER." "THE TRUTH IS OUT HERE." A really good painting of a whale. And small, near the ground: "it gets better, J."', 'Someone has written a whole poem on the concrete in Sharpie. It\'s about their mom. You read it twice.'] },
     ],
     trainyard: [
       { id: 't_cars', ic: '🚃', l: 'Look at the old cars', min: 8, texts: ['Rusted boxcars with names from companies that don\'t exist anymore. One has a mural of a sunflower somebody painted with a lot of care.'] },
     ],
     harbor: [
-      { id: 'hh_wall', ic: '🖍️', l: 'Look at the wall of notes', min: 5, texts: ['Hundreds of sticky notes from kids who stayed here. "Thank u for the socks." "I called my aunt. she came." "I\'m in college now!! — T." You read until your eyes blur.'], fx: ['stat.mood +8', 'stat.stress -6'] },
+      { id: 'hh_wall', ic: '🖍️', l: 'Look at the wall of notes', min: 5, texts: ['Hundreds of sticky notes from kids who stayed here. "Thank u for the socks." "I called my aunt. she came." "I\'m in college now!! T." You read until your eyes blur.'], fx: ['stat.mood +8', 'stat.stress -6'] },
     ],
   };
 
   /* ---------------- overheard lines: the world talking about itself ---------------- */
   const O = SH.OVERHEAR = {
-    school: ['"—and then he said pineapple DOES go on pizza and I just walked away." "Valid."', '"If Mr. Dale gives us a pop quiz I will literally transfer schools."', '"My mom said if I get a C I lose my phone. Like, forever."', '"Did you see Tyler\'s dad yelling in the parking lot?" "Everyone saw."'],
+    school: ['"...and then he said pineapple DOES go on pizza and I just walked away." "Valid."', '"If Mr. Dale gives us a pop quiz I will literally transfer schools."', '"My mom said if I get a C I lose my phone. Like, forever."', '"Did you see Tyler\'s dad yelling in the parking lot?" "Everyone saw."'],
     store: ['Raj, on the phone in Gujarati, laughing, then in English: "No, no, tell her I said happy birthday. Tell her Dad loves her."', '"Do you guys have the blue Gatorade?" "We have the red Gatorade." "…" "It\'s basically the same." "It is NOT."'],
     library: ['Two old ladies whispering very loudly about someone named Gloria who "knows what she did."', 'A dad reading to a toddler, doing all the voices. The wolf voice is extremely committed.'],
     park: ['"Babe, the ducks are not plotting against you." "Look at that one. LOOK at it."', 'Two runners: "…and my therapist said, have you considered that you\'re allowed to rest?" "Deep." "I know."'],
@@ -92,7 +92,7 @@
     underpass: ['Two older guys arguing, kind of friendly, about whether the bridge is 40 years old or 60.'],
     harbor: ['A counselor on the phone: "She\'s safe. She\'s eaten. She\'s asleep. She wanted you to know she\'s sorry. Yes. Tomorrow morning."'],
   };
-  const RUN_OVERHEAR = ['"Did you see that flyer? The kid from Lincoln?" "Poor mom." "Poor kid."', '"—twelve years old. Can you imagine? I\'d be out of my mind."', '"They said on the news the kid might be at the bus depot." "Would you even recognize them?"', '"My cousin\'s kid did that once. Came home after two days. Nobody talks about why."'];
+  const RUN_OVERHEAR = ['"Did you see that flyer? The kid from Lincoln?" "Poor mom." "Poor kid."', '"...twelve years old. Can you imagine? I\'d be out of my mind."', '"They said on the news the kid might be at the bus depot." "Would you even recognize them?"', '"My cousin\'s kid did that once. Came home after two days. Nobody talks about why."'];
 
   const baseFlag = SH.flag;
   SH.flag = function (k, v) { if (k === 'bruise' && SH.G && !SH.G.flags.bruise) SH.G.flags.bruiseDay = SH.day(); return baseFlag.apply(this, arguments); };
@@ -113,7 +113,7 @@
     if (p.listen) {
       const L = SH.LOC[G.loc]; let pool = (O[G.loc] || O[L.type] || []).slice();
       if (G.phase === 'run' && G.reported) pool = pool.concat(RUN_OVERHEAR, RUN_OVERHEAR);
-      if (G.loc === 'school' && SH.Rumor) SH.Rumor.list().forEach((r) => pool.push('"—did you hear? ' + r.text.replace(/^./, (c) => c.toUpperCase()) + '" "No WAY." "That\'s what I heard."'));
+      if (G.loc === 'school' && SH.Rumor) SH.Rumor.list().forEach((r) => pool.push('"...did you hear? ' + r.text.replace(/^./, (c) => c.toUpperCase()) + '" "No WAY." "That\'s what I heard."'));
       const heardSet = (st.heard = st.heard || []); const fresh = pool.filter((x) => !heardSet.includes(x));
       text = U.pick(fresh.length ? fresh : pool); if (!text) text = 'Nobody\'s saying anything interesting.'; heardSet.push(text); if (heardSet.length > 60) heardSet.shift();
     } else {

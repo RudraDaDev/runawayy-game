@@ -605,4 +605,15 @@ New `src/power.js` (after logic.js):
 
 The user requested music/SFX, a new dark-only UI, bug/popup fixes, richer writing without em dashes, optimization, BrokenHours Studio branding and a proper responsive main menu. They then added detailed endings, seeded character appearances and clothing-aware visuals; ending title cards/scenes/music; companion tracking/visibility outside Harlow; visual/text memory montages and more appropriate story scenes. They renamed the entire update from v1.1 to **v1.5**.
 
-Latest request: "in main menu add saves and prev runs and memories. and r=ur suggestions. and update the markdowns". Interpreted as adding the main-menu destinations and approving the preceding polish suggestions. Consolidated in `V1_5.md`, linked from `FULLGAME.md` and `README.md`. **Documentation updated, gameplay unchanged; wait for go.**
+Latest request: "in main menu add saves and prev runs and memories. and r=ur suggestions. and update the markdowns". Interpreted as adding the main-menu destinations and approving the preceding polish suggestions. Consolidated in `V1_5.md`, linked from `FULLGAME.md` and `README.md`. **Historical planning status; superseded by “GOOO” implementation authorization.**
+
+
+## v1.5 implementation preview · 2026-10-10
+- User explicitly authorized v1.5 with “GOOO”. Additive vanilla-JS modules: v15_settings/audio/people/memories/presentation/menu/icons plus v15.css; existing wrapper chains retained.
+- BrokenHours Studio main menu, dark olive/lamplight identity; preferences independent of story state.
+- Local Scott Buckley official assets (~12.3 MB), source SHA256s, 96 kbps encodes, CC BY 4.0 credits; acquired through Actions after sandbox TLS failures. build.py rewrites source-relative audio base. package_release.py packages HTML and assets. HTML alone remains playable silently.
+- Stable seeded Sam, copied established NPC looks, generated missing looks; outfit history snapshots. Unified party+rkids presence; restored away in-person talk, contextual replies and quiet moments. No nearby texts.
+- Settled-only title/last-recorded-scene/text+visual memory sequence, read-only browser/replay, per-chapter local archive and merge backups. Keep living it and second ending retained. Late phone messages cannot mutate a settled run or read-only scene viewer.
+- Old saves accepted with incomplete visual-history notice; nothing fabricated. Playable Saves separate from Previous Runs; replacement warnings; no silent archive eviction.
+- Player-facing em-dash writing pass; old homesick split option and three no-splits-inconsistent epilogues corrected after reporting. Existing exhaustion/burner/charger/village rules kept.
+- tests/v15.test.js: 90 desktop/source + mobile/built-offline checks passed. Physical-device keyboard/background and subjective music mix review still required before final paid release. Changelog/checklist/release test docs are authoritative for acceptance, not historical “not built” sections.

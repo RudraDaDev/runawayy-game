@@ -90,7 +90,7 @@
     let add = '';
     if (now.length && id === G.loc) add += `<p>👥 Here now: ${now.map((n) => SH.World.PEOPLE[n] || n).join(', ')}</p>`;
     else if (usual.length) add += `<p>👥 You've run into ${usual.join(', ')} here before.</p>`;
-    const cnd = SH.cond(); if (['rain', 'storm'].includes(cnd) && !SH.LOC[id].indoor) add += '<p>🌧 Outdoors, in this weather. You\'ll get soaked.</p>'; if (cnd === 'fog') add += '<p>🌫 Fog. Harder to see — and to be seen.</p>';
+    const cnd = SH.cond(); if (['rain', 'storm'].includes(cnd) && !SH.LOC[id].indoor) add += '<p>🌧 Outdoors, in this weather. You\'ll get soaked.</p>'; if (cnd === 'fog') add += '<p>🌫 Fog. Harder to see, and to be seen.</p>';
     if (add) { const h3 = box.querySelector('h3'); const holder = document.createElement('div'); holder.innerHTML = add; const firstBtn = box.querySelector('button'); firstBtn ? box.insertBefore(holder, firstBtn) : box.appendChild(holder); }
     if (!box.querySelector('.sheetgrab')) { const g = document.createElement('div'); g.className = 'sheetgrab'; g.onclick = () => { M.sel = null; box.classList.add('hidden'); }; box.prepend(g); }
   };

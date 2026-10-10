@@ -28,7 +28,7 @@
     const privateWifi = w && (g.loc === 'home' || ['patel', 'jordan'].includes(g.loc) || (g.hideout && g.hideout.id));
     if (!privateWifi) {
       if (!s || s.cut) return 'No mobile service. PocketPal needs data to log in.';
-      if (s.mb <= 0.2) return 'Out of data. Recharge to use PocketPal. (It won\'t connect over public wifi — "for your security".)';
+      if (s.mb <= 0.2) return 'Out of data. Recharge to use PocketPal. (It won\'t connect over public wifi, "for your security".)';
     }
     if (NT && !privateWifi) NT.spend(0.3);
     return null;

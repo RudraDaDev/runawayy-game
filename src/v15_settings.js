@@ -29,5 +29,6 @@
   };
   const init = A.init;
   A.init = function () { init(); if (A.ctx && A.ctx.state === 'suspended') A.ctx.resume().catch(() => {}); SH.Soundtrack && SH.Soundtrack.unlock(); };
+  document.addEventListener('visibilitychange', () => { if (!A.ctx) return; if (document.hidden) A.ctx.suspend().catch(() => {}); else if (SH.Soundtrack && SH.Soundtrack.unlocked) A.ctx.resume().catch(() => {}); });
   S.apply();
 })(window.SH);

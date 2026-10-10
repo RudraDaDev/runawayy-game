@@ -105,7 +105,7 @@
     const tabs = `<div class="ptabs"><button class="${tab === 'people' ? 'on' : ''}" onclick="SH.Phone.view.tab='people';SH.Phone.render()">People</button><button class="${tab === 'talk' ? 'on' : ''}" onclick="SH.Phone.view.tab='talk';SH.Phone.render()">What people are saying</button></div>`;
     if (tab === 'talk') {
       const L = SH.Rumor ? SH.Rumor.list() : [];
-      body.innerHTML = hdr('👥 People') + tabs + `<div class="appbody">${L.length ? L.map((r) => `<div class="post"><div class="who">Going around${r.n > 4 ? ' — everywhere' : r.n > 2 ? ' — spreading' : ''}</div>"${esc(r.text)}"<div class="meta">${esc(knownHolders(r.id))}</div></div>`).join('') : '<p style="color:#777;font-size:12px;padding:10px">Nobody\'s talking about you. As far as you know. Things you tell people can travel — and change on the way.</p>'}</div>`;
+      body.innerHTML = hdr('👥 People') + tabs + `<div class="appbody">${L.length ? L.map((r) => `<div class="post"><div class="who">Going around${r.n > 4 ? ', everywhere' : r.n > 2 ? ', spreading' : ''}</div>"${esc(r.text)}"<div class="meta">${esc(knownHolders(r.id))}</div></div>`).join('') : '<p style="color:#777;font-size:12px;padding:10px">Nobody\'s talking about you. As far as you know. Things you tell people can travel, and change on the way.</p>'}</div>`;
       return;
     }
     const ids = P.PEOPLE.filter(known);

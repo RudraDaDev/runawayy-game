@@ -293,8 +293,7 @@
     const G = SH.G, k = FR.KIDS[id];
     SH.UI.dialog({ title: 'Getting quiet', who: id, text: [`${k.n} has been quiet for an hour. Then: "i miss my ${/^Mr\.? /.test(k.parent) ? 'dad' : 'mom'}. that's so dumb. i know. ${k.fam === 'away' ? 'even if he\'s never home' : 'she\'s probably freaking out'}."`, `${k.g === 'they' ? 'They look' : (k.g === 'he' ? 'He looks' : 'She looks')} at you. "we could both go back. to mine, i mean. my ${/^Mr\.? /.test(k.parent) ? 'dad' : 'mom'} would help. i think actually help."`],
       choices: [
-        { t: `Go back to ${k.n}'s house together`, cls: 'safe', fn: () => { G.party = G.party.filter((x) => x !== id); SH.Talk.open('host_' + id, { first: `${k.parent} opens the door before you knock, phone in hand, eyes red. "Oh thank God. Both of you. Inside. Then talk."`, turnsMax: 7, onEnd: (c) => FR.hostOutcome(id, c.result === 'call' ? 'call' : c.result || 'night') }); } },
-        { t: 'Let them go home. You keep going.', fn: () => { G.party = G.party.filter((x) => x !== id); const tell = Math.random() < 0.5; SH.UI.log(`${k.n} hugs you hard and walks away fast so neither of you changes your mind.${tell ? ' An hour later the whole town knows which direction you went.' : ''}`, tell ? 'bad' : ''); if (tell) G.heat = Math.min(100, (G.heat || 0) + 30); SH.UI.afterAction(); } },
+        { t: `Go back to ${k.n}'s house together`, cls: 'safe', fn: () => { SH.Talk.open('host_' + id, { first: `${k.parent} opens the door before you knock, phone in hand, eyes red. "Oh thank God. Both of you. Inside. Then talk."`, turnsMax: 7, onEnd: (c) => FR.hostOutcome(id, c.result === 'call' ? 'call' : c.result || 'night') }); } },
         { t: 'Talk them into staying', fn: () => { FR.st(id).home = 4; SH.rel(id, -8); SH.UI.log(`${k.n} stays. ${k.g === 'they' ? 'They don\'t' : (k.g === 'he' ? 'He doesn\'t' : 'She doesn\'t')} really look at you for a while.`, 'bad'); SH.UI.afterAction(); } },
       ] });
   }

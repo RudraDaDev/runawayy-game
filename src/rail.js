@@ -31,12 +31,12 @@
   SH.Brain.railagent = function (an, c) {
     c.mem.n = (c.mem.n || 0) + 1;
     if (an.has('disclose') || an.has('scared') || an.has('run') || an.has('selfharm')) { c.result = 'help'; return R('Okay, sweetheart. Come around the side door, sit in the office with me where it\'s warm. You\'re not in any trouble. I\'m going to call someone who can help.', {}, { end: true }); }
-    if (/\b(i'm|i am) (12|twelve|11|eleven|10|ten)\b|\btwelve\b/.test(an.t)) { c.result = 'minor'; return R('Then I can\'t sell you a ticket, honey. Twelve and under ride with an adult — that\'s Northline policy, and it\'s a good one. Is somebody meeting you? Do you want to call them from my phone?', {}); }
+    if (/\b(i'm|i am) (12|twelve|11|eleven|10|ten)\b|\btwelve\b/.test(an.t)) { c.result = 'minor'; return R('Then I can\'t sell you a ticket, honey. Twelve and under ride with an adult, that\'s Northline policy, and it\'s a good one. Is somebody meeting you? Do you want to call them from my phone?', {}); }
     if (c.result === 'minor' && (an.has('grandma') || an.has('yes') || an.has('mom'))) { c.result = 'call'; return R('Here. Desk phone. Take your time.', {}, { end: true }); }
     if (/\b(i'm|i am) (1[3-5]|thirteen|fourteen|fifteen)\b/.test(an.t)) { c.result = 'um'; return R('Thirteen to fifteen can ride alone only with the unaccompanied-minor form, signed by a parent, in person, here. Daytime trains only, staffed stations only. Is your parent with you?', {}); }
     if (/\b(i'm|i am) (1[6-9]|sixteen|seventeen|eighteen)\b/.test(an.t)) { c.mem.sus = (c.mem.sus || 0) + 2; return R('I\'m going to need to see an ID, then. ...No? Mm-hm.', {}); }
     if (an.has('ticket') || an.has('grandma') || /\bcedar\b/.test(an.t)) { c.mem.sus = (c.mem.sus || 0) + 1; return R('Cedar Falls, one way is $22. Who are you traveling with, hon?', {}); }
-    if (an.has('money') || /\bhow much\b/.test(an.t)) return R('Twenty-two to Cedar Falls. Forty-one to the capital. Kids half-price — with a grown-up.', {});
+    if (an.has('money') || /\bhow much\b/.test(an.t)) return R('Twenty-two to Cedar Falls. Forty-one to the capital. Kids half-price, with a grown-up.', {});
     if (an.has('time') || /\bwhen\b|\bnext train\b/.test(an.t)) { const n = RL.next(); return R(n != null ? 'Next one to Cedar Falls is the ' + RL.fmt(n) + '. Platform 2.' : 'Last train\'s gone for tonight, hon. First one\'s 6:45.', {}); }
     if ((c.mem.sus || 0) >= 3 || c.mem.n >= 5) { c.result = 'minor'; return R('Honey, I think you and I both know I can\'t sell you anything. But I can help. Want to use my phone?', {}); }
     return R(U.pick(['Where are you headed?', 'Just you today?', 'You look cold. There\'s a heater by bench four.']), {});
@@ -49,7 +49,7 @@
     if (c.mem.gm && (an.has('yes') || /\d{3}/.test(an.t))) { c.result = 'grandma'; return R('Okay. I\'m calling her from the office. You sit right here where I can see you.', {}, { end: true }); }
     if (an.has('hostile')) { c.result = 'off'; return R('Alright. That\'s enough. Next stop, you\'re getting off with me, and there\'ll be an officer on the platform.', {}, { end: true }); }
     if (an.has('money') || an.has('ticket')) return R('Can\'t sell you a fare on board, kiddo. Twelve and under doesn\'t ride without a grown-up, period.', {});
-    if (c.mem.n >= 4) { c.result = 'off'; return R('Okay. I have to radio ahead. That\'s not a punishment — it\'s the rule, and it exists because kids alone on trains get hurt.', {}, { end: true }); }
+    if (c.mem.n >= 4) { c.result = 'off'; return R('Okay. I have to radio ahead. That\'s not a punishment, it\'s the rule, and it exists because kids alone on trains get hurt.', {}, { end: true }); }
     return R(U.pick(['Where are your folks, bud?', 'Ticket? ...No ticket. How old are you?', 'You\'re not in trouble. I just need to know who you\'re with.', G.reported ? 'Hey... I\'ve seen your face today. On the alert. You\'re ' + G.name + '.' : 'Where\'d you get on?']), {});
   };
 
@@ -66,10 +66,10 @@
   RL.callGrandma = function () {
     const G = SH.G;
     if (!SH.f('knowsGrandmaNum')) { log('You don\'t know Grandma\'s number by heart. You never needed to. It lives in your phone.', 'warn'); return; }
-    if (G.phase === 'home') { SH.flag('grandmaKnows'); SH.rel('grandma', 8); log('Grandma answers on the first ring. "The TRAIN station? Sweet pea, what— no. Listen to me. If you ever need me, you call, and I get on that train and come get you. Any day. Any hour."', 'good'); return; }
+    if (G.phase === 'home') { SH.flag('grandmaKnows'); SH.rel('grandma', 8); log('Grandma answers on the first ring. "The TRAIN station? Sweet pea, what... no. Listen to me. If you ever need me, you call, and I get on that train and come get you. Any day. Any hour."', 'good'); return; }
     const arr = RL.next(RL.ARRIVES); if (arr == null) { SH.Run.grandmaComing(); return; }
     const wait = Math.round((arr - SH.hour()) * 60) + 150;
-    D({ title: 'The Payphone by Platform 1', who: 'grandma', text: ['"Where are you. WHERE. — The station. Harlow Station. Okay. Okay."', '"You go sit by the ticket window, where the lady can see you. You don\'t go outside, you don\'t talk to anybody else. I\'m getting on the next train down, and then you and I are riding back up together. You hear me? Together."'],
+    D({ title: 'The Payphone by Platform 1', who: 'grandma', text: ['"Where are you. WHERE. The station. Harlow Station. Okay. Okay."', '"You go sit by the ticket window, where the lady can see you. You don\'t go outside, you don\'t talk to anybody else. I\'m getting on the next train down, and then you and I are riding back up together. You hear me? Together."'],
       choices: [{ t: 'Wait by the ticket window', cls: 'safe', fn: () => { G.pickup = { by: 'grandma', at: G.t + wait, how: 'train' }; G.flags.grandmaTrain = 1; log('Grandma is coming on the train. About ' + Math.round(wait / 60) + ' hours. The ticket lady brings you a cup of hot water with a tea bag in it without asking.', 'good'); } }] });
   };
   RL.ride = function () {
@@ -98,7 +98,7 @@
     if (res === 'told') return SH.Endings.show('trainSafe', 'Millbrook', 'Found · and heard', [
       'The conductor sits you in the empty seat across from his, in the car with the little office. He radios ahead in a low voice. The café attendant brings you a hot chocolate with too much whipped cream and says it was "a mistake order."',
       'At Millbrook, two people are waiting on the platform: a transit police officer with her hat in her hands, and a woman from children\'s services with a lanyard and a granola bar. They don\'t grab you. They ask if you\'re hurt, then if you\'re hungry.',
-      'You tell them what you told the conductor. Then more. It all goes into a report with a case number — which means, for the first time, what happens in your house exists somewhere outside of it.',
+      'You tell them what you told the conductor. Then more. It all goes into a report with a case number, which means, for the first time, what happens in your house exists somewhere outside of it.',
       'Mom gets there at 2 AM. She\'s alone. She holds on to you on a bench under a sign that says MILLBROOK like she\'s afraid the platform will tip over.']);
     if (!SH.f('toldPolice')) G.flags.trainCaught = 1;
     SH.Endings.found('train');
@@ -108,7 +108,7 @@
   SH.Run.trainyard = function () {
     const h = SH.hour();
     if (h >= 7 && h < 18) return D({ title: 'The Rail Yard', text: ['In daylight the yard is loud: a switch engine shoving cars, couplers banging like gunshots, a man in an orange vest walking the rows.', 'An open boxcar at the end of a line. Cardboard inside. Someone else\'s blanket.'],
-      choices: [{ t: 'Climb into the boxcar', cls: 'hot', fn: () => D({ title: 'Railroad Police', who: 'officer', text: ['You get one foot on the ladder before a truck skids up in the gravel. RAILROAD POLICE on the door. The officer isn\'t angry. He\'s white-faced.', '"Get down. Slowly. — Kid, those cars move without warning. Twenty tons, no sound until it\'s too late. I pull people out from under these every year and some of them are your age." He sits you in the truck with the heat on and makes a call.'], choices: [{ t: '...', fn: () => SH.Endings.found('yard') }] }) },
+      choices: [{ t: 'Climb into the boxcar', cls: 'hot', fn: () => D({ title: 'Railroad Police', who: 'officer', text: ['You get one foot on the ladder before a truck skids up in the gravel. RAILROAD POLICE on the door. The officer isn\'t angry. He\'s white-faced.', '"Get down. Slowly. Kid, those cars move without warning. Twenty tons, no sound until it\'s too late. I pull people out from under these every year and some of them are your age." He sits you in the truck with the heat on and makes a call.'], choices: [{ t: '...', fn: () => SH.Endings.found('yard') }] }) },
         { t: 'Leave', fn: () => { SH.G.loc = 'station'; SH.advance(15, { interrupt: false }); log('You walk the long way around the fence to Harlow Station. Real trains. With seats. And rules.', 'sys'); SH.UI.afterAction(); } }] });
     return baseYard();
   };
@@ -122,7 +122,7 @@
     const done = () => SH.UI.afterAction();
     if (!SH.isOpen('station')) { a.push(act('The station is locked', 'Opens at 5 AM.', () => {}, { dis: true })); return out; }
     const n = RL.next();
-    a.push(act('Read the departures board', n != null ? 'Next to Cedar Falls: ' + RL.fmt(n) : 'No more trains tonight', () => { SH.advance(3, { interrupt: false }); SH.flag('knowsTrain'); log('NORTHLINE — Cedar Falls: 6:45 AM · 11:30 AM · 4:50 PM · 9:10 PM · Capital City: 8:05 AM · 5:40 PM. Under it, a laminated sign: "CHILDREN 12 AND UNDER MUST TRAVEL WITH AN ADULT."', 'sys'); done(); }));
+    a.push(act('Read the departures board', n != null ? 'Next to Cedar Falls: ' + RL.fmt(n) : 'No more trains tonight', () => { SH.advance(3, { interrupt: false }); SH.flag('knowsTrain'); log('NORTHLINE, Cedar Falls: 6:45 AM · 11:30 AM · 4:50 PM · 9:10 PM · Capital City: 8:05 AM · 5:40 PM. Under it, a laminated sign: "CHILDREN 12 AND UNDER MUST TRAVEL WITH AN ADULT."', 'sys'); done(); }));
     a.push(act('Go to the ticket window', 'Cedar Falls $22', () => RL.ticketWindow()));
     a.push(act('Watch the trains come in', '20 min', () => { SH.advance(20, { interrupt: true }); SH.st('stress', -6); SH.st('mood', 4); log(U.pick(['A freight train goes through without stopping: a hundred cars, graffiti blurring into one long painting. The whole platform shakes. It feels like being inside a heartbeat.', 'People get off the 11:30. A soldier in uniform. A grandpa who gets tackled by three grandkids. A woman who nobody meets, who stands a second, then walks off alone.', 'You count the cars. Forty-two. You don\'t know why that helps. It helps.']), 'sys'); done(); }));
     if (G.phase === 'run') {
@@ -138,13 +138,13 @@
   SH.Run.doPickup = function (p) { if (p && p.how === 'train') return SH.Endings.grandma('platform'); return baseDo.apply(this, arguments); };
   const baseGm = SH.Endings.grandma;
   SH.Endings.grandma = function (how) {
-    const I = { train: ['Cedar Falls. A station the size of a garage and one bench. You walk the address — 41 Larkspur Lane — for forty minutes in the gray light.', 'The yellow house. Too many wind chimes. You knock. The door opens, and Grandma Rose is in her robe, and she makes a sound you will remember forever.'],
+    const I = { train: ['Cedar Falls. A station the size of a garage and one bench. You walk the address, 41 Larkspur Lane, for forty minutes in the gray light.', 'The yellow house. Too many wind chimes. You knock. The door opens, and Grandma Rose is in her robe, and she makes a sound you will remember forever.'],
       platform: ['The 7:30 from Cedar Falls pulls in with a long sigh. The doors open and Grandma Rose is the first one off, in her church coat and her slippers, because she forgot to change her shoes.', 'She doesn\'t run. She can\'t run. She walks faster than you\'ve ever seen her walk, and the ticket lady comes out from behind the glass to watch.'],
       conductor: ['At the next stop, the conductor walks you to the office and hands you the phone. Grandma is already crying. "I\'m in the car. I\'m in the car right now. You stay with that nice man."', 'She\'s at Millbrook station ninety minutes later, in her coat over her nightgown.'] }[how];
     if (!I) return baseGm.apply(this, arguments);
     SH.Endings.show('grandma', 'Wind Chimes', how === 'train' ? '41 Larkspur Lane · Cedar Falls' : 'Northline · the ride back', I.concat([
       '"Mijo. Mijo. Look at you. You\'re frozen." She wraps her scarf around your neck twice. "There\'s pozole. There is always pozole."',
-      'She calls your mom with the door closed. Her voice rises and falls — angry, then crying, then very quiet. "Your mother is coming. Alone. And you\'re staying with me as long as you need. That\'s not a question."',
+      'She calls your mom with the door closed. Her voice rises and falls, angry, then crying, then very quiet. "Your mother is coming. Alone. And you\'re staying with me as long as you need. That\'s not a question."',
       'You sleep under the quilt she made when you were born. The wind chimes play all night. For the first time in months, nothing else does.']));
   };
   // found intros for the railway

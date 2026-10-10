@@ -9,7 +9,8 @@
     const blobs = [...Array(14)].map(() => ({ x: Math.random(), y: 0.55 + Math.random() * 0.45, r: 20 + Math.random() * 60, c: ['#f2a65a', '#e05260', '#6aa7ff', '#b48cff', '#ffcf73'][Math.floor(Math.random() * 5)], p: Math.random() * 6 }));
     function f(t) {
       if ($('#title').classList.contains('hidden')) return;
-      const W = c.width = innerWidth, H = c.height = innerHeight;
+      if (document.hidden || (SH.Settings && SH.Settings.values.reducedMotion)) { requestAnimationFrame(f); return; }
+      const W = innerWidth, H = innerHeight; if (c.width !== W || c.height !== H) { c.width = W; c.height = H; }
       x.fillStyle = '#07090f'; x.fillRect(0, 0, W, H);
       blobs.forEach((b) => { const g = x.createRadialGradient(b.x * W, b.y * H, 0, b.x * W, b.y * H, b.r * 2.4); const a = 0.18 + 0.08 * Math.sin(t / 900 + b.p); g.addColorStop(0, b.c + Math.round(a * 255).toString(16).padStart(2, '0')); g.addColorStop(1, 'transparent'); x.fillStyle = g; x.fillRect(0, 0, W, H); });
       x.strokeStyle = 'rgba(180,200,230,.18)'; x.lineWidth = 1; x.beginPath();
@@ -44,7 +45,7 @@
         'Nobody is going to tell you what to do. Not really. You have a phone, a backpack, a map of the town, and a sarcastic assistant named PIP who lives in your pocket.',
         `Tap things in the scene to use them, tap the floor to walk, and drag to look around. Talk to people by typing: there are no dialogue menus. Keys: <b>1–9</b> actions · <b>M</b> map · <b>P</b> ask PIP · <b>?</b> help.<br><span style="color:var(--muted);font-size:12px">Story #${P.seed}. Every story is different: the timing, the breaking point, the side stories, even the weather.</span>`],
         choices: [{ t: 'Get out of bed', fn: () => { SH.Audio.init(); } }] });
-    } else { SH.UI.restoreLog(); SH.UI.log('— Continued. —', 'sys'); SH.UI.renderAll(); }
+    } else { SH.UI.restoreLog(); SH.UI.log(', Continued. ', 'sys'); SH.UI.renderAll(); }
   }
 
   window.addEventListener('DOMContentLoaded', () => {

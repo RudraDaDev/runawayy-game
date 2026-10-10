@@ -270,14 +270,14 @@
       if (g.money < 3.5 && !nearMeal()) why = 'You\'re out of money and out of food.';
     }
     if (g.ended) return;
-    if (shut()) { SH.UI.log(`— ${did} quiet day${did === 1 ? '' : 's'} went by before something came up. —`, 'day'); return; }
+    if (shut()) { SH.UI.log(`, ${did} quiet day${did === 1 ? '' : 's'} went by before something came up. `, 'day'); return; }
     const spent = Math.max(0, m0 - g.money);
     const sum = [`${did} day${did === 1 ? '' : 's'} go by at your ${b.shack ? 'shack' : B.TYPES[b.type].n.toLowerCase()} outside ${p.name}.`].concat(lines.slice(-7));
     if (lines.length > 7) sum.splice(1, 0, `<i>(…${lines.length - 7} more days like it.)</i>`);
     sum.push([`Spent: $${spent.toFixed(2)}. Money left: $${g.money.toFixed(2)}.`, spoons ? `You carved ${spoons} spoon${spoons > 1 ? 's' : ''}.` : '', forg ? `You foraged ${forg} lots for the pile.` : '', fishN ? `Caught ${fishN} fish.` : ''].filter(Boolean).join(' '));
     if (QD.side.length) sum.push(`<i>Along the way: ${[...new Set(QD.side)].slice(-4).join(' ')}</i>`);
     if (why) sum.push(`<b>You stop.</b> ${why}`);
-    SH.UI.log(`— ${did} quiet day${did === 1 ? '' : 's'} at your base. —`, 'day');
+    SH.UI.log(`, ${did} quiet day${did === 1 ? '' : 's'} at your base. `, 'day');
     QD = null;
     SH.UI.dialog({ title: `⏩ ${did} quiet day${did === 1 ? '' : 's'}`, text: sum, html: true, choices: [{ t: 'Okay', fn: K.back }] });
   }

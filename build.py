@@ -8,5 +8,6 @@ def rep(m):
     js = (src/m.group(1)).read_text().replace('</script>', '<\\/script>')
     return '<script>\n/* '+m.group(1)+' */\n'+js+'\n</script>'
 html = re.sub(r'<script src="([^"]+)"></script>', rep, html)
+html = html.replace("const BASE = '../assets/audio/';", "const BASE = './assets/audio/';")
 (pathlib.Path(__file__).parent/'SmallHours.html').write_text(html)
 print('built', len(html)//1024, 'KB')

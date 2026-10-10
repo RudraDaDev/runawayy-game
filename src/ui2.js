@@ -69,7 +69,7 @@
       return `<div class="need ${crit ? 'crit' : ''}" title="${n}"><span class="ni">${i}</span><div class="nb"><div class="nl"><span>${n}</span><em>${UI.statWord(i + ' ' + n, v)}${tr ? `<i class="tr ${(tr > 0) === !!good ? 'up' : 'dn'}">${tr > 0 ? '▲' : '▼'}</i>` : ''}</em></div><div class="trk"><div class="fil" style="width:${v}%;background:${colr(v, good)}"></div></div></div></div>`; }).join('')
       + (G.phase === 'run' || !SH.locIndoor() ? (() => { const v = s.warmth; return `<div class="need ${v <= 15 ? 'crit' : ''}"><span class="ni">🌡</span><div class="nb"><div class="nl"><span>Warmth</span><em>${UI.statWord('🌡 Warmth', v)}</em></div><div class="trk"><div class="fil" style="width:${v}%;background:${colr(v, 1)}"></div></div></div></div>`; })() : '');
     const meter = G.phase === 'run' ? `<div class="card status run"><h4>${ic('eye')} Out there</h4><p>${UI.heatLine(G)}</p></div>` : `<div class="card status"><h4>${ic('eye')} At home</h4><p>${UI.suspLine(G.susp)}</p></div>`;
-    const tiles = [[ic('cash'), '$' + G.money.toFixed(2), 'on you'], G.phase === 'home' ? ['📦', '$' + G.shoebox, 'shoebox'] : null, [ic('bat'), G.phone.confiscated ? '—' : Math.round(G.phone.bat) + '%', G.phone.share ? 'sharing location' : 'phone'], ['📚', UI.gradeWord(G.grades), 'grades']].filter(Boolean);
+    const tiles = [[ic('cash'), '$' + G.money.toFixed(2), 'on you'], G.phase === 'home' ? ['📦', '$' + G.shoebox, 'shoebox'] : null, [ic('bat'), G.phone.confiscated ? '·' : Math.round(G.phone.bat) + '%', G.phone.share ? 'sharing location' : 'phone'], ['📚', UI.gradeWord(G.grades), 'grades']].filter(Boolean);
     const w = SH.bagWeight(), cap = SH.BAG_CAP;
     $('#left').innerHTML = `<div class="card me"><div class="mept">${PT.svg('sam', { mood: PT.moodOf('sam') })}</div><div class="mei"><h3>${esc(G.name)}</h3><small>12 · 7th grade${G.story && G.story.trait && SH.Story && SH.Story.TRAITS[G.story.trait] ? ' · ' + esc(SH.Story.TRAITS[G.story.trait].n.replace(/^The /, '')) : ''}</small><p>${headline(G)}</p></div></div>
       <div class="card needs">${needs}</div>
@@ -145,7 +145,8 @@
     text = SH.nm(text); const G = SH.G, l = $('#log'); if (!l) return;
     if (newBatch) { l.querySelectorAll('.le.fresh').forEach((e) => e.classList.remove('fresh')); newBatch = false; cur = null; G.logB = (G.logB || 0) + 1; }
     G.log.push([text, cls, G.t, G.logB || 0]); if (G.log.length > 140) G.log.shift();
-    const p = put(l, text, cls, G.t); p.classList.add('fresh', 'in'); trim(l); l.scrollTop = 0;
+    const before = l.scrollTop, height = l.scrollHeight; const readingOlder = before > 24;
+    const p = put(l, text, cls, G.t); p.classList.add('fresh', 'in'); trim(l); l.scrollTop = readingOlder ? before + Math.max(0, l.scrollHeight - height) : 0;
     if (cls === 'day' && !G._booting && !/Rewound|You leave/.test(text)) U2.dayCard(text);
   };
   UI.restoreLog = function () {
@@ -165,7 +166,7 @@
     const talked = (R2.talked[y] || []).filter((n) => SH.NPCS_META[n]); const places = (R2.places[y] || []).filter((p) => SH.LOC[p]).map((p) => SH.LOC[p].name);
     const tmp = document.createElement('div'); tmp.innerHTML = html; const sub = tmp.querySelector('small'); const subT = sub ? sub.textContent : ''; if (sub) sub.remove();
     const el = document.createElement('div'); el.id = 'daycard';
-    el.innerHTML = `<div class="dc"><div class="dcn">Day ${d}</div><div class="dcd">${esc(tmp.textContent.trim())}</div><div class="dcw"><span>${(SH.WICON || {})[cond] || ''}</span> ${W.hi}° / ${W.lo}° · ${COND[cond] || cond}${G.phase === 'home' && SH.MOM_SHIFTS ? ' · Mom: ' + ({ D: 'day shift', E: 'evening shift', N: 'night shift', DD: 'a double', OFF: 'day off' }[SH.MOM_SHIFTS[d]] || '—') : ''}</div>${subT ? `<p class="dcs">${esc(subT)}</p>` : ''}
+    el.innerHTML = `<div class="dc"><div class="dcn">Day ${d}</div><div class="dcd">${esc(tmp.textContent.trim())}</div><div class="dcw"><span>${(SH.WICON || {})[cond] || ''}</span> ${W.hi}° / ${W.lo}° · ${COND[cond] || cond}${G.phase === 'home' && SH.MOM_SHIFTS ? ' · Mom: ' + ({ D: 'day shift', E: 'evening shift', N: 'night shift', DD: 'a double', OFF: 'day off' }[SH.MOM_SHIFTS[d]] || '·') : ''}</div>${subT ? `<p class="dcs">${esc(subT)}</p>` : ''}
       ${y >= 1 && (talked.length || places.length || inc || out) ? `<div class="dcr"><h6>Yesterday</h6>${talked.length ? `<div class="dcp">${talked.slice(0, 6).map((n) => `<span title="${esc(SH.NPCS_META[n].n)}">${PT.svg(n, { mood: PT.moodOf(n) })}</span>`).join('')}<small>talked to ${talked.map((n) => esc(SH.NPCS_META[n].n)).slice(0, 4).join(', ')}</small></div>` : ''}${places.length ? `<div class="dcl">${ic('pin')} ${esc(places.slice(0, 5).join(' · '))}</div>` : ''}${inc || out ? `<div class="dcl">${ic('cash')} ${inc ? `<b class="pos">+$${inc.toFixed(2)}</b>` : ''} ${out ? `<b class="neg">−$${out.toFixed(2)}</b>` : ''}</div>` : ''}</div>` : ''}
       <small class="dck">tap to continue</small></div>`;
     const old = $('#daycard'); if (old) old.remove(); document.body.appendChild(el);

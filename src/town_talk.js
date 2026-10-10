@@ -183,7 +183,7 @@
       const it = MENU.find(([re]) => re.test(t));
       if (it && !(q.kind === 'laundromat' && it[1] !== 'drink' && it[1] !== 'water')) {
         const [, name, price, full, warm] = it;
-        if (!price) return R(pick(['Sure, hon. Here.', 'Water\'s free. Here you go.']) , { fx: {} });
+        if (!price) return R(pick(['Sure, hon. Here.', 'Water\'s free. Here you go.']), { fx: {} });
         if ((g.money || 0) >= price && TW.pay(price, name)) { SH.st('full', full); if (warm) SH.st('warmth', 10); SH.advance(10, { interrupt: false }); return R(pick([`One ${name}, coming up. That's $${price.toFixed(2)}.`, `${name[0].toUpperCase() + name.slice(1)}. $${price.toFixed(2)}, hon.`, `Sure thing. $${price.toFixed(2)}.`]), { narr: warm ? 'It\'s hot enough to hurt. You hold it with both hands anyway.' : 'You eat it slower than you want to, to make it last.' }); }
         if (!m.freebie && !is(q, /busy|suspicious|no-nonsense/)) { m.freebie = 1; SH.st('full', Math.round(full * 0.8)); if (warm) SH.st('warmth', 10); m.sus += 0.5; return R(`That's $${price.toFixed(2)}... You're short, huh. ...Here. Don't tell my manager.`, { narr: 'You say thank you twice. It doesn\'t feel like enough.' }); }
         return R(`That's $${price.toFixed(2)}, hon. Come back when you've got it.`);
@@ -192,7 +192,7 @@
     // telling the truth to a grown-up
     if (an.has('disclose') || an.has('scared') || (an.has('run') && c.mem.n > 1)) {
       if (/pastor|librar|teacher/.test(q.role) && !m.told.resource) { m.told.resource = 1; if (!SH.has('safeline')) SH.addBag('safeline', true); const sh = loc('shelter'); if (sh) { sh.hidden = false; SH.Map && (SH.Map.cache = null); }
-        return R(`Thank you for telling me. I mean that. I'm not going to grab you or call anybody this second. Here — ${sh ? `${sh.name} is a real place, and they'll let you sleep tonight without calling anyone. And ` : ''}this number's free, any hour, and they don't have to tell anybody where you are. If you want me to call somebody with you, I will. That's your choice. But I'd like it to be soon.`); }
+        return R(`Thank you for telling me. I mean that. I'm not going to grab you or call anybody this second. Here, ${sh ? `${sh.name} is a real place, and they'll let you sleep tonight without calling anyone. And ` : ''}this number's free, any hour, and they don't have to tell anybody where you are. If you want me to call somebody with you, I will. That's your choice. But I'd like it to be soon.`); }
       c.result = 'help'; return R(is(q, /busy|suspicious/) ? 'Okay. Okay, stay right there. I\'m calling someone who knows what to do. You did the right thing.' : 'Oh, sweetheart. Come here. You did the right thing telling me. Let\'s get you somewhere warm, and call the people who can help.', { end: true });
     }
     // names & ages: remembered, never re-asked

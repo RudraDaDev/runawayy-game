@@ -25,7 +25,7 @@
     'river valley': ['sort bait at the bait shop', 'carry groceries at the IGA'], lakeshore: ['hose down boats at the marina', 'rake a cabin yard'],
     'hill country': ['pick apples at the orchard', 'pull weeds'], coast: ['untangle nets on the dock', 'bus tables at the chowder shack'], prairie: ['muck stalls', 'wash pickup trucks'],
   };
-  const CITYJOBS = ['hand out flyers', 'carry bags at the farmers market', 'wash dishes in a back kitchen (cash, no questions — that\'s the problem)', 'walk dogs for a building'];
+  const CITYJOBS = ['hand out flyers', 'carry bags at the farmers market', 'wash dishes in a back kitchen (cash, no questions, that\'s the problem)', 'walk dogs for a building'];
   const PEOPLE_N = ['Walt', 'Bev', 'Ray', 'June', 'Luis', 'Marge', 'Dale', 'Nadia', 'Hank', 'Tammy', 'Earl', 'Rosa', 'Gus', 'Irene', 'Omar', 'Pat', 'Linh', 'Vern'];
   const PEOPLE_R = ['runs the diner', 'owns the hardware store', 'the librarian (part-time, Tuesdays and Thursdays)', 'drives the school bus', 'pastor at the white church', 'works the gas station night shift', 'retired teacher who knows everybody', 'the mail carrier', 'runs the laundromat', 'volunteers at the food pantry'];
   const MOOD = ['kind but nosy', 'suspicious of strangers', 'lonely, likes to talk', 'no-nonsense, soft underneath', 'too friendly (trust your gut)', 'busy, barely looks up'];

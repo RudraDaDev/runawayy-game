@@ -148,7 +148,7 @@
     const ids = (F ? Object.keys(F.KIDS) : []).concat(['jordan']).filter((id) => g.rel[id] != null && (id === 'jordan' || (g.friends && g.friends[id] && g.friends[id].met)));
     const rows = ids.map((id) => {
       const m = SH.NPCS_META[id] || { n: id, col: '#666', ini: '?' }, shares = (g.rel[id] || 0) >= 30 || (SH.Companions ? SH.Companions.ids() : (g.party || [])).includes(id);
-      let where = '—';
+      let where = '·';
       if (shares) { if ((SH.Companions ? SH.Companions.ids() : (g.party || [])).includes(id)) where = 'with you'; else { const w = W.where(id); where = w && w.loc ? ((SH.LOC[w.loc] || {}).name || w.loc) + ' · ' + w.act : 'offline'; } }
       return `<div class="contact"><div class="av" style="background:${m.col}">${m.ini}</div><div style="flex:1"><div class="nm">${esc(m.n)}</div><div class="pv">${shares ? '📍 ' + esc(where) : 'Not sharing with you'}</div></div></div>`;
     }).join('');

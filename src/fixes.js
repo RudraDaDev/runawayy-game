@@ -50,7 +50,7 @@
   SH.rewindTo = function (snap, mode) {
     if (!snap) return; const g = JSON.parse(snap); g.ended = false; if (g.phase === 'end') g.phase = 'home'; if (mode === 'left') g.phase = 'home';
     SH.G = g;
-    SH.afterRestore(mode === 'left' ? '— Rewound to the moment before you left. —' : '— Rewound. —');
+    SH.afterRestore(mode === 'left' ? 'Rewound to the moment before you left. ' : 'Rewound. ');
   };
 
   window.addEventListener('DOMContentLoaded', () => {

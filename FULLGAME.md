@@ -3,11 +3,11 @@
 A narrative life-sim for **16+** players about **Sam**, a troubled 12-year-old, in the days/weeks before running away from home — and what happens after.
 Vanilla JS + canvas (no React). Entertainment, **not** a guide for real runaways. Endings never glamorize running away and always leave a path to safe adults.
 
-**Play:** open `src/index.html` (loads separate files) or the single-file build `SmallHours.html` (`python3 build.py`).
+**Play:** open `src/index.html` (loads separate files) or the built `SmallHours.html` with adjacent `assets/audio/` (`python3 build.py`).
 
 ---
 
-## Next release: v1.5 (approved plan, not built)
+## v1.5 preview (implemented; final acceptance pending)
 
 **Studio: BrokenHours Studio.** The planned v1.1 update has been renamed **v1.5** in full. The authoritative consolidated checklist is [V1_5.md](V1_5.md), updated 2026-10-10. The sections below retain historical feature/progress information and must not be treated as the latest pending-work list.
 
@@ -23,9 +23,9 @@ Approved scope:
 - Continue/skip/pause and reduced-motion scene controls, text-size/speed settings (including instant text), old-save compatibility and archive backups.
 - Regression testing, changelog, screenshots, release description, packaging and verification of source/built/published versions.
 
-The selected music is Scott Buckley's **The Long Dark**, **There is a Place**, and **Intervention (No Piano Melody mix)**, all CC BY 4.0 with attribution. Downloads and implementation have **not** been completed. See the roadmap for official sources and licence details.
+The selected music is Scott Buckley's **The Long Dark**, **There is a Place**, and **Intervention (No Piano Melody mix)**, all CC BY 4.0 with attribution. All three tracks are installed locally as 96 kbps game copies, with original hashes and CC BY 4.0 credits in `AUDIO_CREDITS.md`. CSS/JS is inlined by `build.py`; audio remains alongside the HTML. Build a portable zip with `package_release.py`.
 
-**Documentation-only planning for now. Build only when the user says go.** Do not alter established gameplay rules or introduce hunger warnings.
+**The user authorized implementation with “GOOO”.** The v1.5 preview is implemented; see `CHANGELOG.md`, `RELEASE_TESTS.md` and the checklist for evidence and remaining acceptance. No new hunger warnings or unrelated simulation systems.
 
 ---
 
