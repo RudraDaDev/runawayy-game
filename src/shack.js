@@ -138,6 +138,7 @@
     if (TW.time(Math.round(pt.mins * hands() * (rainy() ? 1.3 : 1)), 0.02, { exert: 2 })) return;
     b.up.push(pt.id); SH.st('energy', -Math.round(pt.mins / 8)); SH.st('hyg', -8); SH.st('mood', 6); SH.st('stress', -6); SH.flag('builtShack');
     log(`${pt.n}: done. ${pt.d}${fline('build')}`, 'good');
+    if(SH.Memories) SH.Memories.event('shack:'+p.id+':'+pt.id, pt.n+' finished', pt.d, 'construction', {base:true, ids:crew()});
     const left = PARTS.filter((x) => !b.up.includes(x.id)).length;
     if (!left) log('You stand back and look at it. Walls, roof, a door that latches, a fire ring, a bed. Nobody gave you this. You made it out of a forest and some farmer\'s leftover boards.', 'good');
     done();

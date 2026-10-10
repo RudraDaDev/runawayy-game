@@ -21,7 +21,10 @@
   const queue = (id, o) => { const t = T(); const key = keyOf(Object.assign({ id }, o || {})); if (t.q.some((x) => x.id === id) || seen(key)) return;
     if (LOGONLY.has(id) || (id === 'stepdad' && SH.f('rickGone'))) { mark(key); try { SC[id](o || {}); } catch (e) { console.warn(e); } return; }
     t.q.push(Object.assign({ id }, o || {})); };
-  const D = (title, text, choices) => SH.UI.dialog({ title, text: [].concat(text), choices: choices || [{ t: 'Okay' }] });
+  const D = (title, text, choices, memory) => SH.UI.dialog({ title, text: [].concat(text), choices: choices || [{ t: 'Okay' }], memory });
+  // Event-owned cast metadata; a village clerk sharing a name is never a Harlow NPC.
+  const actor=(id,name,young,gender)=>{const h=TW.h32(id);return {id,name,look:{skin:['#c88e65','#8d5b3e','#69432f','#efc5a3'][h%4],hair:['#35271d','#8b5734','#7b7569'][(h>>>4)%3],shirt:['#7f8659','#866053','#6b7980'][(h>>>8)%3],style:gender==='she'?'pony':'short',top:young?'tee':'flannel',young:young?1:0}};};
+  const sceneDialog=ctx=>(title,text,choices)=>D(title,text,choices,ctx);
   const vdays = (p) => (V && p ? V.st(p.id).days : 0);
   const cal = () => (SH.World2 ? SH.World2.cal(G().t) : { m: 9, dd: 5 });
   const wdN = () => SH.WEEKDAYS[SH.wd()];
@@ -31,9 +34,10 @@
   const sib = () => nm('Lily'), mom = () => nm('Mom'), rick = () => nm('Rick');
 
   /* ---------- show queued scenes when the player is free ---------- */
-  const busy = () => { const g = G(); return !g || g.ended || g.phase === 'end' || (SH.UI.modalOpen && SH.UI.modalOpen()) || (V && V.quietOn && V.quietOn()) || (SH.Talk && SH.Talk.cur && !SH.Talk.cur.ended && document.querySelector('#talk:not(.hidden), #tlog')); };
+  const busy = () => { const g = G(); return !g || (SH.Presentation && SH.Presentation.active) || g.ended || g.phase === 'end' || (SH.UI.modalOpen && SH.UI.modalOpen()) || (V && V.quietOn && V.quietOn()) || (SH.Talk && SH.Talk.cur && !SH.Talk.cur.ended && document.querySelector('#talk:not(.hidden), #tlog')); };
   function show() {
-    const t = G() && T(); if (!t || !t.q.length || busy()) return;
+    if(SH.Presentation && SH.Presentation.readOnly) return;
+    const t = G() && G().tale; if (!t || !t.q.length || busy()) return;
     const e = t.q.shift(); const f = SC[e.id]; if (!f) return;
     mark(keyOf(e));
     try { f(e); } catch (err) { console.warn('tale', e.id, err); }
@@ -72,6 +76,7 @@
   const SC = {};
   SC.kid = (e) => {
     const p = here(); if (!p || p.id !== e.pid) return; const k = kst(p), K2 = kidOf(p), step = k.step; const next = (n, days) => { k.step = n; k.at = SH.day() + (days || 1); };
+    const D=sceneDialog({base:true,kind:'camp',action:step===0?'bike-kid':step===2?'grass-talk':'',beat:'conversation',key:'tale:kid:'+p.id+':'+step,actors:[actor('village-kid:'+p.id,K2.n,true,K2.he)]});
     if (step === 0) return D(`${K2.n}`, [`A kid about your age is sitting on a bike at the end of the tractor path, one foot on the ground, watching you haul branches. Grass-stained knees. A bread bag tied to the handlebars for no reason you can see.`, `"Are you building a fort?"`], [
       { t: '"Kind of."', fn: () => { next(1, 1); log(`"Cool," says ${K2.n}, and watches for another twenty minutes without offering to help, then pedals off yelling "BYE." Tomorrow ${K2.he} comes back.`, ''); } },
       { t: '"It\'s a house, actually."', fn: () => { next(1, 1); log(`${K2.n} considers this very seriously. "A house house?" You nod. "That's the coolest thing anyone in this whole town has ever done," ${K2.he} says, and means it.`, 'good'); SH.st('mood', 6); } },
@@ -97,15 +102,18 @@
   };
   SC.dog = (e) => {
     const p = here(); if (!p || p.id !== e.pid) return; const F = farmer(p), dog = dogOf(p), dg = (T().dog[p.id] = T().dog[p.id] || { step: 0 });
+    const D=sceneDialog({kind:'street',location:{kind:'work',name:F.place,indoor:false},place:F.place,beat:'conversation',actors:[actor('farmer:'+p.id,F.n,false,F.g)]});
     D(F.place, [`${F.n} is standing in the yard calling "${dog}! ${dog.toUpperCase()}!" in a voice that's trying hard not to crack.`, `"Old girl got out last night. Fourteen years old. Half blind. She never goes past the mailbox." ${F.g === 'she' ? 'She' : 'He'} looks at you. "You're out in those trees more than anybody. You see a yellow dog, you holler."`], [
       { t: `Go look for ${dog} right now`, fn: () => { if (TW && TW.time(120, 0.02, { exert: 1.5 })) return; dg.step = 2; SH.flag('foundDog'); if (V) V.bump(p, 'farm', 4);
-        D(F.place, [`Two hours along the creek, calling. You almost give up. Then you hear it: a thin whine from inside a culvert under the county road.`, `${dog} is wedged in there with a cut paw, shivering, and when you crawl in on your elbows she licks your whole face like you're the best thing that ever happened. You carry her back. She's heavier than she looks. You don't put her down once.`, `${F.n} doesn't say anything for a long moment. Just holds the dog. Then: "Anybody ever asks, you're my sister's grandkid, down from Joplin for a while." ${F.g === 'she' ? 'She' : 'He'} clears ${F.g === 'she' ? 'her' : 'his'} throat. "Your grandma's name is Arlene. She makes a bad pie."`],
+        sceneDialog({kind:'street',location:{kind:'work',name:F.place,indoor:false},place:F.place,beat:'conversation',action:'dog-returned',actors:[actor('farmer:'+p.id,F.n,false,F.g)]})(F.place, [`Two hours along the creek, calling. You almost give up. Then you hear it: a thin whine from inside a culvert under the county road.`, `${dog} is wedged in there with a cut paw, shivering, and when you crawl in on your elbows she licks your whole face like you're the best thing that ever happened. You carry her back. She's heavier than she looks. You don't put her down once.`, `${F.n} doesn't say anything for a long moment. Just holds the dog. Then: "Anybody ever asks, you're my sister's grandkid, down from Joplin for a while." ${F.g === 'she' ? 'She' : 'He'} clears ${F.g === 'she' ? 'her' : 'his'} throat. "Your grandma's name is Arlene. She makes a bad pie."`],
           [{ t: 'Arlene. Bad pie. Got it.', fn: () => { T().cover = T().cover || {}; T().cover[p.id] = 1; SH.st('mood', 12); SH.st('stress', -10); log(`You have a cover story now, and it came with a grandma. In ${p.name}, you're somebody's family.`, 'good'); } }]); } },
       { t: '"I\'ll keep an eye out."', fn: () => { dg.step = 1; log(`You keep an eye out. Two days later ${dog} limps home on her own. ${F.n} tells everybody at the diner. You wish you'd gone looking.`, ''); } }]);
   };
   (A.mods = A.mods || []).push((p) => (p && G().tale && G().tale.cover && G().tale.cover[p.id] ? 0.85 : 1));
   SC.danny = (e) => {
     const p = here(); if (!p || p.id !== e.pid) return; const n = (V && TW && TW.cache[p.id] && (TW.cache[p.id].people.find((q) => q.kind === 'diner') || {}).n) || 'The waitress';
+    const q=TW.cache[p.id] && TW.cache[p.id].people.find(q=>q.kind==='diner');
+    const D=sceneDialog({kind:'diner',location:{kind:'diner',name:'The diner',indoor:true},beat:'conversation',actors:[actor(q?q.id:'waitress:'+p.id,n,false,'she')]});
     D('The diner, after the lunch rush', [`It's dead in the diner. ${n} sits down across from you with a coffee, which she has never done, and looks out the window at nothing.`, `"My boy Danny left when he was sixteen. Took the truck and forty dollars out of my purse. I didn't hear from him for three years." She turns the cup around. "Three years of every car in the driveway being him. Every phone call. Then one Christmas, he called. Just to say he was alive. He didn't say where. I didn't ask. I've never been so grateful for anything in my life."`, `She finally looks at you. "I'm not asking you anything. I'm just saying. Someday, when it's safe. One phone call. It doesn't have to be to your mother. Just somebody who's up at night."`], [
       { t: '"Someday. I promise."', fn: () => { SH.flag('promisedCall'); SH.st('stress', -6); log(`${n} nods once and goes back behind the counter like nothing happened. When you leave, there's a slice of pie in a to-go box on your stool. You didn't order it.`, 'good'); } },
       { t: 'Say nothing', fn: () => { log(`You don't say anything. ${n} doesn't need you to. She refills your hot chocolate and goes back to wiping a counter that's already clean.`, ''); } }]);
@@ -120,6 +128,7 @@
   SC.storm = (e) => {
     const p = here(); if (!p || p.id !== e.pid || !hasBase(p)) return; const b = G().base, B = SH.Bases, F = farmer(p);
     const roof = B && B.fx('dry') > 0, walls = B && B.fx('warm') >= 2, fm = G()._farm && G()._farm[p.id] && G()._farm[p.id].met;
+    const D=sceneDialog({base:true,beat:'shelter',key:'tale:storm:'+p.id+':'+e.key});
     if (roof && walls) return D('Storm', ['The storm comes in around midnight like a train. Thunder you feel in your teeth. The whole shack creaks and flexes.', 'And holds. Water finds exactly one gap in the roof, over your feet, and you move your feet. You lie there in the dark listening to the worst storm of the year happen to everybody else.'], [{ t: 'Sleep, eventually', fn: () => { SH.st('mood', 10); SH.flag('shackHeld'); log('In the morning there are branches down all over the county and your shack is still standing. You built that.', 'good'); } }]);
     D('Storm', [`The storm hits around midnight. The wind gets under ${roof ? 'the walls' : 'the roof'} and part of it just leaves, into the dark. Rain sideways. Everything you own getting soaked.`, fm ? `Then headlights, bouncing up the tractor path. ${F.n}'s truck, wipers going crazy. The window rolls down. "Get in. Don't argue."` : 'You grab your bag and run for the only shelter you can think of.'], [
       fm ? { t: 'Get in', fn: () => { SH.advance(420, { sleep: true, quality: 0.7, interrupt: false }); SH.st('warmth', 40); if (V) V.bump(p, 'farm', 3); log(`You sleep on a cot in ${F.place}'s mudroom next to a dog bed. In the morning there's coffee you're too young for and eggs. ${F.n} drives you back to see the damage and helps you fix it without being asked.`, 'good'); } }

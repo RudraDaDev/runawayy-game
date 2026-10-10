@@ -46,3 +46,15 @@ The preview is usable, backed up and tested, but this document does not call the
 - Older homesick option and three companion epilogues split the group: reported and removed/reworded without introducing jealousy or new endings.
 
 Final local rerun after Previous navigation, overlay guards and deferred reply protection: **90/90 checks passed**, no uncaught browser errors.
+
+## Animated-scene refinement verification · 2026-10-10
+
+Fresh local results after the refinement:
+- `tests/v15.test.js`: **90/90 source + built checks passed**.
+- `tests/cinema.test.js` on source and built HTML: motion layers, exact animation-time freeze on Pause, SVG identity across pause, reduced-motion cancellation, live-state equality, distinct sets, lying pose, finite translated walking, eight-person bounds and mobile viewport checks passed.
+- `tests/cinema_capture.test.js` on source and built: real shack-build, base-sleep and private motel-sleep callbacks; no imaginary frame at a cleared spot; no remote/unvisited base upgrades; explicit same-name local actors; malformed scene props; queued/stale offers passed. Random event selection is suppressed in these deterministic integration fixtures, not in the shipped game.
+- One intermediate run timed out clicking Begin on the second browser page. A clean rerun passed both pages; this was not treated as a successful test run.
+- Rain stop, bedroom, lying/rest, diner, completed-parts shack and mobile library screenshots were visually opened during work. Screenshots in `docs/screenshots/cinema-*.png` are **renderer fixtures**, not evidence of earned player history. The integration tests verify earned capture separately.
+- Pause's former one-frame drift was fixed with explicit animation hold times. Explicitly resumed CSS animation objects are cancelled too when reduced motion is enabled.
+
+Not certified: every story-event illustration, every generated building layout, physical-phone behaviour, human audio/art acceptance, and the newest public Pages deployment. Scene refinement is a tested preview, not a claim that the paid release is accepted.

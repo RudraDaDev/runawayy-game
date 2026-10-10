@@ -90,9 +90,10 @@
       { t: 'Go back out', fn: K.back }]);
   }
   function sleep(p, dark) {
-    const g = G(); SH.advance(dark ? 8 * 60 : 120, { interrupt: false }); if (g.ended) return;
+    const g = G(), scene=SH.Memories && SH.Memories.snapshot([], {room:true}); SH.advance(dark ? 8 * 60 : 120, { interrupt: false }); if (g.ended) return;
     SH.st('energy', dark ? 70 : 25); SH.st('warmth', 40); SH.st('stress', -12); SH.st('mood', 8); g.phone.bat = 100;
     if (A.noticed(p, 0.03)) return; if (g.roomEvt) return event(p);
+    if(dark && scene && SH.Memories) { const rec=SH.Memories.record('motel-night:'+p.id+':'+scene.date, 'Behind a door that locks', 'You slept in your paid room at '+g.room.n+'. The ice machine and the road stayed on the other side of the door.', 'sleep', [], scene); SH.Presentation.offer(rec); }
     K.D('Morning', K.pick(['You sleep like you fell off a cliff. The ice machine hums all night and you don\'t hear it once.', 'You wake up and for three whole seconds you forget where you are.', 'Real sleep. In a real bed. Your body didn\'t know it was this tired.']), [{ t: 'Okay', fn: () => roomMenu(p) }]);
   }
   /* ---------- daily motel life: payment + trouble ---------- */

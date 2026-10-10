@@ -26,7 +26,7 @@
     SH.advance(180, { interrupt: false }); if (g.ended) return;
     if (!K.chance(0.65)) { SH.st('energy', -10); return K.D('Nothing', 'Three hours of looking. Everything is either locked, lived in, or too close to the road.', K.ok()); }
     const t = K.pick(typesFor(p));
-    K.D(TYPES[t].i + ' ' + TYPES[t].n, [TYPES[t].d, 'It isn\'t much. It could be.'], [{ t: 'Make it your base', cls: 'safe', fn: () => { g.base = { type: t, pid: p.id, up: [], day: SH.day(), nights: 0 }; SH.UI.log(`You have a base: the ${TYPES[t].n.toLowerCase()} outside ${p.name}.`, 'good'); base(p); } }, { t: 'Keep looking another day', fn: K.back }]);
+    K.D(TYPES[t].i + ' ' + TYPES[t].n, [TYPES[t].d, 'It isn\'t much. It could be.'], [{ t: 'Make it your base', cls: 'safe', fn: () => { g.base = { type: t, pid: p.id, up: [], day: SH.day(), nights: 0 }; SH.UI.log(`You have a base: the ${TYPES[t].n.toLowerCase()} outside ${p.name}.`, 'good'); if(SH.Memories) SH.Memories.event('base:'+p.id+':'+g.t, 'Somewhere to come back to', TYPES[t].d, 'shelter', {base:true}); base(p); } }, { t: 'Keep looking another day', fn: K.back }]);
   }
   function base(p) {
     const g = G(), b = g.base, T = TYPES[b.type], lvl = b.up.length;
@@ -49,12 +49,13 @@
     ['found', () => fx('hide') < 1 && K.chance(0.5), '', null],
   ];
   function sleep(p) {
-    const g = G(), b = g.base, dark = SH.hour() >= 20 || SH.hour() < 6; SH.advance(dark ? 8 * 60 : 120, { interrupt: false }); if (g.ended) return;
+    const g = G(), b = g.base, scene = SH.Memories && SH.Memories.snapshot([], {base:true}), dark = SH.hour() >= 20 || SH.hour() < 6; SH.advance(dark ? 8 * 60 : 120, { interrupt: false }); if (g.ended) return;
     b.nights += dark ? 1 : 0; SH.st('energy', dark ? 30 + 12 * fx('rest') + 5 * fx('warm') : 15); SH.st('warmth', 10 * fx('warm')); SH.st('mood', 3 * fx('mood'));
     if (A.noticed(p, 0.04 / (1 + fx('hide')))) return;
     const th = dark && K.chance(0.35) ? K.pick(THREATS.filter((x) => x[1]() && !(x[0] === 'found' && b.type === 'building' && p && p.tier === 'village'))) : null;
     if (th && th[0] === 'found') { const who = b.type === 'camp' ? 'A park ranger' : b.type === 'barn' ? 'The farmer who owns the barn' : 'A city inspector'; g.awayNotice = (g.awayNotice || 0) + 25; g.base = null; return K.D('Found your base', `${who} finds your ${TYPES[b.type].n.toLowerCase()} in the morning. You're already gone (you heard the footsteps), but your base isn't yours anymore.`, K.ok()); }
     if (th) { th[3](); return K.D('A long night', th[2], [{ t: 'Okay', fn: () => base(p) }]); }
+    if(dark && scene && SH.Memories) { const rec=SH.Memories.record('base-night:'+b.pid+':'+scene.date, 'Morning at your base', 'You slept at '+scene.place+'. The night passed without a base disturbance.', 'sleep', [], scene); SH.Presentation.offer(rec); }
     K.D('Morning at base', K.pick(['Birds. Actual birds. You slept through the whole night.', 'It\'s starting to feel like somewhere. Like yours.', 'You wake up and know exactly where you are, and it\'s okay.']), [{ t: 'Okay', fn: () => base(p) }]);
   }
   K.hub((p, ch) => { const b = G().base; if (b && b.pid === p.id) ch.unshift({ t: `${TYPES[b.type].i} Your base`, cls: 'safe', sub: `${b.up.length} upgrades · ${b.nights} nights`, fn: () => base(p) }); else if (!b) ch.push({ t: '🔎 Look for a place to make a base', sub: typesFor(p).map((t) => TYPES[t].n).join(' or ') + ' · 3 hours', fn: () => search(p) }); });

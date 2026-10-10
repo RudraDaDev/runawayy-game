@@ -2,6 +2,15 @@
 
 ## v1.5 preview · 2026-10-10 · BrokenHours Studio
 
+### Animated scene refinement
+- Replaced the static memory artwork with layered SVG scenes, separate staging for school, library, diner, home, motel, road stops, underpasses, camps, barns and abandoned buildings.
+- Seated/crouched/lying poses, conversation gestures, gaze, clothing details and finite arrivals. Walking moves through the scene once instead of looping in place. Environmental rain, snow, ripples, curtains, clouds, dust and steam have a shared pause state.
+- Construction snapshots show only completed shack parts. A camp is not automatically a tent; a town edge is not automatically a camp. Base scenes require an actual base action in its own town.
+- Completed base/motel sleep callbacks now earn records directly. Street sleep records the elapsed rest without claiming an uninterrupted full night.
+- Village kid, farmer and diner tales carry explicit cast/location metadata; identical names do not substitute unrelated Harlow NPCs. Bike-kid and returned-dog visual details appear only in those rendered events.
+- Multiple milestone offers queue without overwriting one another; stale-world offers are discarded. Archived replay no longer initializes tale state from a delayed gameplay callback.
+- Added scene-prop/import bounds, corrupt-look fallback, source/built visual tests, completed-action integration tests and clearly labelled renderer screenshots. Final artistic/device acceptance remains open.
+
 ### Play and presentation
 - New dark-only olive/lamplight palette, split-line title motif and responsive main menu.
 - Main menu: New Game, Continue, Saves, Previous Runs, Memories, Settings and Credits.

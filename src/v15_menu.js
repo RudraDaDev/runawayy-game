@@ -37,11 +37,23 @@
     if (words.some(k => l[k] != null && !/^[a-z0-9_-]{1,24}$/i.test(l[k]))) return false;
     return Object.keys(l).every(k => colours.includes(k) || words.includes(k) || (typeof l[k] === 'number' && Number.isFinite(l[k]) && Math.abs(l[k]) <= 10) || typeof l[k] === 'boolean' || l[k] === null);
   }
+  function validScene(s) {
+    if(!s || !Array.isArray(s.people) || s.people.length>16 || s.people.some(a=>!a || typeof a.id!=='string' || typeof a.name!=='string' || a.name.length>120 || !validLook(a.look))) return false;
+    if(s.action!=null && !['','bike-kid','grass-talk','dog-returned'].includes(s.action)) return false;
+    if(s.beat!=null && !['still','arrival','departure','shared','conversation','shelter','sleep','construction','scene','turning','joined','moment','outfit'].includes(s.beat)) return false;
+    if(s.set!=null) {
+      if(typeof s.set!=='object' || Array.isArray(s.set)) return false;
+      if(s.set.kind!=null && !['bedroom','kitchen','home','library','school','diner','shelter','motel','interior','camp','stop','underpass','street','barn','building'].includes(s.set.kind)) return false;
+      if(s.set.indoor!=null && typeof s.set.indoor!=='boolean') return false;
+      if(s.set.upgrades!=null && (!Array.isArray(s.set.upgrades) || s.set.upgrades.length>40 || s.set.upgrades.some(x=>typeof x!=='string' || !/^[a-z0-9_]{1,32}$/.test(x)))) return false;
+    }
+    return ['place','town','time','date','weather','loc'].every(k=>s[k]==null || (typeof s[k]==='string' && s[k].length<=240));
+  }
   AR.validate = function (d) {
     if (!d || d.format !== 'smallhours-history' || d.version !== 1 || !Array.isArray(d.runs) || d.runs.length > 200) throw Error('Not a supported history backup.');
     return d.runs.map(r => {
       if (!r || typeof r.id !== 'string' || typeof r.title !== 'string' || !Array.isArray(r.memories) || r.memories.length > 160 || typeof r.html !== 'string' || r.html.length > 500000) throw Error('A run in this backup is incomplete or invalid.');
-      if (!r.scene || !Array.isArray(r.scene.people) || r.scene.people.some(a => !a || !validLook(a.look) || typeof a.name !== 'string') || r.memories.some(m => !m || typeof m.title !== 'string' || typeof m.text !== 'string' || !m.scene || !Array.isArray(m.scene.people) || m.scene.people.some(a => !a || !validLook(a.look) || typeof a.name !== 'string'))) throw Error('The visual records in this backup are invalid.');
+      if (!validScene(r.scene) || r.memories.some(m => !m || typeof m.title !== 'string' || typeof m.text !== 'string' || !validScene(m.scene))) throw Error('The visual records in this backup are invalid.');
       const clean = copy(r); clean.html = safeHTML(clean.html); return clean;
     });
   };

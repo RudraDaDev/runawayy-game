@@ -3,20 +3,7 @@
   const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const clone = x => JSON.parse(JSON.stringify(x));
   const P = SH.Presentation = { active: false, paused: false, readOnly: false, gen: 0 };
-  P.scene = function (s) {
-    if (!s) return '<div class="memory-empty">No visual record was stored.</div>';
-    const night = s.night, indoors = /home|room|library|motel|shelter|shack|diner|grandma|patel/.test(s.loc || '');
-    const sky = night ? '#181a15' : '#3d4337', land = night ? '#24261d' : '#4a4d38';
-    const place = esc(s.place || s.town || 'A place you were');
-    let scenery = indoors ? '<rect x="0" y="0" width="800" height="300" fill="#342f26"/><path d="M0 252H800" stroke="#6b5b42" stroke-width="4"/><rect x="65" y="52" width="132" height="133" fill="' + sky + '" stroke="#7c694e" stroke-width="8"/><path d="M131 52V185 M65 118H197" stroke="#7c694e" stroke-width="5"/><path d="M585 254V125H725V254" fill="#574737"/><rect x="470" y="207" width="240" height="42" rx="7" fill="#625841"/>' : '<path d="M0 170L80 134L170 164L235 120L390 167L520 133L650 164L800 112V300H0Z" fill="' + land + '"/><path d="M0 245H800V300H0Z" fill="#413c30"/><path d="M530 240V85H680V240" fill="#564b38"/><rect x="555" y="112" width="42" height="56" fill="' + (night ? '#b39458' : '#929780') + '"/><path d="M70 242V135M58 140H126M117 140V155" stroke="#908369" stroke-width="5"/>';
-    if (/village|camp|forest|park|woods/.test(s.loc || '') || s.tier === 'village') scenery += '<path d="M20 242V167M150 242V125M755 242V145" stroke="#5d563e" stroke-width="10"/><path d="M20 82L-24 189H64ZM150 40L100 164H200ZM755 65L706 186H804Z" fill="#394630"/>';
-    if (/rain|storm|drizzle|snow/.test(s.weather || '')) scenery += '<path d="M25 20L10 50M230 15L215 45M395 39L380 69M605 14L590 44M740 65L725 95M90 145L75 175M310 178L295 208M470 100L455 130M685 150L670 180" stroke="#c8c5af" opacity=".35" stroke-width="2"/>';
-    const people = (s.people || []).slice(0, 7).map((a, i, all) => {
-      const l = a.look, x = 300 + (i - (all.length - 1) / 2) * 70, y = 245;
-      return `<g transform="translate(${x},${y})"><ellipse cy="2" rx="20" ry="5" fill="#111" opacity=".3"/><path d="M-5 -40L-7 0M5 -40L9 0" stroke="${esc(l.legs || '#39372f')}" stroke-width="8"/><path d="M-12 0H-2M3 0H14" stroke="${esc(l.shoe || '#aaa396')}" stroke-width="4"/><rect x="-14" y="-80" width="28" height="44" rx="8" fill="${esc(l.shirt)}"/><path d="M-12 -72L-19 -44M12 -72L20 -44" stroke="${esc(l.shirt)}" stroke-width="8"/><circle cy="-95" r="14" fill="${esc(l.skin)}"/><path d="M-14 -96Q-17 -115 0 -111Q17 -111 14 -96L7 -102L-8 -102Z" fill="${esc(l.hair)}"/>${/pony|bob|curly/.test(l.style) ? `<path d="M-14 -100V-79" stroke="${esc(l.hair)}" stroke-width="7"/>` : ''}${l.hat ? `<path d="M-15 -103Q0 -124 15 -103Z" fill="${esc(l.hatc || l.shirt)}"/>` : ''}<path d="M-5 -95h2m6 0h2" stroke="#29211b" stroke-width="2"/>${l.glasses ? `<path d="M-10 -99h8v7h-8Zm12 0h8v7H2ZM-2 -96H2" fill="none" stroke="${esc(l.glasses)}"/>` : ''}</g>`;
-    }).join('');
-    return `<div class="recorded-scene"><svg viewBox="0 0 800 300" role="img" aria-label="Recorded scene at ${place}"><rect width="800" height="300" fill="${sky}"/>${scenery}${people}<path d="M0 294H800" stroke="#bb9960" opacity=".6" stroke-width="2"/></svg><div class="scene-caption">${place} · ${esc(s.date)} · ${esc(s.time)} · ${esc(s.weather)}</div></div><div class="memory-cast">${(s.people || []).map(a => `<span>${SH.Portrait.svg(a.id, { look: a.look, mood: 'neutral' })}<b>${esc(a.name)}</b></span>`).join('')}</div>`;
-  };
+  P.scene = (s, card) => SH.Cinema.render(s, card);
   function root() {
     let e = document.querySelector('#presentation');
     if (!e) { e = document.createElement('div'); e.id = 'presentation'; e.setAttribute('role', 'dialog'); e.setAttribute('aria-modal', 'true'); document.body.appendChild(e); }
@@ -35,45 +22,44 @@
     function draw() {
       if (gen !== P.gen) return;
       const c = P.cards[P.index];
-      e.innerHTML = `<section class="sequence-panel"><header><span class="studio">BROKENHOURS STUDIO</span><span>${P.index + 1} / ${P.cards.length}</span></header><div class="sequence-content ${c.titleOnly ? 'outcome-card' : ''}"><small class="eyebrow">${esc(c.label || 'A memory from this story')}</small><h1>${esc(c.title)}</h1>${c.titleOnly ? '' : P.scene(c.scene)}<div class="sequence-text">${esc(c.text || '').split('\n').map(l => `<p>${l}</p>`).join('')}</div></div><footer><button class="btn" id="scenePrev" ${P.index === 0 || P.paused ? 'disabled' : ''}>Previous</button><button class="btn" id="scenePause">${P.paused ? 'Resume' : 'Pause'}</button><button class="btn" id="sceneMotion">${SH.Settings.values.reducedMotion ? 'Reduced motion on' : 'Reduce motion'}</button><button class="btn" id="sceneSkip">${readOnly ? 'Close' : isEnding ? 'Skip to ending' : 'Skip scene'}</button><button class="btn primary" id="sceneNext" ${P.paused ? 'disabled' : ''}>${P.index + 1 === P.cards.length ? readOnly ? 'Done' : isEnding ? 'Read the ending' : 'Keep going' : 'Continue'}</button></footer><small class="sequence-hint">Read at your own pace. ${P.paused ? 'Paused, including music.' : 'Nothing advances until you continue.'}</small></section>`;
+      e.innerHTML = `<section class="sequence-panel"><header><span class="studio">BROKENHOURS STUDIO</span><span>${P.index + 1} / ${P.cards.length}</span></header><div class="sequence-content ${c.titleOnly ? 'outcome-card' : ''}"><small class="eyebrow">${esc(c.label || 'A memory from this story')}</small><h1>${esc(c.title)}</h1>${c.titleOnly ? '' : P.scene(c.scene, c)}<div class="sequence-text">${esc(c.text || '').split('\n').map(l => `<p>${l}</p>`).join('')}</div></div><footer><button class="btn" id="scenePrev" ${P.index === 0 || P.paused ? 'disabled' : ''}>Previous</button><button class="btn" id="scenePause">${P.paused ? 'Resume' : 'Pause'}</button><button class="btn" id="sceneMotion">${SH.Settings.values.reducedMotion ? 'Reduced motion on' : 'Reduce motion'}</button><button class="btn" id="sceneSkip">${readOnly ? 'Close' : isEnding ? 'Skip to ending' : 'Skip scene'}</button><button class="btn primary" id="sceneNext" ${P.paused ? 'disabled' : ''}>${P.index + 1 === P.cards.length ? readOnly ? 'Done' : isEnding ? 'Read the ending' : 'Keep going' : 'Continue'}</button></footer><small class="sequence-hint">Read at your own pace. ${P.paused ? 'Paused, including music.' : 'Nothing advances until you continue.'}</small></section>`;
       e.querySelector('#scenePrev').onclick = () => { if (!P.paused && P.index > 0) { P.index--; draw(); } };
-      e.querySelector('#scenePause').onclick = () => { P.paused = !P.paused; SH.Soundtrack && SH.Soundtrack.sync(); draw(); };
-      e.querySelector('#sceneMotion').onclick = () => { SH.Settings.set('reducedMotion', !SH.Settings.values.reducedMotion); draw(); };
+      e.querySelector('#scenePause').onclick = () => { P.paused = !P.paused; SH.Soundtrack && SH.Soundtrack.sync(); SH.Cinema.sync();
+        e.querySelector('#scenePause').textContent = P.paused ? 'Resume' : 'Pause'; e.querySelector('#sceneNext').disabled = P.paused; e.querySelector('#scenePrev').disabled = P.paused || P.index === 0;
+        e.querySelector('.sequence-hint').textContent = P.paused ? 'Paused, including animation and music.' : 'Read at your own pace. Nothing advances until you continue.'; };
+      e.querySelector('#sceneMotion').onclick = () => { SH.Settings.set('reducedMotion', !SH.Settings.values.reducedMotion); e.querySelector('#sceneMotion').textContent = SH.Settings.values.reducedMotion ? 'Reduced motion on' : 'Reduce motion'; SH.Cinema.sync(); };
       e.querySelector('#sceneSkip').onclick = finish;
       e.querySelector('#sceneNext').onclick = () => { if (P.paused) return; if (++P.index >= P.cards.length) finish(); else draw(); };
-      e.querySelector('#sceneNext').focus();
+      SH.Cinema.sync(); e.querySelector('#sceneNext').focus();
     }
     function finish() { if (gen !== P.gen) return; const fn = P.onDone; const focus = P.oldFocus; P.dismiss(); fn && fn(); if (readOnly && focus && focus.isConnected) focus.focus(); }
     P.finish = finish; draw();
   };
   P.dismiss = function () {
     ++P.gen; P.active = false; P.paused = false; P.readOnly = false;
-    const e = document.querySelector('#presentation'); if (e) e.remove();
+    const e = document.querySelector('#presentation'); if (e) e.remove(); if(SH.Cinema.held) SH.Cinema.held.clear();
     document.body.classList.remove('sh-presenting');
     const md = document.querySelector('#modal'); if (md) { md.inert = false; md.removeAttribute('aria-hidden'); }
     SH.Soundtrack && SH.Soundtrack.context();
   };
+  // A queue belongs to one live world/epoch; stale callbacks cannot erase newer offers.
+  P.queue = [];
+  P.flush = function () {
+    P.queue=P.queue.filter(x=>x.g===SH.G && x.epoch===SH.epoch && !x.g.ended);
+    if(P.active || P.readOnly || SH.UI.modalOpen() || !P.queue.length) return;
+    const next=P.queue.shift(), rec=next.rec;
+    P.open([{title:rec.title,text:rec.text,scene:rec.scene,kind:rec.kind,label:'A turning point'}],()=>setTimeout(P.flush,120));
+  };
   P.offer = function (rec) {
-    if (!rec) return;
-    P.pending = { rec, g: SH.G, epoch: SH.epoch };
-    const g = SH.G, epoch = SH.epoch;
-    setTimeout(() => {
-      if (SH.G !== g || SH.epoch !== epoch || g.ended) { P.pending = null; return; }
-      if (P.active || SH.UI.modalOpen()) return;
-      P.pending = null;
-      P.open([{ title: rec.title, text: rec.text, scene: rec.scene, label: 'A turning point' }], () => {});
-    }, 120);
+    if (!rec || !SH.G || SH.G.ended || P.readOnly) return;
+    if(!P.queue.some(x=>x.rec.key===rec.key && x.g===SH.G && x.epoch===SH.epoch)) P.queue.push({rec:clone(rec),g:SH.G,epoch:SH.epoch});
+    setTimeout(P.flush,120);
   };
   const afterAction = SH.UI.afterAction;
-  SH.UI.afterAction = function () {
-    const r = afterAction.apply(this, arguments);
-    const next = P.pending;
-    if (next && next.g === SH.G && next.epoch === SH.epoch && !SH.UI.modalOpen() && !P.active) P.offer(next.rec);
-    return r;
-  };
+  SH.UI.afterAction = function () { const r=afterAction.apply(this,arguments); setTimeout(P.flush,120); return r; };
   P.cardsFor = function (ending) {
     const list = [{ title: ending.outcome, text: '', titleOnly: true, label: 'This chapter has settled' }, { title: ending.title, text: ending.sub, scene: ending.scene, label: 'The last recorded scene' }];
-    (ending.memories || []).forEach(m => list.push({ title: m.title, text: m.text, scene: m.scene, label: 'What actually happened' }));
+    (ending.memories || []).forEach(m => list.push({ title: m.title, text: m.text, scene: m.scene, kind: m.kind, label: 'What actually happened' }));
     if (ending.incomplete) list.push({ title: 'Some hours were not recorded', text: 'This story began in an older version. Missing scenes have not been invented. The saved conversations and ending still belong to this story.', label: 'An incomplete visual history' });
     return list;
   };
@@ -129,5 +115,5 @@
     if (['1','2','3','4','5','6','7','8','9','m','M','p','P','?'].includes(e.key)) { e.preventDefault(); e.stopImmediatePropagation(); }
   }, true);
   const reset = SH.resetRuntime;
-  SH.resetRuntime = function () { P.pending = null; P.heldMessages = []; P.heldReplies = []; P.dismiss(); return reset.apply(this, arguments); };
+  SH.resetRuntime = function () { P.queue = []; P.pending = null; P.heldMessages = []; P.heldReplies = []; P.dismiss(); return reset.apply(this, arguments); };
 })(window.SH);

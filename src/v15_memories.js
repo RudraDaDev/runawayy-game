@@ -3,17 +3,34 @@
   const copy = x => JSON.parse(JSON.stringify(x));
   const M = SH.Memories = {};
   const v = () => SH.Visuals.ensure(SH.G);
-  M.snapshot = function (ids = []) {
-    const g = SH.G, place = (SH.LOC[g.loc] || {}).name || (g.away && SH.Atlas.here().name) || 'Harlow';
-    const presentIds = ids.filter(id => SH.Companions.has(id) || (SH.World.where(id) || {}).loc === g.loc || (SH.Talk.cur && SH.Talk.cur.npc === id && !SH.Talk.cur.opts.phone));
+  M.snapshot = function (ids = [], context = {}) {
+    const g = SH.G, L = context.location || SH.LOC[g.loc] || {}, p = g.away && SH.Atlas.here(), base = g.base;
+    const atBase = !!(base && p && base.pid === p.id && context.base);
+    const rawKind = L.kind || L.type || g.loc;
+    let kind = g.loc === 'home' ? (g.room === 'bedroom' ? 'bedroom' : g.room === 'kitchen' ? 'kitchen' : 'home') : /diner|cafe/.test(rawKind) ? 'diner' : /library/.test(rawKind) ? 'library' : /school/.test(rawKind) ? 'school' : /motel|shelter|grandma|harbor/.test(rawKind) ? 'shelter' : /stop|bus|station/.test(rawKind) ? 'stop' : /underpass/.test(rawKind) ? 'underpass' : /camp|forest|woods/.test(rawKind) ? 'camp' : L.indoor ? 'interior' : 'street';
+    if(atBase) kind=base.type==='camp'?'camp':'interior';
+    if(context.room) kind='motel';
+    if(context.kind) kind=context.kind;
+    const set = { kind, indoor: !!context.room || (atBase ? base.type !== 'camp' : !!L.indoor), camp: atBase && base.type === 'camp', shack: atBase && !!base.shack, baseType: atBase ? base.type : '', upgrades: atBase && Array.isArray(base.up) ? base.up.slice() : [], biome: p ? p.biome : '', locationKind: rawKind };
+    const local = p && SH.Town.present ? SH.Town.present(L).map(q=>q.id) : [];
+    const presentIds = ids.filter(id => SH.Companions.has(id) || local.includes(id) || (!p && (SH.World.where(id) || {}).loc === g.loc) || (SH.Talk.cur && SH.Talk.cur.npc === id && !SH.Talk.cur.opts.phone));
     const actors = ['sam'].concat(SH.Companions.ids(), presentIds).filter((id, i, a) => a.indexOf(id) === i && SH.Visuals.look(id));
-    return { loc: g.loc, place, town: g.away ? SH.Atlas.here().name : 'Harlow', tier: g.away ? SH.Atlas.here().tier : 'town', room: g.room, time: SH.fmt12(), date: SH.dateStr(), night: SH.isDark(), weather: SH.cond(), outfit: copy(v().outfit), people: actors.map(id => ({ id, name: id === 'sam' ? g.name : (SH.NPCS_META[id] || {}).n || id, look: copy(SH.Visuals.look(id)), companion: SH.Companions.has(id) })) };
+    const explicit=(context.actors||[]).filter(a=>a && a.id && a.name && a.look);
+    const place = context.place || (context.room ? g.room.n + ', your room' : atBase ? (base.shack ? 'Your shack' : (SH.Bases.TYPES[base.type] || {}).n) : L.name || (p && p.name) || 'Harlow');
+    return { set, loc: g.loc, place, town: p ? p.name : 'Harlow', tier: p ? p.tier : 'town', action: context.action || '', room: typeof g.room === 'string' ? g.room : 'motel', time: SH.fmt12(), date: SH.dateStr(), night: SH.isDark(), weather: SH.cond(), outfit: copy(v().outfit), people: actors.map(id => ({ id, name: id === 'sam' ? g.name : (SH.NPCS_META[id] || {}).n || id, look: copy(SH.Visuals.look(id)), companion: SH.Companions.has(id) })).concat(explicit.filter(a=>!actors.includes(a.id)).map(copy)) };
+  };
+  // Called at the actual completed action, not inferred from words in the log.
+  M.event = function (key,title,text,kind,context={}) {
+    const rec=M.record(key,title,text,kind,context.ids||[],M.snapshot(context.ids||[],context));
+    if(rec) SH.Presentation && SH.Presentation.offer(rec);
+    return rec;
   };
   M.record = function (key, title, text, kind = 'moment', ids = [], snapshot) {
     const g = SH.G; if (!g || (SH.Presentation && SH.Presentation.readOnly) || g.ended) return;
     const h = v(); if (h.seen[key]) return;
     h.seen[key] = true;
     const rec = { key: String(key).slice(0, 120), title: SH.nm(title), text: String(SH.nm(text)).replace(/<[^>]*>/g, '').slice(0, 2500), kind, t: g.t, scene: snapshot || M.snapshot(ids) };
+    rec.scene.beat = kind === 'arrival' ? 'arrival' : key.startsWith('tag:ranAway') ? 'departure' : kind === 'shared' ? 'shared' : kind === 'conversation' || kind === 'joined' ? 'conversation' : kind === 'construction' ? 'construction' : kind === 'sleep' ? 'sleep' : kind === 'shelter' ? 'shelter' : 'still';
     h.memories.push(copy(rec));
     // Bound history, while keeping the first departure. Nothing is reconstructed as a pictured event.
     if (h.memories.length > 160) h.memories.splice(1, 1);
@@ -34,33 +51,28 @@
     return r;
   };
   const tag = SH.tag;
-  SH.tag = function (key) { const r = tag.apply(this, arguments); if (tags[key]) M.record('tag:' + key + ':' + SH.day(), tags[key][0], tags[key][1], 'turning'); return r; };
-  const log = SH.UI.log;
-  SH.UI.log = function (text, cls) {
-    const r = log.apply(this, arguments), plain = String(SH.nm(text)).replace(/<[^>]*>/g, '');
-    const meaningful = /shelter|you sleep|sleep tonight|first night|warm meal|lets? you in|takes? you in|joins you|comes with you|tells? (him|her|them|you) the truth|tell .*truth|you build|you finish|your own (place|roof)|hands you|gives you|you hug|holds your hand/i.test(plain);
-    if (SH.G && !SH.G.ended && meaningful && !/you (can|could)|if you|buy|costs?\b|bus lets you off|you arrive|a way to sleep|shelter and keeps going/i.test(plain)) M.record('log:' + SH.G.t + ':' + plain.slice(0, 50), /you sleep|sleep tonight|first night|lets you in|roof|warm meal/.test(plain) ? 'Somewhere for tonight' : /truth/.test(plain) ? 'Words outside your head' : 'Something that stayed', plain, 'moment');
-    return r;
-  };
+  SH.tag = function (key) { const r = tag.apply(this, arguments); if (tags[key]) M.record('tag:' + key + ':' + SH.day(), tags[key][0], tags[key][1], 'turning', [], key==='ranAway' && SH.G.loc==='home' ? M.snapshot([], {kind:'street',location:{name:'Outside home',kind:'street',indoor:false}}) : undefined); return r; };
+  // Only explicit events earn visual records. Prose mentioning a roof or a gift is not proof of receiving one.
   // Capture only milestone dialogs that were actually rendered. Choices still apply exactly once.
   const milestoneTitles = /^(Two backpacks|Harbor House|Storm|First snow|Thanksgiving|Christmas|Birthday|The diner, after the lunch rush|The Parking Lot|Second Place|Slow and Steady|His Hand|Locked|The Bulletin Board|The Librarian|The Tooth|Burning Up|Pancakes|Spilled Juice|A Knock at the Door|Newton Is Missing)$/;
   const dialog = SH.UI.dialog;
   SH.UI.dialog = function (o) {
     const before = SH.G;
     const r = dialog.apply(this, arguments);
-    if (o && before && SH.G === before && !before.ended && milestoneTitles.test(String(o.title || '')) && SH.UI.modalOpen() && (document.querySelector('#modal h3') || {}).textContent === SH.nm(o.title)) {
+    if (o && before && SH.G === before && !before.ended && (o.memory || milestoneTitles.test(String(o.title || ''))) && SH.UI.modalOpen() && (document.querySelector('#modal h3') || {}).textContent === SH.nm(o.title)) {
       const text = [].concat(o.text || []).map(x => String(x).replace(/<[^>]*>/g, '')).join('\n');
-      const rec = M.record('scene:' + o.title + ':' + before.t, o.title, text, 'scene', o.who ? [o.who] : []);
+      const meta=o.memory || {};
+      const rec = M.record(meta.key || 'scene:' + o.title + ':' + before.t, o.title, text, meta.beat || 'scene', o.who ? [o.who] : [], M.snapshot(o.who ? [o.who] : [],meta));
       if (rec) SH.Presentation && SH.Presentation.offer(rec);
     }
     return r;
   };
   const sleep = SH.Run.sleep;
   SH.Run.sleep = function () {
-    const g = SH.G, scene = M.snapshot(), meals = g.stats.nightsOut || 0;
+    const g = SH.G, scene = M.snapshot(), t = g.t;
     const r = sleep.apply(this, arguments);
-    if (SH.G === g && !g.ended && (g.stats.nightsOut || 0) > meals) {
-      const rec = M.record('night:' + scene.loc + ':' + scene.date, 'A place to close your eyes', 'You spent a night at ' + scene.place + '. It is one of the places that held part of your story.', 'shelter', [], scene);
+    if (SH.G === g && !g.ended && g.t > t) {
+      const rec = M.record('night:' + scene.loc + ':' + scene.date, 'A place to close your eyes', 'You rested at ' + scene.place + ' for about ' + Math.max(1, Math.round((g.t-t)/60)) + ' hours. This records the rest you actually got, not a promise of an undisturbed night.', 'sleep', [], scene);
       SH.Presentation && SH.Presentation.offer(rec);
     }
     return r;
@@ -72,7 +84,7 @@
     return close.apply(this, arguments);
   };
   M.sync = function () {
-    const g = SH.G; if (!g || g.ended) return;
+    const g = SH.G; if (!g || g.ended || (SH.Presentation && SH.Presentation.readOnly)) return;
     const h = v(), current = SH.Companions.ids();
     if (!h.partyBaseline) { h.partyBaseline = current.slice(); return; }
     current.filter(id => !h.partyBaseline.includes(id)).forEach(id => {
