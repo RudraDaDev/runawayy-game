@@ -1,0 +1,31 @@
+name: Acquire selected soundtrack
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  acquire:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download official CC BY 4.0 music and make practical game copies
+        shell: bash
+        run: |
+          set -euo pipefail
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq ffmpeg
+          mkdir -p originals assets/audio
+          curl --fail --location --retry 3 --max-time 180 'https://www.scottbuckley.com.au/library/wp-content/uploads/2023/01/TheLongDark.mp3' -o originals/the-long-dark.mp3
+          curl --fail --location --retry 3 --max-time 180 'https://www.scottbuckley.com.au/library/wp-content/uploads/2019/04/sb_thereisaplace.mp3' -o originals/there-is-a-place.mp3
+          curl --fail --location --retry 3 --max-time 180 'https://www.scottbuckley.com.au/library/wp-content/uploads/2019/01/sb_intervention_nomelody.mp3' -o originals/intervention.mp3
+          for name in the-long-dark there-is-a-place intervention; do
+            ffprobe -v error -show_entries format=duration,size -of json "originals/$name.mp3" > "assets/audio/$name.source.json"
+            ffmpeg -hide_banner -loglevel error -i "originals/$name.mp3" -map_metadata -1 -codec:a libmp3lame -b:a 96k "assets/audio/$name.mp3"
+          done
+          sha256sum originals/*.mp3 > assets/audio/SOURCE_SHA256SUMS
+          sha256sum assets/audio/*.mp3 > assets/audio/SHA256SUMS
+      - uses: actions/upload-artifact@v4
+        with:
+          name: smallhours-selected-soundtrack
+          path: assets/audio/
+          retention-days: 7

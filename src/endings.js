@@ -97,6 +97,7 @@
     const b = document.querySelector('#rwDay'); if (b) b.onclick = () => rw(snapDay);
     document.querySelector('#newG').onclick = () => { try { localStorage.removeItem('smallhours_save'); } catch (e) {} location.reload(); };
     try { localStorage.removeItem('smallhours_save'); } catch (e) {}
+    SH.Presentation && SH.Presentation.settle(key, title, sub, paras);
     SH.Audio.bad && SH.Audio.tone(392, 1.2, 'sine', 0.04); SH.Audio.tone(523, 1.4, 'sine', 0.03, 0.3);
   };
 

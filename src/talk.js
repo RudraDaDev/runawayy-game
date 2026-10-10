@@ -70,7 +70,7 @@
       T.showRel(); SH.UI.renderSide();
       const max = c.opts.turnsMax || 12;
       if (r.end || c.turn >= max) T.finish();
-    }, 350 + Math.min(1200, r.say.length * 8));
+    }, SH.Settings ? SH.Settings.delay(350 + Math.min(1200, r.say.length * 8)) : 350 + Math.min(1200, r.say.length * 8));
   };
   T.finish = function () {
     const c = T.cur; if (!c) return; c.ended = true;

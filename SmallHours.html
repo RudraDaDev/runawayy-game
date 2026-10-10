@@ -866,6 +866,55 @@ body.v3 #log,#log{mask-image:none!important;-webkit-mask-image:none!important}
 #toScene{display:none!important}
 
 </style>
+<style>
+/* v15.css */
+/* Small Hours: lamplight, worn paper and olive-black. Dark only. */
+:root{--bg:#14150f;--panel:#1e2018;--panel2:#272920;--line:#393b2b;--line2:#464633;--text:#ece6d7;--muted:#b3ad99;--amber:#d8b472;--teal:#a2b28a;--blue:#b4b4a0;--violet:#b8a0b1;--red:#dc8c78;--green:#b0bb84;--reading-size:16px}
+body.v15{background:var(--bg);color:var(--text)}
+body.v15 #title{background:#16170f;overflow-y:auto;padding:32px 20px;align-items:center;min-height:100dvh;height:auto}
+body.v15 #titleCanvas{position:fixed;inset:0;opacity:.14;pointer-events:none;filter:sepia(.8)}
+body.v15 .tbox{position:relative;max-width:720px;width:100%;background:linear-gradient(145deg,rgba(35,36,26,.98),rgba(18,20,14,.98));border:1px solid #555039;border-radius:3px;padding:32px 40px;box-shadow:0 24px 80px #0007}
+body.v15 .logo{font-family:Georgia,serif;color:#e9dfc5;letter-spacing:.13em;font-weight:400;font-size:clamp(30px,5.6vw,54px);margin:15px 0 13px;line-height:1.1}
+body.v15 .logo::after{content:'';display:block;width:76px;height:3px;margin-top:22px;background:linear-gradient(90deg,var(--amber) 0 43%,transparent 43% 57%,var(--amber) 57%);transform:rotate(-3deg)}
+body.v15 .tag{font-family:Georgia,serif;font-style:italic;color:#cac1a7;line-height:1.6}
+body.v15 .cw{line-height:1.65;color:#c8c0ab;background:#171910;border:1px solid #35382a;border-radius:3px;margin:20px 0;padding:13px 15px}
+.studio,.eyebrow{font:10px system-ui,sans-serif;letter-spacing:.2em;color:var(--amber);text-transform:uppercase}
+.main-menu{display:grid;grid-template-columns:1fr 1fr;gap:8px}.main-menu>.btn{text-align:left;min-height:45px;font-size:14px;letter-spacing:.025em}.main-menu .primary,.main-menu #menuContinue{grid-column:1/-1;padding:13px 15px}.main-menu span{float:right;font-size:11px;font-weight:400;opacity:.75;letter-spacing:0;padding-top:3px}
+.menu-version{font-size:10px;letter-spacing:.06em;color:var(--muted);margin-top:21px;padding-top:15px;border-top:1px solid var(--line)}
+body.v15 .btn,body.v15 .act,body.v15 .seg button{border-radius:4px;background:#2c2f22;border-color:#484b35;color:var(--text)}
+body.v15 .btn.primary{background:#ddbd7d;border-color:#ddbd7d;color:#29291a}body.v15 .btn:hover,body.v15 .act:hover{filter:brightness(1.1)}
+body.v15 button:focus-visible,body.v15 a:focus-visible,body.v15 input:focus-visible,body.v15 select:focus-visible{outline:2px solid var(--amber);outline-offset:3px}
+body.v15 button:disabled{opacity:.4;cursor:default}
+body.v15 input,body.v15 textarea,body.v15 select{background:#171a12;color:var(--text);border:1px solid #50513a;border-radius:4px;max-width:100%}
+body.v15 #top,body.v15 #left,body.v15 #locbar{background:#202218;border-color:var(--line)}
+body.v15 #dock{background:#1b1e14;border-color:var(--line)}body.v15 #dock .dk{background:#2c2f21;border-color:#4a4d36}
+body.v15 #phone,body.v15 #screen,body.v15 #sbar,body.v15 .phdr{background:#1d2018;color:var(--text)}body.v15 .appbody,body.v15 .msgs,body.v15 #pbody{background:#1a1d15;color:var(--text)}body.v15 .bub.them{background:#333a29;color:var(--text)}body.v15 .bub.me{background:#4b5035;color:#f2eddb}body.v15 .composer,body.v15 .sugg{background:#22261a;border-color:#3b422b}body.v15 .contact,body.v15 .post,body.v15 .setrow{border-color:var(--line)}
+body.v15 #pop,body.v15.v3.allopen #actions{background:#22261af7!important;border-color:#636045!important;border-radius:5px}
+body.v15 #stitle{background:linear-gradient(90deg,#191c12ee,#191c1288,transparent)}
+body.v15 .hv,body.v15 .hs.person .hv{background:#292d1f;border-color:#d1b477}body.v15 .hc{background:#252a1d;border-color:#686447}
+body.v15 #modal,body.v15 #saveOv{background:#080b08b8;backdrop-filter:blur(4px)}
+body.v15 .mbox{display:flex;flex-direction:column;max-height:calc(100dvh - 28px);width:min(760px,calc(100vw - 24px));min-height:0;border-radius:5px;background:#22251a;border:1px solid #5d5b40;overflow:hidden}
+body.v15 .mhead{flex:none;background:#2a2e1f;border-color:var(--line);gap:10px}
+body.v15 .mtext,body.v15 .talklog{min-height:0;overflow-y:auto;overscroll-behavior:contain;font-size:var(--reading-size);line-height:1.7;color:var(--text)}
+body.v15 .mchoices{flex:none;max-height:42dvh;overflow-y:auto;overscroll-behavior:contain;background:#1f2317;padding:10px;display:flex;flex-direction:column;gap:6px}
+body.v15 .mchoices .act{white-space:normal;overflow-wrap:anywhere;flex:none;min-height:44px;height:auto;font-size:14px;line-height:1.4;text-align:left;padding:11px 13px}
+body.v15 .mchoices .act small{line-height:1.5;white-space:normal;font-size:12px}
+body.v15 .talkin{flex:none;flex-wrap:wrap;background:#1e2316;padding:10px;gap:6px}.talkin #tin{min-width:100px;flex:1;height:42px;font-size:16px}body.v15 .talkin .btn{min-height:42px}
+body.v15 .tl.npc{background:#303825;color:var(--text)}body.v15 .tl.me{background:#484c30;color:var(--text)}body.v15 .tl{font-size:var(--reading-size);line-height:1.65;overflow-wrap:anywhere}
+body.v15 .endbox{background:#22251a!important}body.v15 .epi p,body.v15 .archive-ending p{font-size:var(--reading-size);line-height:1.85}
+#menuOverlay,#presentation{position:fixed;inset:0;z-index:10000;display:flex;align-items:center;justify-content:center;padding:20px;background:#0c100ae8;overflow:hidden}#presentation{z-index:11000;background:#0f130cf5}
+.menu-panel,.sequence-panel{display:flex;flex-direction:column;width:min(850px,100%);max-height:calc(100dvh - 40px);background:#24281b;border:1px solid #575b3e;border-radius:5px;box-shadow:0 30px 90px #0007;min-height:0;color:var(--text)}
+.menu-panel>header,.sequence-panel>header{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:18px 24px;border-bottom:1px solid var(--line);flex:none}.menu-panel h2{font:28px Georgia,serif;margin:9px 0 0}.sequence-panel>header{font-size:11px;color:var(--muted)}
+.menu-content,.sequence-content{padding:24px;overflow-y:auto;overscroll-behavior:contain;min-height:0;overflow-wrap:anywhere}
+.menu-content p{line-height:1.7}.menu-content a{color:var(--amber)}.credits-title{font:34px Georgia,serif;letter-spacing:.1em}.pref-row{display:flex;justify-content:space-between;align-items:center;gap:22px;min-height:50px;border-bottom:1px solid var(--line);font-size:15px}.pref-row input[type=checkbox]{width:22px;height:22px;accent-color:var(--amber)}.pref-row input[type=range]{width:160px;accent-color:var(--amber)}.pref-row select{padding:8px;font-size:14px}
+.history-row{display:flex;align-items:center;justify-content:space-between;gap:15px;padding:15px;width:100%;margin:7px 0;text-align:left;border:1px solid #464b32;border-radius:4px;background:#2c3221;color:var(--text);cursor:pointer}.history-row b{font:18px Georgia,serif}.history-row small{display:block;margin-top:7px;color:var(--muted);line-height:1.5}.backup-buttons{display:flex;gap:9px;flex-wrap:wrap;margin:20px 0}.empty-state{border-left:2px solid var(--amber);padding:16px 20px;background:#1c2215;margin:20px 0}.in-game-menu{display:grid;grid-template-columns:1fr 1fr;gap:10px}.in-game-menu .btn{min-height:48px}.archive-ending h1{font-family:Georgia,serif}.archive-ending .sgrid{display:flex;flex-wrap:wrap;gap:10px}.archive-ending svg{max-width:56px;max-height:56px}
+.sequence-content h1{font:clamp(26px,4vw,42px) Georgia,serif;line-height:1.25;margin:13px 0 22px}.recorded-scene{border:1px solid #696445;background:#141a10;border-radius:4px;overflow:hidden}.recorded-scene>svg{display:block;width:100%;height:auto}.scene-caption{padding:10px 14px;font-size:11px;color:#c6c2aa;line-height:1.5;border-top:1px solid var(--line)}.memory-cast{display:flex;gap:13px;flex-wrap:wrap;padding:15px 0}.memory-cast>span{display:flex;align-items:center;gap:7px;max-width:100%}.memory-cast svg{width:32px;height:32px}.memory-cast b{font-size:12px;font-weight:400;color:var(--muted)}.sequence-text{background:#1b2114;border-left:2px solid #a58e5d;padding:5px 20px;margin-top:12px}.sequence-text p{font:var(--reading-size)/1.85 Georgia,serif;margin:12px 0}.sequence-panel>footer{display:flex;justify-content:flex-end;flex-wrap:wrap;gap:8px;padding:16px 24px;border-top:1px solid var(--line);flex:none}.sequence-hint{display:block;padding:0 24px 14px;color:var(--muted);font-size:11px}.outcome-card{text-align:center;padding:80px 24px;min-height:260px}.outcome-card h1{font-size:clamp(32px,6vw,58px)}.outcome-card .sequence-text{display:none}.memory-empty{padding:30px;background:#1b2114;color:var(--muted)}
+.reduce-motion *{animation-duration:0s!important;transition:none!important;scroll-behavior:auto!important}.reduce-motion #titleCanvas{display:none}
+*{scrollbar-width:none!important}*::-webkit-scrollbar{display:none!important}
+@media(max-width:600px){body.v15 #title{padding:18px 12px;align-items:flex-start}body.v15 .tbox{padding:24px 20px}.main-menu span{float:none;display:block;padding-top:5px}.main-menu>.btn{font-size:13px}.main-menu .primary,.main-menu #menuContinue{padding:12px}.cw{font-size:11px}.tbox .row{flex-wrap:wrap}.tbox .row>label{min-width:55px}.tbox .seg{flex-wrap:wrap}.tbox .seg button{min-height:40px}#menuOverlay,#presentation{padding:10px}.menu-panel,.sequence-panel{max-height:calc(100dvh - 20px)}.menu-panel>header,.sequence-panel>header{padding:14px 16px}.menu-content,.sequence-content{padding:16px}.sequence-panel>footer{padding:12px 14px}.sequence-panel>footer .btn{min-height:40px}.sequence-hint{padding-left:14px}.pref-row input[type=range]{width:125px}.history-row{padding:13px}.history-row>span:last-child{font-size:11px;white-space:nowrap}.in-game-menu{grid-template-columns:1fr}.outcome-card{padding:60px 18px}.sequence-text{padding:3px 13px}body.v15 .mbox{max-height:calc(100dvh - 16px);width:calc(100vw - 16px)}body.v15 .mchoices{max-height:40dvh}.hint{font-size:10px}body.v15 .talkin #tpip{font-size:11px;padding:7px}body.v15 #menuBtn{min-width:34px}}
+@media(max-height:500px){.menu-panel,.sequence-panel{max-height:calc(100dvh - 12px)}#menuOverlay,#presentation{padding:6px}.menu-panel>header,.sequence-panel>header{padding:9px 14px}.sequence-panel>footer{padding:8px 12px}.sequence-hint{display:none}.outcome-card{padding:35px 14px;min-height:130px}body.v15 .mbox{max-height:calc(100dvh - 12px)}body.v15 .mchoices{max-height:35dvh}}
+
+</style>
 </head>
 <body>
 <div id="title">
@@ -3039,7 +3088,7 @@ window.SH = window.SH || {};
       T.showRel(); SH.UI.renderSide();
       const max = c.opts.turnsMax || 12;
       if (r.end || c.turn >= max) T.finish();
-    }, 350 + Math.min(1200, r.say.length * 8));
+    }, SH.Settings ? SH.Settings.delay(350 + Math.min(1200, r.say.length * 8)) : 350 + Math.min(1200, r.say.length * 8));
   };
   T.finish = function () {
     const c = T.cur; if (!c) return; c.ended = true;
@@ -4151,6 +4200,7 @@ window.SH = window.SH || {};
     const b = document.querySelector('#rwDay'); if (b) b.onclick = () => rw(snapDay);
     document.querySelector('#newG').onclick = () => { try { localStorage.removeItem('smallhours_save'); } catch (e) {} location.reload(); };
     try { localStorage.removeItem('smallhours_save'); } catch (e) {}
+    SH.Presentation && SH.Presentation.settle(key, title, sub, paras);
     SH.Audio.bad && SH.Audio.tone(392, 1.2, 'sine', 0.04); SH.Audio.tone(523, 1.4, 'sine', 0.03, 0.3);
   };
 
@@ -4568,7 +4618,7 @@ window.SH = window.SH || {};
     S.c = c; S.x = c.getContext('2d');
     const r = rng(7); for (let i = 0; i < 90; i++) S.stars.push({ x: r(), y: r() * 0.6, s: r() * 1.4 + 0.3, p: r() * 6 });
     for (let i = 0; i < 160; i++) S.drops.push({ x: Math.random(), y: Math.random(), v: 0.6 + Math.random() * 0.6 });
-    let last = 0; const loop = (t) => { requestAnimationFrame(loop); if (document.hidden || t - last < 33) return; last = t; S.draw(t / 1000); }; requestAnimationFrame(loop); // ~30fps, paused when hidden
+    let last = 0; const loop = (t) => { requestAnimationFrame(loop); if (document.hidden || (SH.Presentation && SH.Presentation.active) || t - last < (SH.Settings && SH.Settings.values.reducedMotion ? 150 : 33)) return; last = t; S.draw(SH.Settings && SH.Settings.values.reducedMotion ? 0 : t / 1000); }; requestAnimationFrame(loop); // ~30fps, paused when hidden
   };
 
   S.draw = function (time) {
@@ -4751,7 +4801,7 @@ window.SH = window.SH || {};
     if (id === 'dex') return open + `<path d="M18 100 Q20 72 50 70 Q80 72 82 100Z" fill="#3b4150"/><circle cx="50" cy="46" r="18" fill="#3b4150"/><text x="50" y="53" text-anchor="middle" font-size="18" font-weight="800" fill="#8a93a6" font-family="system-ui">?</text></g></svg>`;
     if (id === 'class') return open + `<circle cx="34" cy="52" r="10" fill="#fff" opacity=".55"/><circle cx="66" cy="52" r="10" fill="#fff" opacity=".55"/><circle cx="50" cy="44" r="12" fill="#fff" opacity=".85"/><path d="M14 100 Q18 72 34 70 Q44 64 50 64 Q56 64 66 70 Q82 72 86 100Z" fill="#fff" opacity=".7"/></g></svg>`;
     if (id === 'lighthouse') return open + `<path d="M44 86 L47 40 L53 40 L56 86Z" fill="#fff"/><path d="M45 52 L55 52 L55.6 60 L44.4 60Z" fill="#e05260"/><path d="M53 38 L90 26 L90 50Z" fill="#ffd66b" opacity=".6"/><rect x="45" y="32" width="10" height="8" fill="#ffd66b"/></g></svg>`;
-    const L = LOOK[id];
+    const L = o.look || LOOK[id];
     if (!L) return open + `<text x="50" y="62" text-anchor="middle" font-size="36" font-weight="700" fill="#fff" font-family="system-ui">${meta.ini || '?'}</text></g></svg>`;
     const sk = L.skin, skd = shade(sk, 0.86);
     return open + hairBack(L) + top(L) +
@@ -7288,9 +7338,9 @@ window.SH = window.SH || {};
     NT.spend(0.4);
     const ids = (F ? Object.keys(F.KIDS) : []).concat(['jordan']).filter((id) => g.rel[id] != null && (id === 'jordan' || (g.friends && g.friends[id] && g.friends[id].met)));
     const rows = ids.map((id) => {
-      const m = SH.NPCS_META[id] || { n: id, col: '#666', ini: '?' }, shares = (g.rel[id] || 0) >= 30 || (g.party || []).includes(id);
+      const m = SH.NPCS_META[id] || { n: id, col: '#666', ini: '?' }, shares = (g.rel[id] || 0) >= 30 || (SH.Companions ? SH.Companions.ids() : (g.party || [])).includes(id);
       let where = '—';
-      if (shares) { if ((g.party || []).includes(id)) where = 'with you'; else { const w = W.where(id); where = w && w.loc ? ((SH.LOC[w.loc] || {}).name || w.loc) + ' · ' + w.act : 'offline'; } }
+      if (shares) { if ((SH.Companions ? SH.Companions.ids() : (g.party || [])).includes(id)) where = 'with you'; else { const w = W.where(id); where = w && w.loc ? ((SH.LOC[w.loc] || {}).name || w.loc) + ' · ' + w.act : 'offline'; } }
       return `<div class="contact"><div class="av" style="background:${m.col}">${m.ini}</div><div style="flex:1"><div class="nm">${esc(m.n)}</div><div class="pv">${shares ? '📍 ' + esc(where) : 'Not sharing with you'}</div></div></div>`;
     }).join('');
     body.innerHTML = P.hdr('👀 Friend Finder') + `<div class="appbody">${rows || '<p class="muted">No friends yet. Go say hi to people.</p>'}<p class="muted" style="font-size:11px;margin-top:10px">Friends share with you once you're close (and always, if they're with you).</p></div>`;
@@ -9611,7 +9661,7 @@ window.SH = window.SH || {};
       ch.push({ t: '✂️ Cut it yourself (free)', sub: 'Gas station bathroom, safety scissors', fn: () => { SH.advance(20); SH.st('mood', -4); done('hair', 'It\'s... uneven. Very uneven. But it doesn\'t look like the picture anymore, and that\'s the point.'); } }); }
     if (!L.dye) ch.push({ t: has('dye') ? '🎨 Dye your hair (you have dye)' : '🎨 Dye your hair', sub: has('dye') ? '' : 'Buy hair dye first: general store, pharmacy, supermarket or gas station', fn: () => { if (!has('dye')) return K.D('No dye', 'You need hair dye first. Pharmacies and supermarkets have it.', [{ t: 'Okay', fn: () => mirror(p) }]); SH.advance(60); rm('dye'); done('dye', 'Forty-five minutes in a gas station bathroom. The sink will never be the same. Your hair is a color that doesn\'t exist in nature, and your own mom would look twice.'); } });
     if (!L.glasses) ch.push({ t: '👓 Wear glasses', sub: has('glasses') ? 'You have a pair' : 'Buy some first: general store, pharmacy or gas station', fn: () => { if (!has('glasses')) return K.D('No glasses', 'You need a pair first.', [{ t: 'Okay', fn: () => mirror(p) }]); done('glasses', 'Fake glasses. You push them up your nose like a detective. It changes your face more than you\'d think.'); } });
-    if (!L.clothes) ch.push({ t: '👕 Change into different clothes', sub: 'Anything that isn\'t what you wore when you left', fn: () => { const c = (G().bag || []).concat(G().owned || []).find((id) => C.ALL[id] && C.ALL[id].cat === 'clothes'); if (!c) return K.D('Nothing to change into', 'Every piece of clothing you have is what you left in. Buy something at a store or the alley stall.', [{ t: 'Okay', fn: () => mirror(p) }]); done('clothes', `You change into the ${C.ALL[c].n}. The hoodie you left in goes to the bottom of the bag. The posters describe that hoodie.`); } });
+    if (!L.clothes) ch.push({ t: '👕 Change into different clothes', sub: 'Anything that isn\'t what you wore when you left', fn: () => { const c = (G().bag || []).concat(G().owned || []).find((id) => C.ALL[id] && C.ALL[id].cat === 'clothes'); if (!c) return K.D('Nothing to change into', 'Every piece of clothing you have is what you left in. Buy something at a store or the alley stall.', [{ t: 'Okay', fn: () => mirror(p) }]); SH.Visuals && SH.Visuals.equip(c); done('clothes', `You change into the ${C.ALL[c].n}. The hoodie you left in goes to the bottom of the bag. The posters describe that hoodie.`); } });
     ch.push({ t: 'Back', fn: K.back });
     K.D('The mirror', [`Changes so far: ${nChanges()}/4.`, nChanges() >= 3 ? 'You barely recognize yourself. That\'s the idea. It\'s also a little sad.' : 'Missing posters describe what you looked like when you left.'], ch);
   }
@@ -12721,6 +12771,7 @@ window.SH = window.SH || {};
     x.fillStyle = T(lk.skin); x.fillRect(-2.5 * s, -64 * s - bob, 5 * s, 5 * s); x.beginPath(); x.arc(1 * s, -72 * s - bob, 9 * s, 0, 7); x.fill();
     x.fillStyle = T(lk.hair); x.beginPath(); x.arc(0, -75 * s - bob, 9.4 * s, Math.PI * 0.95, Math.PI * 2.1); x.fill(); if (lk.long) x.fillRect(-9 * s, -76 * s - bob, 5 * s, 14 * s);
     if (lk.cap) { x.fillStyle = T(lk.cap); x.beginPath(); x.arc(0, -76 * s - bob, 9.6 * s, Math.PI, 0); x.fill(); x.fillRect(2 * s, -78 * s - bob, 12 * s, 3); }
+    if (lk.glasses) { x.strokeStyle = T(lk.glasses); x.lineWidth = 1; x.strokeRect(2 * s, -76 * s - bob, 6 * s, 5 * s); }
     const blink = (t * 1.3 + X) % 4 < 0.12; x.fillStyle = T('#1a1410'); if (!blink) { x.fillRect(5 * s, -73 * s - bob, 2, 2.4); } else x.fillRect(4.5 * s, -72 * s - bob, 3, 1);
     x.restore();
   }
@@ -12728,10 +12779,10 @@ window.SH = window.SH || {};
     const G = SH.G, inside = ST.inside, sam = ST.sam, base = inside ? FL + 6 : GY + 7;
     const tint = inside ? (E.night ? 0.38 : 0.05) : Math.max(0, 0.5 - E.dl * 0.5);
     if (inside) { const lamp = E.night ? 0.45 : 1, d = (c) => E.shadeI(c, lamp); L.R(x, d('#e8e2d4'), 10, FL - 118, 52, 118); L.R(x, d('#6b4a3a'), 15, FL - 113, 42, 113); L.R(x, d('#5a3e2e'), 19, FL - 108, 34, 46); L.R(x, d('#5a3e2e'), 19, FL - 56, 34, 50); x.fillStyle = d('#c9a24a'); x.beginPath(); x.arc(50, FL - 58, 2.5, 0, 7); x.fill(); }
-    ST.npcs.forEach((n) => person(x, n.x, GY + 6, (n.id && LOOKS[n.id]) || hashLook(n.seed + 3), t, 0, n.x > sam.x ? -1 : 1, tint, false));
+    ST.npcs.forEach((n) => person(x, n.x, GY + 6, (SH.Visuals && SH.Visuals.body(n.id, null)) || (n.id && LOOKS[n.id]) || hashLook(n.seed + 3), t, 0, n.x > sam.x ? -1 : 1, tint, false));
     if (sam.x !== sam.tx) { const sp = Math.max(170, Math.abs(sam.tx - sam.x) * 2.2) * dt; sam.dir = sam.tx > sam.x ? 1 : -1; if (Math.abs(sam.tx - sam.x) <= sp || performance.now() - (sam.t0 || 0) > 1400) { sam.x = sam.tx; sam.walk = 0; } else { sam.x += sam.dir * sp; sam.walk += dt * 11; } }
     if (sam.x === sam.tx && sam.cb) { const cb = sam.cb; sam.cb = null; ST.busy = false; setTimeout(cb, 60); } else if (sam.x === sam.tx) ST.busy = false;
-    person(x, sam.x, base, LOOKS.sam, t, sam.x !== sam.tx ? sam.walk : 0, sam.dir, tint * 0.8, G.phase === 'run');
+    person(x, sam.x, base, SH.Visuals ? SH.Visuals.body("sam", LOOKS.sam) : LOOKS.sam, t, sam.x !== sam.tx ? sam.walk : 0, sam.dir, tint * 0.8, G.phase === 'run');
   }
 
   /* ---------- the new draw: fixed logical height, camera that follows Sam ---------- */
@@ -17136,6 +17187,451 @@ window.SH = window.SH || {};
       'That was a warning. If it happens again in the next few days, someone will notice. Eat something. Sleep somewhere real.'],
       choices: [{ t: 'Get up', fn: () => { SH.advance(300, { interrupt: false }); if (G().ended) return; SH.st('health', -8); SH.st('energy', 25); SH.st('stress', 10); SH.UI.afterAction && SH.UI.afterAction(); } }] });
   };
+})(window.SH);
+
+</script>
+<script>
+/* v15_settings.js */
+/* Small Hours v1.5: browser preferences, independent from a story save. */
+(function (SH) {
+  const defaults = { music: true, sfx: true, muted: false, musicVolume: 0.22, sfxVolume: 0.45, fontSize: 16, textSpeed: 'normal', reducedMotion: matchMedia('(prefers-reduced-motion: reduce)').matches };
+  const KEY = 'smallhours_preferences';
+  const read = () => { try { return JSON.parse(localStorage.getItem(KEY) || '{}'); } catch (_) { return {}; } };
+  const S = SH.Settings = { values: Object.assign({}, defaults, read()) };
+  S.set = function (key, value) {
+    if (!(key in defaults)) return;
+    S.values[key] = value;
+    S.apply();
+    try { localStorage.setItem(KEY, JSON.stringify(S.values)); } catch (_) {}
+  };
+  S.apply = function () {
+    const v = S.values;
+    v.fontSize = Math.min(22, Math.max(14, Number(v.fontSize) || 16));
+    ['musicVolume', 'sfxVolume'].forEach(k => v[k] = Math.min(1, Math.max(0, Number(v[k]) || 0)));
+    if (!['instant', 'normal', 'slow'].includes(v.textSpeed)) v.textSpeed = 'normal';
+    document.documentElement.style.setProperty('--reading-size', v.fontSize + 'px');
+    document.documentElement.classList.toggle('reduce-motion', !!v.reducedMotion);
+    SH.Soundtrack && SH.Soundtrack.sync();
+  };
+  S.delay = n => S.values.textSpeed === 'instant' ? 0 : S.values.textSpeed === 'slow' ? n * 1.8 : n;
+  const A = SH.Audio;
+  Object.defineProperty(A, 'muted', { configurable: true, get: () => S.values.muted, set: v => S.set('muted', !!v) });
+  const tone = A.tone;
+  A.tone = function (f, d, type, volume = 0.05, delay) {
+    if (!S.values.sfx || document.hidden || (SH.Presentation && SH.Presentation.paused)) return;
+    return tone.call(A, f, d, type, volume * S.values.sfxVolume, delay);
+  };
+  const init = A.init;
+  A.init = function () { init(); if (A.ctx && A.ctx.state === 'suspended') A.ctx.resume().catch(() => {}); SH.Soundtrack && SH.Soundtrack.unlock(); };
+  S.apply();
+})(window.SH);
+
+</script>
+<script>
+/* v15_people.js */
+/* Small Hours v1.5: one appearance source, and companions are actually here. */
+(function (SH) {
+  const clone = x => JSON.parse(JSON.stringify(x));
+  const hash = s => { let h = 2166136261; for (const c of String(s)) h = Math.imul(h ^ c.charCodeAt(0), 16777619); return h >>> 0; };
+  const V = SH.Visuals = {};
+  V.ensure = function (g) {
+    if (!g) return;
+    g.v15 = g.v15 || { version: 1, memories: [], seen: {}, incomplete: true };
+    const v = g.v15; v.memories = v.memories || []; v.seen = v.seen || {}; v.people = v.people || {}; v.outfit = v.outfit || {};
+    if (!v.people.sam) {
+      const n = hash('sam:' + ((g.story || {}).seed || 1));
+      v.people.sam = { skin: ['#e1b48f', '#bc845c', '#8d5b3e', '#69432f', '#efc5a3'][n % 5], hair: ['#211812', '#463021', '#8b5734', '#b58c52'][(n >>> 4) % 4], style: (g.gender || (g.fam || {}).gender) === 'f' ? ['bob', 'pony', 'curly'][(n >>> 7) % 3] : ['messy', 'short', 'curly'][(n >>> 7) % 3], shirt: ['#746957', '#686d56', '#8a5650', '#69606c'][(n >>> 10) % 4], top: 'hoodie', young: 1, freckles: (n >>> 13) % 2 };
+    }
+    return v;
+  };
+  V.look = function (id, g = SH.G) {
+    const v = V.ensure(g); if (!v) return SH.Portrait.LOOK[id];
+    if (!v.people[id]) {
+      const established = SH.Portrait.LOOK[id];
+      if (established) v.people[id] = clone(established);
+      else if (SH.NPCS_META[id] && id !== 'dex') {
+        const n = hash(id + ':' + ((g.story || {}).seed || 1));
+        v.people[id] = { skin: ['#c88e65', '#8d5b3e', '#69432f', '#efc5a3'][n % 4], hair: ['#211812', '#8b5734', '#a7a09a'][(n >>> 4) % 3], shirt: ['#746957', '#686d56', '#8a5650', '#69606c'][(n >>> 8) % 4], style: 'short', top: 'tee', young: (SH.NPCS_META[id].age || 30) <= 14 ? 1 : 0 };
+      }
+    }
+    const l = v.people[id]; if (!l) return null;
+    if (id !== 'sam') return l;
+    const o = Object.assign({}, l), changes = g.look || {}, fit = v.outfit;
+    if (changes.hair) o.style = 'buzz';
+    if (changes.dye) o.hair = '#a47eb0';
+    if (changes.glasses) o.glasses = '#aaa08e';
+    const tops = { x_hoodie2: ['#74766d', 'hoodie'], x_rainjacket: ['#68765b', 'jacket'], x_sweats: ['#65616b', 'hoodie'] };
+    if (tops[fit.top]) [o.shirt, o.top] = tops[fit.top];
+    if (fit.hat) { o.hat = fit.hat === 'x_cap' ? 'cap' : 'beanie'; o.hatc = '#8b735b'; }
+    return o;
+  };
+  V.body = function (id, fallback) {
+    const p = V.look(id); if (!p) return fallback;
+    const fit = id === 'sam' ? V.ensure(SH.G).outfit : {};
+    return { skin: p.skin, hair: p.hair, top: p.shirt, legs: fit.legs === 'x_sweats' ? '#65616b' : '#39372f', shoe: fit.shoes === 'x_boots' ? '#786049' : '#aaa396', long: /pony|bob|curly|bun|pigtails/.test(p.style), cap: p.hat ? p.hatc || p.shirt : null, glasses: p.glasses, tall: p.young === 2 ? 0.7 : p.young ? 0.86 : 1 };
+  };
+  const categories = { x_hoodie2: 'top', x_rainjacket: 'top', x_sweats: 'legs', x_boots: 'shoes', x_cap: 'hat', x_beanie: 'hat', x_gloves: 'hands', x_socks: 'socks' };
+  V.equip = function (id) {
+    const g = SH.G, slot = categories[id];
+    if (!g || !slot || !(g.bag || []).concat(g.owned || []).includes(id)) return false;
+    V.ensure(g).outfit[slot] = id;
+    SH.Memories && SH.Memories.record('outfit:' + id + ':' + g.t, 'A different outline', 'You put on the ' + SH.ITEMS[id].n + '.', 'outfit');
+    return true;
+  };
+  V.wardrobe = function () {
+    const g = SH.G, ids = [...new Set((g.bag || []).concat(g.owned || []))].filter(id => categories[id]);
+    SH.UI.dialog({ title: 'What you wear', text: ['Your face stays yours. Clothing changes only what you see here; existing carried-gear benefits stay unchanged.'], choices: ids.map(id => ({ t: SH.ITEMS[id].n, sub: V.ensure(g).outfit[categories[id]] === id ? 'Wearing this' : 'Put it on', fn: () => { V.equip(id); SH.UI.renderAll(); V.wardrobe(); } })).concat([{ t: 'Back', fn: () => {} }]) });
+  };
+  const PT = SH.Portrait, svg = PT.svg, has = PT.has;
+  PT.has = id => has(id) || !!(SH.NPCS_META[id] && id !== 'dex');
+  PT.svg = function (id, o = {}) { return svg.call(PT, id, Object.assign({}, o, { look: o.look || V.look(id) })); };
+  const migrate = SH.migrate;
+  SH.migrate = function (g) { const r = migrate.apply(this, arguments); V.ensure(g); return r; };
+  const newGame = SH.newGame;
+  SH.newGame = function () { const r = newGame.apply(this, arguments); V.ensure(SH.G).incomplete = false; return r; };
+
+  const C = SH.Companions = {};
+  C.ids = function (g = SH.G) { return g && (g.phase === 'run' || g.phase === 'end') ? [...new Set((g.party || []).concat(g.rkids || []))].filter(id => SH.NPCS_META[id]) : []; };
+  C.has = id => C.ids().includes(id);
+  C.talk = function (id) {
+    if (!C.has(id)) return;
+    const g = SH.G, p = SH.Atlas.here(), n = SH.NPCS_META[id].n;
+    const first = g.away ? `I'm here. ${p.name} still feels strange, doesn't it?` : 'Right here. You can just talk to me.';
+    SH.Talk.open(id, { ctx: 'run', first, turnsMax: 12, intro: `${n} turns toward you. No screen between you this time.` });
+  };
+  C.quiet = function () {
+    const ids = C.ids(); if (!ids.length) return;
+    const g = SH.G, n = ids.map(id => SH.NPCS_META[id].n).join(' and '), p = SH.LOC[g.loc];
+    SH.advance(10, { interrupt: false }); if (g.ended) return;
+    const line = `${n} stays beside you. ${SH.raining() ? 'Rain ticks against the nearest roof. You both listen.' : SH.isDark() ? 'For a little while, neither of you needs to fill the dark with words.' : 'Someone shifts their bag to make a little more room. The quiet is shared, not empty.'}`;
+    SH.UI.log(line, 'good');
+    SH.Memories.record('quiet:' + SH.day() + ':' + g.loc, 'The quiet beside you', line, 'shared', ids);
+    SH.UI.dialog({ title: p ? p.name : 'A little while', text: [line], choices: [{ t: 'Stay together. Keep going.', fn: () => {} }] });
+  };
+  const where = SH.World.where, present = SH.World.present;
+  SH.World.where = function (id, t) { if (C.has(id)) return { loc: SH.G.loc, act: 'with you', place: SH.G.away || 'p0' }; return where.apply(this, arguments); };
+  SH.World.present = function (loc = SH.G.loc) { return [...new Set(present.apply(this, arguments).concat(loc === SH.G.loc ? C.ids() : []))]; };
+  SH.K.party = () => C.ids();
+  const list = SH.Actions.list;
+  SH.Actions.list = function () {
+    const out = list.apply(this, arguments); if (!out || !SH.G || SH.G.ended) return out;
+    C.ids().forEach(id => {
+      const n = SH.NPCS_META[id].n, label = 'Talk to ' + n;
+      out.acts = out.acts.filter(a => a.label !== label);
+      out.acts.push({ label, sub: 'With you, here. Talk in person.', fn: () => C.talk(id) });
+    });
+    if (C.ids().length) out.acts.push({ label: 'Share a quiet moment', sub: 'Ten minutes together. No need to say anything.', fn: C.quiet });
+    return out;
+  };
+  const send = SH.Phone.send, call = SH.Phone.callOut;
+  SH.Phone.send = function (id) { if (C.has(id)) { SH.UI.toast('They are beside you. Talk in person.'); return C.talk(id); } return send.apply(this, arguments); };
+  SH.Phone.callOut = function (id) { if (C.has(id)) return C.talk(id); return call.apply(this, arguments); };
+  const ctx = SH.EndX.ctx;
+  SH.EndX.ctx = function () {
+    const c = ctx.apply(this, arguments), ids = C.ids(c.g), nm = id => SH.NPCS_META[id].n;
+    c.party = ids; c.pn = ids.map(nm); c.n = ids.length; c.pl = c.pn.length > 1 ? c.pn.slice(0, -1).join(', ') + ' and ' + c.pn.at(-1) : c.pn[0] || '';
+    c.they = c.n === 1 ? c.pl : c.n ? 'your friends' : ''; c.withYou = c.n ? ' with ' + c.pl : ''; c.partnerWith = ids.includes(c.partner);
+    return c;
+  };
+  SH.K.me((p, ch) => { ch.push({ t: 'What you wear', sub: 'Choose from clothes you own', fn: V.wardrobe }); C.ids().forEach(id => ch.push({ t: 'Talk to ' + SH.NPCS_META[id].n, sub: 'Right here', fn: () => C.talk(id) })); if (C.ids().length) ch.push({ t: 'Share a quiet moment', fn: C.quiet }); });
+})(window.SH);
+
+</script>
+<script>
+/* v15_memories.js */
+/* Small Hours v1.5: earned, per-story memories. No simulated effects on replay. */
+(function (SH) {
+  const copy = x => JSON.parse(JSON.stringify(x));
+  const M = SH.Memories = {};
+  const v = () => SH.Visuals.ensure(SH.G);
+  M.snapshot = function (ids = []) {
+    const g = SH.G, place = (SH.LOC[g.loc] || {}).name || (g.away && SH.Atlas.here().name) || 'Harlow';
+    const actors = ['sam'].concat(SH.Companions.ids(), ids).filter((id, i, a) => a.indexOf(id) === i && SH.Visuals.look(id));
+    return { loc: g.loc, place, town: g.away ? SH.Atlas.here().name : 'Harlow', tier: g.away ? SH.Atlas.here().tier : 'town', room: g.room, time: SH.fmt12(), date: SH.dateStr(), night: SH.isDark(), weather: SH.cond(), outfit: copy(v().outfit), people: actors.map(id => ({ id, name: id === 'sam' ? g.name : (SH.NPCS_META[id] || {}).n || id, look: copy(SH.Visuals.look(id)), companion: SH.Companions.has(id) })) };
+  };
+  M.record = function (key, title, text, kind = 'moment', ids = [], snapshot) {
+    const g = SH.G; if (!g || (SH.Presentation && SH.Presentation.readOnly) || g.ended) return;
+    const h = v(); if (h.seen[key]) return;
+    h.seen[key] = true;
+    const rec = { key: String(key).slice(0, 120), title: SH.nm(title), text: String(SH.nm(text)).replace(/<[^>]*>/g, '').slice(0, 2500), kind, t: g.t, scene: snapshot || M.snapshot(ids) };
+    h.memories.push(copy(rec));
+    // Bound history, while keeping the first departure. Nothing is reconstructed as a pictured event.
+    if (h.memories.length > 160) h.memories.splice(1, 1);
+    return rec;
+  };
+  const tags = {
+    phoneTaken: ['The empty pocket', 'Your phone was taken.'], burnedTyler: ['Finding your voice', 'You answered Tyler back.'],
+    okaforTalk: ['Someone noticed', 'You talked with Ms. Okafor.'], bikeSold: ['The missing bicycle', 'The bicycle Grandma gave you was sold.'],
+    protectedLily: ['A small fort', 'You stayed close to your sister when home was difficult.'], cps: ['Outside the house', 'Children’s Services became part of your story.'],
+    dexReported: ['A report', 'You reported dex.'], bigNight: ['A breaking point', 'That night became part of the reason to leave.'], lockedIn: ['Behind the door', 'You spent that night with the door closed.'],
+    ranAway: ['Leaving', 'You left home.'], phoneDied: ['The screen went dark', 'Your phone battery ran out.']
+  };
+  const tag = SH.tag;
+  SH.tag = function (key) { const r = tag.apply(this, arguments); if (tags[key]) M.record('tag:' + key + ':' + SH.day(), tags[key][0], tags[key][1], 'turning'); return r; };
+  const log = SH.UI.log;
+  SH.UI.log = function (text, cls) {
+    const r = log.apply(this, arguments), plain = String(SH.nm(text)).replace(/<[^>]*>/g, '');
+    const meaningful = /shelter|you sleep|sleep tonight|first night|warm meal|lets? you in|takes? you in|joins you|comes with you|tells? (him|her|them|you) the truth|tell .*truth|you build|you finish|your own (place|roof)|hands you|gives you|you hug|holds your hand/i.test(plain);
+    if (SH.G && !SH.G.ended && meaningful && !/you (can|could)|if you|buy|costs?\b|bus lets you off|you arrive|a way to sleep|shelter and keeps going/i.test(plain)) M.record('log:' + SH.G.t + ':' + plain.slice(0, 50), /you sleep|sleep tonight|first night|lets you in|roof|warm meal/.test(plain) ? 'Somewhere for tonight' : /truth/.test(plain) ? 'Words outside your head' : 'Something that stayed', plain, 'moment');
+    return r;
+  };
+  const close = SH.Talk.close;
+  SH.Talk.close = function () {
+    const c = SH.Talk.cur, lines = [...document.querySelectorAll('#tlog .tl')].map(e => (e.classList.contains('me') ? (SH.G.name || 'You') : e.classList.contains('narr') ? '' : (SH.NPCS_META[c && c.npc] || {}).n || '') + (e.classList.contains('narr') ? '' : ': ') + e.textContent);
+    if (c && c.turn >= 1 && !c.opts.phone && lines.length) M.record('conversation:' + c.npc + ':' + SH.G.t, 'Talking with ' + (SH.NPCS_META[c.npc] || {}).n, lines.join('\n'), 'conversation', [c.npc]);
+    return close.apply(this, arguments);
+  };
+  M.sync = function () {
+    const g = SH.G; if (!g || g.ended) return;
+    const h = v(), current = SH.Companions.ids();
+    if (!h.partyBaseline) { h.partyBaseline = current.slice(); return; }
+    current.filter(id => !h.partyBaseline.includes(id)).forEach(id => {
+      const n = SH.NPCS_META[id].n;
+      M.record('joined:' + id, 'Not alone', n + ' joined you. From here, the road has another set of footsteps.', 'joined', [id]);
+    });
+    h.partyBaseline = current.slice();
+  };
+  const after = SH.UI.afterAction;
+  SH.UI.afterAction = function () { M.sync(); const r = after.apply(this, arguments); SH.Soundtrack && SH.Soundtrack.context(); return r; };
+  const start = SH.Run.start;
+  SH.Run.start = function () { const before = SH.G && SH.G.phase, r = start.apply(this, arguments); if (SH.G && before !== SH.G.phase && SH.G.phase === 'run') { M.sync(); SH.Presentation && SH.Presentation.offer(v().memories.find(m => m.kind === 'turning' && m.key.startsWith('tag:ranAway'))); } return r; };
+  const arrive = SH.Atlas.arrive;
+  SH.Atlas.arrive = function (to) {
+    const before = SH.G.away, r = arrive.apply(this, arguments), g = SH.G;
+    if (!g.ended && g.away !== before) {
+      const rec = M.record('arrival:' + to.id, to.home ? 'Harlow again' : 'Beyond Harlow', `You arrived in ${to.name}${SH.Companions.ids().length ? ' together' : ''}. The journey is part of your story now.`, 'arrival');
+      SH.Presentation && SH.Presentation.offer(rec);
+    }
+    return r;
+  };
+  const newGame = SH.newGame;
+  SH.newGame = function () { const r = newGame.apply(this, arguments); v().partyBaseline = []; return r; };
+  SH.K.me((p, ch) => ch.push({ t: 'Memories from this story', sub: 'Only things you experienced', fn: () => SH.Menu.memories() }));
+})(window.SH);
+
+</script>
+<script>
+/* v15_presentation.js */
+/* Small Hours v1.5: settled endings and recorded scenes. The game modal stays intact. */
+(function (SH) {
+  const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const clone = x => JSON.parse(JSON.stringify(x));
+  const P = SH.Presentation = { active: false, paused: false, readOnly: false, gen: 0 };
+  P.scene = function (s) {
+    if (!s) return '<div class="memory-empty">No visual record was stored.</div>';
+    const night = s.night, indoors = /home|room|library|motel|shelter|shack|diner|grandma|patel/.test(s.loc || '');
+    const sky = night ? '#181a15' : '#3d4337', land = night ? '#24261d' : '#4a4d38';
+    const place = esc(s.place || s.town || 'A place you were');
+    let scenery = indoors ? '<rect x="0" y="0" width="800" height="300" fill="#342f26"/><path d="M0 252H800" stroke="#6b5b42" stroke-width="4"/><rect x="65" y="52" width="132" height="133" fill="' + sky + '" stroke="#7c694e" stroke-width="8"/><path d="M131 52V185 M65 118H197" stroke="#7c694e" stroke-width="5"/><path d="M585 254V125H725V254" fill="#574737"/><rect x="470" y="207" width="240" height="42" rx="7" fill="#625841"/>' : '<path d="M0 170L80 134L170 164L235 120L390 167L520 133L650 164L800 112V300H0Z" fill="' + land + '"/><path d="M0 245H800V300H0Z" fill="#413c30"/><path d="M530 240V85H680V240" fill="#564b38"/><rect x="555" y="112" width="42" height="56" fill="' + (night ? '#b39458' : '#929780') + '"/><path d="M70 242V135M58 140H126M117 140V155" stroke="#908369" stroke-width="5"/>';
+    if (/village|camp|forest|park|woods/.test(s.loc || '') || s.tier === 'village') scenery += '<path d="M20 242V167M150 242V125M755 242V145" stroke="#5d563e" stroke-width="10"/><path d="M20 82L-24 189H64ZM150 40L100 164H200ZM755 65L706 186H804Z" fill="#394630"/>';
+    if (/rain|storm|drizzle|snow/.test(s.weather || '')) scenery += '<path d="M25 20L10 50M230 15L215 45M395 39L380 69M605 14L590 44M740 65L725 95M90 145L75 175M310 178L295 208M470 100L455 130M685 150L670 180" stroke="#c8c5af" opacity=".35" stroke-width="2"/>';
+    const people = (s.people || []).slice(0, 7).map((a, i, all) => {
+      const l = a.look, x = 300 + (i - (all.length - 1) / 2) * 70, y = 245;
+      return `<g transform="translate(${x},${y})"><ellipse cy="2" rx="20" ry="5" fill="#111" opacity=".3"/><path d="M-5 -40L-7 0M5 -40L9 0" stroke="#39372f" stroke-width="8"/><rect x="-14" y="-80" width="28" height="44" rx="8" fill="${esc(l.shirt)}"/><path d="M-12 -72L-19 -44M12 -72L20 -44" stroke="${esc(l.shirt)}" stroke-width="8"/><circle cy="-95" r="14" fill="${esc(l.skin)}"/><path d="M-14 -96Q-17 -115 0 -111Q17 -111 14 -96L7 -102L-8 -102Z" fill="${esc(l.hair)}"/>${/pony|bob|curly/.test(l.style) ? `<path d="M-14 -100V-79" stroke="${esc(l.hair)}" stroke-width="7"/>` : ''}${l.hat ? `<path d="M-15 -103Q0 -124 15 -103Z" fill="${esc(l.hatc || l.shirt)}"/>` : ''}<path d="M-5 -95h2m6 0h2" stroke="#29211b" stroke-width="2"/>${l.glasses ? `<path d="M-10 -99h8v7h-8Zm12 0h8v7H2ZM-2 -96H2" fill="none" stroke="${esc(l.glasses)}"/>` : ''}</g>`;
+    }).join('');
+    return `<div class="recorded-scene"><svg viewBox="0 0 800 300" role="img" aria-label="Recorded scene at ${place}"><rect width="800" height="300" fill="${sky}"/>${scenery}${people}<path d="M0 294H800" stroke="#bb9960" opacity=".6" stroke-width="2"/></svg><div class="scene-caption">${place} · ${esc(s.date)} · ${esc(s.time)} · ${esc(s.weather)}</div></div><div class="memory-cast">${(s.people || []).map(a => `<span>${SH.Portrait.svg(a.id, { look: a.look, mood: 'neutral' })}<b>${esc(a.name)}</b></span>`).join('')}</div>`;
+  };
+  function root() {
+    let e = document.querySelector('#presentation');
+    if (!e) { e = document.createElement('div'); e.id = 'presentation'; e.setAttribute('role', 'dialog'); e.setAttribute('aria-modal', 'true'); document.body.appendChild(e); }
+    return e;
+  }
+  P.open = function (cards, onDone, readOnly = false) {
+    if (!cards.length) { onDone && onDone(); return; }
+    P.dismiss(); const gen = ++P.gen;
+    P.active = true; P.readOnly = readOnly; P.paused = false; P.index = 0; P.cards = clone(cards); P.onDone = onDone;
+    const md = document.querySelector('#modal'); md.inert = true; md.setAttribute('aria-hidden', 'true');
+    document.body.classList.add('sh-presenting');
+    SH.Soundtrack && SH.Soundtrack.context('reflection');
+    const e = root();
+    function draw() {
+      if (gen !== P.gen) return;
+      const c = P.cards[P.index];
+      e.innerHTML = `<section class="sequence-panel"><header><span class="studio">BROKENHOURS STUDIO</span><span>${P.index + 1} / ${P.cards.length}</span></header><div class="sequence-content ${c.titleOnly ? 'outcome-card' : ''}"><small class="eyebrow">${esc(c.label || 'A memory from this story')}</small><h1>${esc(c.title)}</h1>${c.titleOnly ? '' : P.scene(c.scene)}<div class="sequence-text">${esc(c.text || '').split('\n').map(l => `<p>${l}</p>`).join('')}</div></div><footer><button class="btn" id="scenePause">${P.paused ? 'Resume' : 'Pause'}</button><button class="btn" id="sceneMotion">${SH.Settings.values.reducedMotion ? 'Reduced motion on' : 'Reduce motion'}</button><button class="btn" id="sceneSkip">${readOnly ? 'Close' : 'Skip to ending'}</button><button class="btn primary" id="sceneNext" ${P.paused ? 'disabled' : ''}>${P.index + 1 === P.cards.length ? readOnly ? 'Done' : 'Read the ending' : 'Continue'}</button></footer><small class="sequence-hint">Read at your own pace. ${P.paused ? 'Paused, including music.' : 'Nothing advances until you continue.'}</small></section>`;
+      e.querySelector('#scenePause').onclick = () => { P.paused = !P.paused; SH.Soundtrack && SH.Soundtrack.sync(); draw(); };
+      e.querySelector('#sceneMotion').onclick = () => { SH.Settings.set('reducedMotion', !SH.Settings.values.reducedMotion); draw(); };
+      e.querySelector('#sceneSkip').onclick = finish;
+      e.querySelector('#sceneNext').onclick = () => { if (P.paused) return; if (++P.index >= P.cards.length) finish(); else draw(); };
+      e.querySelector('#sceneNext').focus();
+    }
+    function finish() { if (gen !== P.gen) return; const fn = P.onDone; P.dismiss(); fn && fn(); }
+    P.finish = finish; draw();
+  };
+  P.dismiss = function () {
+    ++P.gen; P.active = false; P.paused = false; P.readOnly = false;
+    const e = document.querySelector('#presentation'); if (e) e.remove();
+    document.body.classList.remove('sh-presenting');
+    const md = document.querySelector('#modal'); if (md) { md.inert = false; md.removeAttribute('aria-hidden'); }
+    SH.Soundtrack && SH.Soundtrack.context();
+  };
+  P.offer = function (rec) {
+    if (!rec) return;
+    const g = SH.G, epoch = SH.epoch;
+    setTimeout(() => {
+      if (SH.G !== g || SH.epoch !== epoch || g.ended || P.active || SH.UI.modalOpen()) return;
+      P.open([{ title: rec.title, text: rec.text, scene: rec.scene, label: 'A turning point' }], () => {});
+    }, 120);
+  };
+  P.cardsFor = function (ending) {
+    const list = [{ title: ending.outcome, text: '', titleOnly: true, label: 'This chapter has settled' }, { title: ending.title, text: ending.sub, scene: ending.scene, label: 'Where this chapter leaves you' }];
+    (ending.memories || []).forEach(m => list.push({ title: m.title, text: m.text, scene: m.scene, label: 'What actually happened' }));
+    if (ending.incomplete) list.push({ title: 'Some hours were not recorded', text: 'This story began in an older version. Missing scenes have not been invented. The saved conversations and ending still belong to this story.', label: 'An incomplete visual history' });
+    return list;
+  };
+  P.settle = function (key, title, sub, paras) {
+    const g = SH.G; if (!g || !g.ended || g.endKey !== key) return;
+    const h = SH.Visuals.ensure(g), never = /never found/i.test(sub) || SH.EndX.defs.some(d => d.k === key && d.on.includes('gone'));
+    const found = /found|returned|caught/i.test(sub + ' ' + key) && !never;
+    const end = clone({ key, title, sub, paras, name: g.name, seed: (g.story || {}).seed, gid: g.gid, t: g.t, scene: SH.Memories.snapshot(), memories: h.memories, incomplete: h.incomplete, outcome: never ? 'You were never found.' : found ? 'You were found.' : 'This chapter has ended.' });
+    // This hook is called only by the final renderer, never by Found/patrol conversations.
+    P.open(P.cardsFor(end), () => {
+      if (SH.G !== g || !g.ended || g.endKey !== key) return;
+      // Allow existing delayed ending decoration and Keep living it hooks to finish before archiving.
+      setTimeout(() => { if (SH.G === g && g.ended && g.endKey === key) SH.Archive.capture(end); }, 100);
+      const next = document.querySelector('#modal .mchoices button'); next && next.focus();
+    });
+  };
+  // A paused/hidden ending modal must not respond to the game's numeric shortcuts.
+  document.addEventListener('keydown', e => {
+    if (!P.active) return;
+    const root = document.querySelector('#presentation');
+    if (e.key === 'Tab') {
+      const bs = [...root.querySelectorAll('button:not(:disabled)')];
+      if (e.shiftKey && document.activeElement === bs[0]) { e.preventDefault(); bs.at(-1).focus(); }
+      else if (!e.shiftKey && document.activeElement === bs.at(-1)) { e.preventDefault(); bs[0].focus(); }
+    }
+    if (e.key === 'Escape') { e.preventDefault(); P.finish && P.finish(); }
+    if (['1','2','3','4','5','6','7','8','9','m','M','p','P','?'].includes(e.key)) { e.preventDefault(); e.stopImmediatePropagation(); }
+  }, true);
+  const reset = SH.resetRuntime;
+  SH.resetRuntime = function () { P.dismiss(); return reset.apply(this, arguments); };
+})(window.SH);
+
+</script>
+<script>
+/* v15_menu.js */
+/* Small Hours v1.5: local run archive, read-only replay and proper main menu. */
+(function (SH) {
+  const $ = s => document.querySelector(s);
+  const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const KEY = 'smallhours_runs_v15', copy = x => JSON.parse(JSON.stringify(x));
+  const AR = SH.Archive = {}, MN = SH.Menu = {};
+  AR.read = () => { try { const a = JSON.parse(localStorage.getItem(KEY) || '[]'); return Array.isArray(a) ? a : []; } catch (_) { return []; } };
+  AR.write = function (runs) { try { localStorage.setItem(KEY, JSON.stringify(runs)); return true; } catch (_) { return false; } };
+  function safeHTML(html) {
+    const t = document.createElement('template'); t.innerHTML = html;
+    t.content.querySelectorAll('script,iframe,object,embed,form,button,input,textarea,link,style').forEach(e => e.remove());
+    t.content.querySelectorAll('*').forEach(e => [...e.attributes].forEach(a => { if (/^on/i.test(a.name) || ['src','srcdoc','href','style','id'].includes(a.name)) e.removeAttribute(a.name); }));
+    return t.innerHTML;
+  }
+  AR.capture = function (ending) {
+    const node = $('#modal .mtext'); if (!node) return;
+    const rec = copy(ending); rec.html = safeHTML(node.innerHTML); rec.savedAt = Date.now(); rec.id = (rec.gid || rec.seed) + ':' + rec.key + ':' + rec.t;
+    const runs = AR.read(); if (runs.some(r => r.id === rec.id)) return;
+    runs.unshift(rec);
+    // Never evict a previous run (or a playable save) silently to make room.
+    if (!AR.write(runs)) {
+      AR.pending = rec;
+      SH.UI.toast('History storage is full or blocked. Export this ending from Previous Runs before leaving. Your saves were not deleted.');
+    }
+  };
+  AR.export = function () {
+    const a = document.createElement('a'), blob = new Blob([JSON.stringify({ format: 'smallhours-history', version: 1, runs: AR.read().concat(AR.pending ? [AR.pending] : []) })], { type: 'application/json' });
+    const url = URL.createObjectURL(blob); a.href = url; a.download = 'SmallHours-history.json'; a.click(); setTimeout(() => URL.revokeObjectURL(url), 1000);
+  };
+  AR.validate = function (d) {
+    if (!d || d.format !== 'smallhours-history' || d.version !== 1 || !Array.isArray(d.runs) || d.runs.length > 200) throw Error('Not a supported history backup.');
+    return d.runs.map(r => {
+      if (!r || typeof r.id !== 'string' || typeof r.title !== 'string' || !Array.isArray(r.memories) || r.memories.length > 160 || typeof r.html !== 'string' || r.html.length > 500000) throw Error('A run in this backup is incomplete or invalid.');
+      const clean = copy(r); clean.html = safeHTML(clean.html); return clean;
+    });
+  };
+  AR.merge = function (d) {
+    const add = AR.validate(d), existing = AR.read(), ids = new Set(existing.map(r => r.id));
+    add.forEach(r => { if (!ids.has(r.id)) { existing.push(r); ids.add(r.id); } });
+    if (!AR.write(existing)) throw Error('History storage is full or blocked. Export your current history first.');
+    return add.length;
+  };
+  AR.import = function () {
+    const i = document.createElement('input'); i.type = 'file'; i.accept = '.json,application/json';
+    i.onchange = async () => { const f = i.files[0]; if (!f) return; try { if (f.size > 12000000) throw Error('That backup is too large.'); const d = JSON.parse(await f.text()); AR.validate(d); if (!confirm('Merge this history backup? Existing runs and playable saves will be kept.')) return; AR.merge(d); MN.runs(); } catch (e) { alert(e.message || 'Could not read that backup.'); } }; i.click();
+  };
+  function overlay(title, html, wire) {
+    let e = $('#menuOverlay'); if (!e) { e = document.createElement('div'); e.id = 'menuOverlay'; e.setAttribute('role', 'dialog'); e.setAttribute('aria-modal', 'true'); document.body.appendChild(e); }
+    e.innerHTML = `<section class="menu-panel"><header><div><small class="studio">BROKENHOURS STUDIO · v1.5 preview</small><h2>${esc(title)}</h2></div><button class="btn" id="menuClose" aria-label="Close ${esc(title)}">Close</button></header><div class="menu-content">${html}</div></section>`;
+    $('#menuClose').onclick = () => { e.remove(); $('#menuBtn') && $('#menuBtn').focus(); };
+    wire && wire(e); $('#menuClose').focus();
+  }
+  MN.overlay = overlay;
+  MN.settings = function () {
+    const v = SH.Settings.values;
+    const toggle = (id, title) => `<label class="pref-row"><span>${title}</span><input type="checkbox" data-pref="${id}" ${v[id] ? 'checked' : ''}></label>`;
+    const volume = (id, title) => `<label class="pref-row"><span>${title}</span><input type="range" min="0" max="1" step="0.01" data-pref="${id}" value="${v[id]}"></label>`;
+    overlay('Settings', `<p class="muted">Saved in this browser, separately from your story. You can always play silently.</p>${toggle('muted', 'Mute all audio')}${toggle('music', 'Music')}${volume('musicVolume', 'Music volume')}${toggle('sfx', 'Small sound effects')}${volume('sfxVolume', 'Effects volume')}<hr><label class="pref-row"><span>Reading size</span><select data-pref="fontSize">${[14,16,18,20,22].map(n => `<option value="${n}" ${n === v.fontSize ? 'selected' : ''}>${n}px</option>`).join('')}</select></label><label class="pref-row"><span>Conversation reply speed</span><select data-pref="textSpeed">${['instant','normal','slow'].map(n => `<option ${n === v.textSpeed ? 'selected' : ''}>${n}</option>`).join('')}</select></label>${toggle('reducedMotion', 'Reduced motion')}<div id="audioStatus" class="muted"></div><button class="btn" id="audioRetry">Retry music</button><p class="muted">Scenes have no reading timer. Continue when you are ready. Backgrounding this page pauses audio.</p>`, e => {
+      e.querySelectorAll('[data-pref]').forEach(i => i.oninput = () => { const val = i.type === 'checkbox' ? i.checked : /Volume|fontSize/.test(i.dataset.pref) ? +i.value : i.value; SH.Settings.set(i.dataset.pref, val); });
+      $('#audioStatus').textContent = SH.Soundtrack ? SH.Soundtrack.status() : 'Selected music assets are not installed yet. Effects and silent play work.';
+      $('#audioRetry').onclick = () => { SH.Audio.init(); SH.Soundtrack && SH.Soundtrack.retry(); $('#audioStatus').textContent = SH.Soundtrack ? SH.Soundtrack.status() : 'Music assets are still pending.'; };
+    });
+  };
+  MN.credits = function () {
+    overlay('Credits', `<div class="credits-title">SMALL HOURS</div><p>Created by <b>BrokenHours Studio</b>.</p><p>Vanilla JavaScript, canvas figures and scenes. Small sound effects synthesized in-game; no external SFX samples.</p><h3>Selected soundtrack</h3>${[['The Long Dark','the-long-dark'],['There is a Place','there-is-a-place'],['Intervention (No Piano Melody mix)','intervention']].map(([n, slug]) => `<p>‘${n}’ by Scott Buckley, released under <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY 4.0</a>. <a href="https://www.scottbuckley.com.au/library/${slug}/" target="_blank" rel="noopener">www.scottbuckley.com.au</a>.</p>`).join('')}<p class="muted">Music integration is in progress. A track is never replaced with a different composition if its local file is missing. See AUDIO_CREDITS.md for asset provenance and packaging status.</p><h3>Content note · 16+</h3><p>This is fiction about a twelve-year-old, not instructions for running away. It includes family conflict, non-graphic abuse, bullying, homelessness and grooming risk.</p><p>If this is close to home: India <b>1098 / 112</b>; US National Runaway Safeline <b>1-800-786-2929</b> and crisis <b>988</b>; UK Childline <b>0800 1111</b>.</p><p class="muted">v1.5 preview. Your saves, previous runs and memories are stored locally in this browser. Export backups before clearing browser data or changing devices.</p>`);
+  };
+  MN.runs = function () {
+    const runs = AR.read().concat(AR.pending ? [AR.pending] : []);
+    overlay('Previous Runs', `<p class="muted">Completed chapters only. Viewing one never loads it as a playable save.</p>${runs.length ? runs.map((r, i) => `<button class="history-row" data-run="${i}"><span><b>${esc(r.title)}</b><small>${esc(r.name)} · Story #${esc(r.seed)} · ${esc(r.scene && r.scene.town)} · ${esc(r.sub)}</small></span><span>View ›</span></button>`).join('') : '<div class="empty-state"><h3>No completed stories yet</h3><p>The endings you actually reach will be kept here. Nothing undiscovered is listed.</p></div>'}<div class="backup-buttons"><button class="btn" id="historyExport">Export history & memories</button><button class="btn" id="historyImport">Import history backup</button></div><p class="muted">History lives in this browser, not in your account. Clearing browser data removes it. Backups merge without replacing saves or older runs.</p>`, e => {
+      e.querySelectorAll('[data-run]').forEach(b => b.onclick = () => MN.run(runs[+b.dataset.run]));
+      $('#historyExport').onclick = AR.export; $('#historyImport').onclick = AR.import;
+    });
+  };
+  MN.run = function (r) {
+    overlay(r.title, `<p class="muted">Read-only · ${esc(r.name)} · Story #${esc(r.seed)}</p><div class="backup-buttons"><button class="btn primary" id="replayEnding">Replay scenes & memories</button><button class="btn" id="runMemories">Browse memories</button><button class="btn" id="backRuns">Back to runs</button></div><article class="archive-ending">${safeHTML(r.html || r.paras.map(p => `<p>${esc(p)}</p>`).join(''))}</article>`, () => {
+      $('#replayEnding').onclick = () => SH.Presentation.open(SH.Presentation.cardsFor(r), () => MN.run(r), true);
+      $('#runMemories').onclick = () => MN.memories(r); $('#backRuns').onclick = MN.runs;
+    });
+  };
+  MN.memories = function (run) {
+    const g = SH.G, current = g && g.v15, list = run ? run.memories : current ? current.memories : [], title = run ? `${run.name}'s story #${run.seed}` : g ? `${g.name}'s current story` : 'Earned memories';
+    const runs = AR.read();
+    overlay('Memories', `<h3>${esc(title)}</h3><p class="muted">These records belong to this story alone.${(run ? run.incomplete : current && current.incomplete) ? ' This older save has incomplete visual history; missing scenes are not invented.' : ''}</p>${list && list.length ? list.map((m, i) => `<button class="history-row" data-memory="${i}"><span><b>${esc(m.title)}</b><small>${esc(m.scene && m.scene.place)} · ${esc(m.scene && m.scene.date)}</small></span><span>View ›</span></button>`).join('') : '<div class="empty-state"><p>No visual memories recorded in this story yet.</p></div>'}${!run && runs.length ? `<h3>Archived stories</h3>${runs.map((r, i) => `<button class="history-row" data-archived="${i}">${esc(r.name)} · #${esc(r.seed)} · ${esc(r.title)}</button>`).join('')}` : ''}`, e => {
+      e.querySelectorAll('[data-memory]').forEach(b => b.onclick = () => { const m = list[+b.dataset.memory]; SH.Presentation.open([{ title: m.title, text: m.text, scene: m.scene }], () => {}, true); });
+      e.querySelectorAll('[data-archived]').forEach(b => b.onclick = () => MN.memories(runs[+b.dataset.archived]));
+    });
+  };
+  MN.open = function () {
+    overlay('Small Hours', '<div class="in-game-menu"><button class="btn primary" id="resumeStory">Back to your story</button><button class="btn" id="gameSaves">Saves</button><button class="btn" id="gameMemories">Memories</button><button class="btn" id="gameRuns">Previous Runs</button><button class="btn" id="gameSettings">Settings</button><button class="btn" id="gameCredits">Credits</button><button class="btn" id="gameTitle">Return to main menu</button></div>', () => {
+      $('#resumeStory').onclick = () => $('#menuOverlay').remove();
+      $('#gameSaves').onclick = () => { $('#menuOverlay').remove(); SH.Saves.open(true); };
+      $('#gameMemories').onclick = () => MN.memories(); $('#gameRuns').onclick = MN.runs; $('#gameSettings').onclick = MN.settings; $('#gameCredits').onclick = MN.credits;
+      $('#gameTitle').onclick = () => { if (SH.G && !SH.G.ended && !SH.save()) { if (!confirm('Saving is blocked. Export a playable save before leaving. Return anyway?')) return; } location.reload(); };
+    });
+  };
+  const top = SH.UI.renderTop;
+  SH.UI.renderTop = function () {
+    const r = top.apply(this, arguments); if (!$('#menuBtn') && $('#top')) { const b = document.createElement('button'); b.id = 'menuBtn'; b.className = 'ibtn'; b.textContent = '☰'; b.title = 'Menu, memories and settings'; b.setAttribute('aria-label', b.title); b.onclick = MN.open; $('#top').appendChild(b); }
+    const snd = $('#sndBtn'); if (snd) { snd.onclick = MN.settings; snd.title = 'Music and sound settings'; }
+    return r;
+  };
+  window.addEventListener('DOMContentLoaded', () => {
+    document.body.classList.add('v15');
+    const box = $('.tbox'), logo = $('.logo'), rows = [...box.children].filter(e => e.classList.contains('row'));
+    const setup = document.createElement('section'); setup.id = 'newGameSetup'; setup.className = 'hidden';
+    rows.forEach(r => setup.appendChild(r));
+    const continueBtn = $('#contBtn'), slotsBtn = $('#slotsBtn'); if (continueBtn) continueBtn.remove(); if (slotsBtn) slotsBtn.remove();
+    const studio = document.createElement('div'); studio.className = 'studio'; studio.textContent = 'BROKENHOURS STUDIO'; logo.before(studio);
+    const nav = document.createElement('nav'); nav.className = 'main-menu'; nav.setAttribute('aria-label', 'Main menu');
+    nav.innerHTML = `<button class="btn primary" id="newGameBtn">New Game <span>Start another story</span></button><button class="btn" id="menuContinue">Continue <span>${SH.hasSave() ? 'Return to your last save' : 'No autosave yet'}</span></button><button class="btn" id="menuSaves">Saves</button><button class="btn" id="menuRuns">Previous Runs</button><button class="btn" id="menuMemories">Memories</button><button class="btn" id="menuSettings">Settings</button><button class="btn" id="menuCredits">Credits</button>`;
+    box.append(nav, setup); if (continueBtn) { continueBtn.classList.add('hidden'); box.appendChild(continueBtn); }
+    const begin = $('#startBtn'); begin.textContent = 'Begin this story'; const cancel = document.createElement('button'); cancel.className = 'btn'; cancel.textContent = 'Back to menu'; begin.after(cancel);
+    cancel.onclick = () => { setup.classList.add('hidden'); nav.classList.remove('hidden'); };
+    $('#newGameBtn').onclick = () => { nav.classList.add('hidden'); setup.classList.remove('hidden'); $('#nameIn').focus(); };
+    const start = begin.onclick;
+    begin.onclick = () => { if (SH.hasSave() && !confirm('Start a new story? The autosave will be replaced. Save it to a slot or export it first if you want to keep playing it. Previous Runs will be kept.')) return; start(); };
+    $('#menuContinue').disabled = !SH.hasSave(); $('#menuContinue').onclick = () => continueBtn && continueBtn.click();
+    $('#menuSaves').onclick = () => SH.Saves.open(false); $('#menuRuns').onclick = MN.runs; $('#menuMemories').onclick = () => MN.memories(); $('#menuSettings').onclick = MN.settings; $('#menuCredits').onclick = MN.credits;
+    const foot = document.createElement('div'); foot.className = 'menu-version'; foot.textContent = 'v1.5 preview · 16+ · Your stories stay on this device'; box.appendChild(foot);
+    [...box.children].filter(e => e !== foot && e.style.fontSize && /endings/.test(e.textContent)).forEach(e => e.remove());
+    SH.Settings.apply();
+  });
 })(window.SH);
 
 </script>

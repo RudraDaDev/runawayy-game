@@ -118,7 +118,7 @@
     if (id === 'dex') return open + `<path d="M18 100 Q20 72 50 70 Q80 72 82 100Z" fill="#3b4150"/><circle cx="50" cy="46" r="18" fill="#3b4150"/><text x="50" y="53" text-anchor="middle" font-size="18" font-weight="800" fill="#8a93a6" font-family="system-ui">?</text></g></svg>`;
     if (id === 'class') return open + `<circle cx="34" cy="52" r="10" fill="#fff" opacity=".55"/><circle cx="66" cy="52" r="10" fill="#fff" opacity=".55"/><circle cx="50" cy="44" r="12" fill="#fff" opacity=".85"/><path d="M14 100 Q18 72 34 70 Q44 64 50 64 Q56 64 66 70 Q82 72 86 100Z" fill="#fff" opacity=".7"/></g></svg>`;
     if (id === 'lighthouse') return open + `<path d="M44 86 L47 40 L53 40 L56 86Z" fill="#fff"/><path d="M45 52 L55 52 L55.6 60 L44.4 60Z" fill="#e05260"/><path d="M53 38 L90 26 L90 50Z" fill="#ffd66b" opacity=".6"/><rect x="45" y="32" width="10" height="8" fill="#ffd66b"/></g></svg>`;
-    const L = LOOK[id];
+    const L = o.look || LOOK[id];
     if (!L) return open + `<text x="50" y="62" text-anchor="middle" font-size="36" font-weight="700" fill="#fff" font-family="system-ui">${meta.ini || '?'}</text></g></svg>`;
     const sk = L.skin, skd = shade(sk, 0.86);
     return open + hairBack(L) + top(L) +

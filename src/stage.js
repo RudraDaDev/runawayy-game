@@ -170,6 +170,7 @@
     x.fillStyle = T(lk.skin); x.fillRect(-2.5 * s, -64 * s - bob, 5 * s, 5 * s); x.beginPath(); x.arc(1 * s, -72 * s - bob, 9 * s, 0, 7); x.fill();
     x.fillStyle = T(lk.hair); x.beginPath(); x.arc(0, -75 * s - bob, 9.4 * s, Math.PI * 0.95, Math.PI * 2.1); x.fill(); if (lk.long) x.fillRect(-9 * s, -76 * s - bob, 5 * s, 14 * s);
     if (lk.cap) { x.fillStyle = T(lk.cap); x.beginPath(); x.arc(0, -76 * s - bob, 9.6 * s, Math.PI, 0); x.fill(); x.fillRect(2 * s, -78 * s - bob, 12 * s, 3); }
+    if (lk.glasses) { x.strokeStyle = T(lk.glasses); x.lineWidth = 1; x.strokeRect(2 * s, -76 * s - bob, 6 * s, 5 * s); }
     const blink = (t * 1.3 + X) % 4 < 0.12; x.fillStyle = T('#1a1410'); if (!blink) { x.fillRect(5 * s, -73 * s - bob, 2, 2.4); } else x.fillRect(4.5 * s, -72 * s - bob, 3, 1);
     x.restore();
   }
@@ -177,10 +178,10 @@
     const G = SH.G, inside = ST.inside, sam = ST.sam, base = inside ? FL + 6 : GY + 7;
     const tint = inside ? (E.night ? 0.38 : 0.05) : Math.max(0, 0.5 - E.dl * 0.5);
     if (inside) { const lamp = E.night ? 0.45 : 1, d = (c) => E.shadeI(c, lamp); L.R(x, d('#e8e2d4'), 10, FL - 118, 52, 118); L.R(x, d('#6b4a3a'), 15, FL - 113, 42, 113); L.R(x, d('#5a3e2e'), 19, FL - 108, 34, 46); L.R(x, d('#5a3e2e'), 19, FL - 56, 34, 50); x.fillStyle = d('#c9a24a'); x.beginPath(); x.arc(50, FL - 58, 2.5, 0, 7); x.fill(); }
-    ST.npcs.forEach((n) => person(x, n.x, GY + 6, (n.id && LOOKS[n.id]) || hashLook(n.seed + 3), t, 0, n.x > sam.x ? -1 : 1, tint, false));
+    ST.npcs.forEach((n) => person(x, n.x, GY + 6, (SH.Visuals && SH.Visuals.body(n.id, null)) || (n.id && LOOKS[n.id]) || hashLook(n.seed + 3), t, 0, n.x > sam.x ? -1 : 1, tint, false));
     if (sam.x !== sam.tx) { const sp = Math.max(170, Math.abs(sam.tx - sam.x) * 2.2) * dt; sam.dir = sam.tx > sam.x ? 1 : -1; if (Math.abs(sam.tx - sam.x) <= sp || performance.now() - (sam.t0 || 0) > 1400) { sam.x = sam.tx; sam.walk = 0; } else { sam.x += sam.dir * sp; sam.walk += dt * 11; } }
     if (sam.x === sam.tx && sam.cb) { const cb = sam.cb; sam.cb = null; ST.busy = false; setTimeout(cb, 60); } else if (sam.x === sam.tx) ST.busy = false;
-    person(x, sam.x, base, LOOKS.sam, t, sam.x !== sam.tx ? sam.walk : 0, sam.dir, tint * 0.8, G.phase === 'run');
+    person(x, sam.x, base, SH.Visuals ? SH.Visuals.body("sam", LOOKS.sam) : LOOKS.sam, t, sam.x !== sam.tx ? sam.walk : 0, sam.dir, tint * 0.8, G.phase === 'run');
   }
 
   /* ---------- the new draw: fixed logical height, camera that follows Sam ---------- */

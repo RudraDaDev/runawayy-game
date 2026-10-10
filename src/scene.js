@@ -12,7 +12,7 @@
     S.c = c; S.x = c.getContext('2d');
     const r = rng(7); for (let i = 0; i < 90; i++) S.stars.push({ x: r(), y: r() * 0.6, s: r() * 1.4 + 0.3, p: r() * 6 });
     for (let i = 0; i < 160; i++) S.drops.push({ x: Math.random(), y: Math.random(), v: 0.6 + Math.random() * 0.6 });
-    let last = 0; const loop = (t) => { requestAnimationFrame(loop); if (document.hidden || t - last < 33) return; last = t; S.draw(t / 1000); }; requestAnimationFrame(loop); // ~30fps, paused when hidden
+    let last = 0; const loop = (t) => { requestAnimationFrame(loop); if (document.hidden || (SH.Presentation && SH.Presentation.active) || t - last < (SH.Settings && SH.Settings.values.reducedMotion ? 150 : 33)) return; last = t; S.draw(SH.Settings && SH.Settings.values.reducedMotion ? 0 : t / 1000); }; requestAnimationFrame(loop); // ~30fps, paused when hidden
   };
 
   S.draw = function (time) {
