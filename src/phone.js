@@ -296,7 +296,7 @@
   };
   P.blockDex = function () { SH.flag('dexBlocked'); SH.flag('dexReported'); SH.tag('dexReported'); SH.st('stress', -5); P.push('dex', 'sys', 'You blocked and reported dex_19. Skyforge Safety: "Thank you. We\'ve escalated this account."', false); SH.UI.log('You blocked and reported dex_19. Your hands are shaking a little. You did the right thing.', 'good'); P.render(); };
   P.saveLLM = function () { SH.PIP.setCfg({ url: $('#llmUrl').value.trim(), key: $('#llmKey').value.trim(), model: $('#llmModel').value.trim() }); SH.UI.toast('PIP brain saved.'); };
-  P.listen = function () { A.playLofi(26); SH.advance(30, { interrupt: true }); SH.st('stress', -9); SH.st('mood', 6); SH.G.phone.bat = Math.max(0, SH.G.phone.bat - 3); SH.UI.log('You put your earbuds in. Rain sounds and a lazy piano. For thirty minutes, the house is someone else\'s problem.', 'good'); SH.UI.afterAction(); };
+  P.listen = function () { A.playLofi(26); SH.advance(30, { interrupt: true }); SH.st('stress', -9); SH.st('mood', 6); SH.G.phone.bat = Math.max(0, SH.G.phone.bat - 3); SH.UI.log('You put your earbuds in. A quiet soundtrack. For thirty minutes, the house is someone else\'s problem.', 'good'); SH.UI.afterAction(); };
   P.viewPhoto = function (c) { const G = SH.G; if (!G.done['photo' + SH.day() + c.length]) { G.done['photo' + SH.day() + c.length] = 1; SH.st('mood', 3); } SH.UI.toast(c.slice(0, 80)); };
   P.playGame = function () {
     const G = SH.G; SH.advance(30, { interrupt: true }); SH.st('stress', -7); SH.st('mood', 5); G.phone.bat = Math.max(0, G.phone.bat - 6);

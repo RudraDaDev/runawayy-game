@@ -48,7 +48,7 @@
   SH.UI.dialog = function (o) {
     const before = SH.G;
     const r = dialog.apply(this, arguments);
-    if (o && before && SH.G === before && !before.ended && milestoneTitles.test(String(o.title || '')) && SH.UI.modalOpen()) {
+    if (o && before && SH.G === before && !before.ended && milestoneTitles.test(String(o.title || '')) && SH.UI.modalOpen() && (document.querySelector('#modal h3') || {}).textContent === SH.nm(o.title)) {
       const text = [].concat(o.text || []).map(x => String(x).replace(/<[^>]*>/g, '')).join('\n');
       const rec = M.record('scene:' + o.title + ':' + before.t, o.title, text, 'scene', o.who ? [o.who] : []);
       if (rec) SH.Presentation && SH.Presentation.offer(rec);

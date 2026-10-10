@@ -13,6 +13,8 @@
   const I = SH.V15Icons = {};
   I.svg = key => `<svg class="sh-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${paths[key] || paths.star}"/></svg>`;
   I.key = text => {
+    text = String(text || '').toLowerCase();
+    if (/all options|all actions|menu/.test(text)) return 'list';
     if (/bed|sleep|nap|rest|🛏|🛌/i.test(text)) return 'bed';
     if (/door|leave|🚪/.test(text)) return 'door';
     if (/clothes|hoodie|👕|🧥/.test(text)) return 'clothes';
@@ -31,7 +33,7 @@
     if (/wait|⏰|clock/.test(text)) return 'clock';
     return 'star';
   };
-  const phoneKeys = { messages: 'chat', calls: 'phone', chirp: 'chat', pip: 'star', people: 'people', browser: 'book', hustle: 'pen', bank: 'cash', wallet: 'cash', camera: 'picture', photos: 'picture', calendar: 'clock', clock: 'clock', notes: 'pen', atlas: 'map', maps: 'map', network: 'settings', finder: 'eye', weather: 'weather', music: 'headphones', skyforge: 'play', settings: 'settings', tubeyou: 'play' };
+  const phoneKeys = { messages: 'chat', calls: 'phone', chirp: 'chat', pip: 'star', people: 'people', browser: 'book', hustle: 'pen', bank: 'cash', wallet: 'cash', camera: 'picture', photos: 'picture', calendar: 'clock', clock: 'clock', notes: 'pen', atlas: 'map', maps: 'map', network: 'settings', finder: 'eye', weather: 'weather', music: 'headphones', skyforge: 'play', pocketpal: 'cash', tube: 'play', net: 'settings', settings: 'settings', tubeyou: 'play' };
   I.phone = function () {
     document.querySelectorAll('.homegrid .app').forEach(b => {
       const match = (b.getAttribute('onclick') || '').match(/open\('([^']+)'/), e = b.querySelector('.ic');

@@ -7,7 +7,7 @@
 - Main menu: New Game, Continue, Saves, Previous Runs, Memories, Settings and Credits.
 - Separate browser preferences for music, SFX, mute, volumes, reading size, reply speed and reduced motion.
 - Settled endings: outcome title, last recorded visual scene, earned text/visual memories, then expanded original ending text.
-- Continue/skip/pause/reduced-motion scene controls; no reading timer.
+- Previous/continue/skip/pause/reduced-motion scene controls; no reading timer.
 - Local completed-run archive, read-only ending replay, per-story memory browser, history export/merge import.
 - Existing Keep living it, second endings and clean rewind retained.
 

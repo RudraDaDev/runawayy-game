@@ -35,7 +35,8 @@
     function draw() {
       if (gen !== P.gen) return;
       const c = P.cards[P.index];
-      e.innerHTML = `<section class="sequence-panel"><header><span class="studio">BROKENHOURS STUDIO</span><span>${P.index + 1} / ${P.cards.length}</span></header><div class="sequence-content ${c.titleOnly ? 'outcome-card' : ''}"><small class="eyebrow">${esc(c.label || 'A memory from this story')}</small><h1>${esc(c.title)}</h1>${c.titleOnly ? '' : P.scene(c.scene)}<div class="sequence-text">${esc(c.text || '').split('\n').map(l => `<p>${l}</p>`).join('')}</div></div><footer><button class="btn" id="scenePause">${P.paused ? 'Resume' : 'Pause'}</button><button class="btn" id="sceneMotion">${SH.Settings.values.reducedMotion ? 'Reduced motion on' : 'Reduce motion'}</button><button class="btn" id="sceneSkip">${readOnly ? 'Close' : isEnding ? 'Skip to ending' : 'Skip scene'}</button><button class="btn primary" id="sceneNext" ${P.paused ? 'disabled' : ''}>${P.index + 1 === P.cards.length ? readOnly ? 'Done' : isEnding ? 'Read the ending' : 'Keep going' : 'Continue'}</button></footer><small class="sequence-hint">Read at your own pace. ${P.paused ? 'Paused, including music.' : 'Nothing advances until you continue.'}</small></section>`;
+      e.innerHTML = `<section class="sequence-panel"><header><span class="studio">BROKENHOURS STUDIO</span><span>${P.index + 1} / ${P.cards.length}</span></header><div class="sequence-content ${c.titleOnly ? 'outcome-card' : ''}"><small class="eyebrow">${esc(c.label || 'A memory from this story')}</small><h1>${esc(c.title)}</h1>${c.titleOnly ? '' : P.scene(c.scene)}<div class="sequence-text">${esc(c.text || '').split('\n').map(l => `<p>${l}</p>`).join('')}</div></div><footer><button class="btn" id="scenePrev" ${P.index === 0 || P.paused ? 'disabled' : ''}>Previous</button><button class="btn" id="scenePause">${P.paused ? 'Resume' : 'Pause'}</button><button class="btn" id="sceneMotion">${SH.Settings.values.reducedMotion ? 'Reduced motion on' : 'Reduce motion'}</button><button class="btn" id="sceneSkip">${readOnly ? 'Close' : isEnding ? 'Skip to ending' : 'Skip scene'}</button><button class="btn primary" id="sceneNext" ${P.paused ? 'disabled' : ''}>${P.index + 1 === P.cards.length ? readOnly ? 'Done' : isEnding ? 'Read the ending' : 'Keep going' : 'Continue'}</button></footer><small class="sequence-hint">Read at your own pace. ${P.paused ? 'Paused, including music.' : 'Nothing advances until you continue.'}</small></section>`;
+      e.querySelector('#scenePrev').onclick = () => { if (!P.paused && P.index > 0) { P.index--; draw(); } };
       e.querySelector('#scenePause').onclick = () => { P.paused = !P.paused; SH.Soundtrack && SH.Soundtrack.sync(); draw(); };
       e.querySelector('#sceneMotion').onclick = () => { SH.Settings.set('reducedMotion', !SH.Settings.values.reducedMotion); draw(); };
       e.querySelector('#sceneSkip').onclick = finish;
@@ -99,9 +100,17 @@
     if (P.readOnly) { P.heldMessages.push({ g, epoch: SH.epoch, args: [...arguments] }); return; }
     return push.apply(this, arguments);
   };
+  const reply = SH.Phone.reply; P.heldReplies = [];
+  SH.Phone.reply = function () {
+    if (!SH.G || SH.G.ended || SH.Companions.has(arguments[0])) return;
+    if (P.readOnly) { P.heldReplies.push({ g: SH.G, epoch: SH.epoch, args: [...arguments] }); return; }
+    return reply.apply(this, arguments);
+  };
   const afterMessages = SH.UI.afterAction;
   SH.UI.afterAction = function () {
     if (!P.readOnly && SH.G && !SH.G.ended) {
+      const replies = P.heldReplies.splice(0);
+      replies.filter(m => m.g === SH.G && m.epoch === SH.epoch && !SH.Companions.has(m.args[0])).forEach(m => reply.apply(SH.Phone, m.args));
       const messages = P.heldMessages.splice(0);
       messages.filter(m => m.g === SH.G && m.epoch === SH.epoch).forEach(m => push.apply(SH.Phone, m.args));
     }
@@ -120,5 +129,5 @@
     if (['1','2','3','4','5','6','7','8','9','m','M','p','P','?'].includes(e.key)) { e.preventDefault(); e.stopImmediatePropagation(); }
   }, true);
   const reset = SH.resetRuntime;
-  SH.resetRuntime = function () { P.pending = null; P.heldMessages = []; P.dismiss(); return reset.apply(this, arguments); };
+  SH.resetRuntime = function () { P.pending = null; P.heldMessages = []; P.heldReplies = []; P.dismiss(); return reset.apply(this, arguments); };
 })(window.SH);

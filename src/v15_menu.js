@@ -10,7 +10,7 @@
     const t = document.createElement('template'); t.innerHTML = html;
     t.content.querySelectorAll('script,iframe,object,embed,form,button,input,textarea,link,style').forEach(e => e.remove());
     t.content.querySelectorAll('foreignObject,animate,animateMotion,animateTransform,set,use,image').forEach(e => e.remove());
-    t.content.querySelectorAll('*').forEach(e => [...e.attributes].forEach(a => { if (/^on/i.test(a.name) || ['src','srcdoc','href','style','id'].includes(a.name)) e.removeAttribute(a.name); }));
+    t.content.querySelectorAll('*').forEach(e => [...e.attributes].forEach(a => { if (/^on/i.test(a.name) || ['src','srcdoc','href','xlink:href','style','id','poster','background'].includes(a.name)) e.removeAttribute(a.name); }));
     return t.innerHTML;
   }
   AR.capture = function (ending) {
@@ -28,11 +28,20 @@
     const a = document.createElement('a'), blob = new Blob([JSON.stringify({ format: 'smallhours-history', version: 1, runs: AR.read().concat(AR.pending ? [AR.pending] : []) })], { type: 'application/json' });
     const url = URL.createObjectURL(blob); a.href = url; a.download = 'SmallHours-history.json'; a.click(); setTimeout(() => URL.revokeObjectURL(url), 1000);
   };
+  function validLook(l) {
+    if (!l || typeof l !== 'object') return false;
+    const colours = ['skin','hair','shirt','legs','shoe','hatc','glasses','gloves'];
+    if (!['skin','hair','shirt'].every(k => /^#[0-9a-f]{3,8}$/i.test(l[k] || ''))) return false;
+    if (colours.some(k => l[k] != null && !/^#[0-9a-f]{3,8}$/i.test(l[k]))) return false;
+    const words = ['style','top','hat'];
+    if (words.some(k => l[k] != null && !/^[a-z0-9_-]{1,24}$/i.test(l[k]))) return false;
+    return Object.keys(l).every(k => colours.includes(k) || words.includes(k) || (typeof l[k] === 'number' && Number.isFinite(l[k]) && Math.abs(l[k]) <= 10) || typeof l[k] === 'boolean' || l[k] === null);
+  }
   AR.validate = function (d) {
     if (!d || d.format !== 'smallhours-history' || d.version !== 1 || !Array.isArray(d.runs) || d.runs.length > 200) throw Error('Not a supported history backup.');
     return d.runs.map(r => {
       if (!r || typeof r.id !== 'string' || typeof r.title !== 'string' || !Array.isArray(r.memories) || r.memories.length > 160 || typeof r.html !== 'string' || r.html.length > 500000) throw Error('A run in this backup is incomplete or invalid.');
-      if (!r.scene || !Array.isArray(r.scene.people) || r.scene.people.some(a => !a || !a.look || typeof a.name !== 'string') || r.memories.some(m => !m || typeof m.title !== 'string' || typeof m.text !== 'string' || !m.scene || !Array.isArray(m.scene.people) || m.scene.people.some(a => !a || !a.look || typeof a.name !== 'string'))) throw Error('The visual records in this backup are invalid.');
+      if (!r.scene || !Array.isArray(r.scene.people) || r.scene.people.some(a => !a || !validLook(a.look) || typeof a.name !== 'string') || r.memories.some(m => !m || typeof m.title !== 'string' || typeof m.text !== 'string' || !m.scene || !Array.isArray(m.scene.people) || m.scene.people.some(a => !a || !validLook(a.look) || typeof a.name !== 'string'))) throw Error('The visual records in this backup are invalid.');
       const clean = copy(r); clean.html = safeHTML(clean.html); return clean;
     });
   };

@@ -2521,7 +2521,7 @@ window.SH = window.SH || {};
   };
   P.blockDex = function () { SH.flag('dexBlocked'); SH.flag('dexReported'); SH.tag('dexReported'); SH.st('stress', -5); P.push('dex', 'sys', 'You blocked and reported dex_19. Skyforge Safety: "Thank you. We\'ve escalated this account."', false); SH.UI.log('You blocked and reported dex_19. Your hands are shaking a little. You did the right thing.', 'good'); P.render(); };
   P.saveLLM = function () { SH.PIP.setCfg({ url: $('#llmUrl').value.trim(), key: $('#llmKey').value.trim(), model: $('#llmModel').value.trim() }); SH.UI.toast('PIP brain saved.'); };
-  P.listen = function () { A.playLofi(26); SH.advance(30, { interrupt: true }); SH.st('stress', -9); SH.st('mood', 6); SH.G.phone.bat = Math.max(0, SH.G.phone.bat - 3); SH.UI.log('You put your earbuds in. Rain sounds and a lazy piano. For thirty minutes, the house is someone else\'s problem.', 'good'); SH.UI.afterAction(); };
+  P.listen = function () { A.playLofi(26); SH.advance(30, { interrupt: true }); SH.st('stress', -9); SH.st('mood', 6); SH.G.phone.bat = Math.max(0, SH.G.phone.bat - 3); SH.UI.log('You put your earbuds in. A quiet soundtrack. For thirty minutes, the house is someone else\'s problem.', 'good'); SH.UI.afterAction(); };
   P.viewPhoto = function (c) { const G = SH.G; if (!G.done['photo' + SH.day() + c.length]) { G.done['photo' + SH.day() + c.length] = 1; SH.st('mood', 3); } SH.UI.toast(c.slice(0, 80)); };
   P.playGame = function () {
     const G = SH.G; SH.advance(30, { interrupt: true }); SH.st('stress', -7); SH.st('mood', 5); G.phone.bat = Math.max(0, G.phone.bat - 6);
@@ -17513,7 +17513,7 @@ window.SH = window.SH || {};
   SH.UI.dialog = function (o) {
     const before = SH.G;
     const r = dialog.apply(this, arguments);
-    if (o && before && SH.G === before && !before.ended && milestoneTitles.test(String(o.title || '')) && SH.UI.modalOpen()) {
+    if (o && before && SH.G === before && !before.ended && milestoneTitles.test(String(o.title || '')) && SH.UI.modalOpen() && (document.querySelector('#modal h3') || {}).textContent === SH.nm(o.title)) {
       const text = [].concat(o.text || []).map(x => String(x).replace(/<[^>]*>/g, '')).join('\n');
       const rec = M.record('scene:' + o.title + ':' + before.t, o.title, text, 'scene', o.who ? [o.who] : []);
       if (rec) SH.Presentation && SH.Presentation.offer(rec);
@@ -17604,7 +17604,8 @@ window.SH = window.SH || {};
     function draw() {
       if (gen !== P.gen) return;
       const c = P.cards[P.index];
-      e.innerHTML = `<section class="sequence-panel"><header><span class="studio">BROKENHOURS STUDIO</span><span>${P.index + 1} / ${P.cards.length}</span></header><div class="sequence-content ${c.titleOnly ? 'outcome-card' : ''}"><small class="eyebrow">${esc(c.label || 'A memory from this story')}</small><h1>${esc(c.title)}</h1>${c.titleOnly ? '' : P.scene(c.scene)}<div class="sequence-text">${esc(c.text || '').split('\n').map(l => `<p>${l}</p>`).join('')}</div></div><footer><button class="btn" id="scenePause">${P.paused ? 'Resume' : 'Pause'}</button><button class="btn" id="sceneMotion">${SH.Settings.values.reducedMotion ? 'Reduced motion on' : 'Reduce motion'}</button><button class="btn" id="sceneSkip">${readOnly ? 'Close' : isEnding ? 'Skip to ending' : 'Skip scene'}</button><button class="btn primary" id="sceneNext" ${P.paused ? 'disabled' : ''}>${P.index + 1 === P.cards.length ? readOnly ? 'Done' : isEnding ? 'Read the ending' : 'Keep going' : 'Continue'}</button></footer><small class="sequence-hint">Read at your own pace. ${P.paused ? 'Paused, including music.' : 'Nothing advances until you continue.'}</small></section>`;
+      e.innerHTML = `<section class="sequence-panel"><header><span class="studio">BROKENHOURS STUDIO</span><span>${P.index + 1} / ${P.cards.length}</span></header><div class="sequence-content ${c.titleOnly ? 'outcome-card' : ''}"><small class="eyebrow">${esc(c.label || 'A memory from this story')}</small><h1>${esc(c.title)}</h1>${c.titleOnly ? '' : P.scene(c.scene)}<div class="sequence-text">${esc(c.text || '').split('\n').map(l => `<p>${l}</p>`).join('')}</div></div><footer><button class="btn" id="scenePrev" ${P.index === 0 || P.paused ? 'disabled' : ''}>Previous</button><button class="btn" id="scenePause">${P.paused ? 'Resume' : 'Pause'}</button><button class="btn" id="sceneMotion">${SH.Settings.values.reducedMotion ? 'Reduced motion on' : 'Reduce motion'}</button><button class="btn" id="sceneSkip">${readOnly ? 'Close' : isEnding ? 'Skip to ending' : 'Skip scene'}</button><button class="btn primary" id="sceneNext" ${P.paused ? 'disabled' : ''}>${P.index + 1 === P.cards.length ? readOnly ? 'Done' : isEnding ? 'Read the ending' : 'Keep going' : 'Continue'}</button></footer><small class="sequence-hint">Read at your own pace. ${P.paused ? 'Paused, including music.' : 'Nothing advances until you continue.'}</small></section>`;
+      e.querySelector('#scenePrev').onclick = () => { if (!P.paused && P.index > 0) { P.index--; draw(); } };
       e.querySelector('#scenePause').onclick = () => { P.paused = !P.paused; SH.Soundtrack && SH.Soundtrack.sync(); draw(); };
       e.querySelector('#sceneMotion').onclick = () => { SH.Settings.set('reducedMotion', !SH.Settings.values.reducedMotion); draw(); };
       e.querySelector('#sceneSkip').onclick = finish;
@@ -17668,9 +17669,17 @@ window.SH = window.SH || {};
     if (P.readOnly) { P.heldMessages.push({ g, epoch: SH.epoch, args: [...arguments] }); return; }
     return push.apply(this, arguments);
   };
+  const reply = SH.Phone.reply; P.heldReplies = [];
+  SH.Phone.reply = function () {
+    if (!SH.G || SH.G.ended || SH.Companions.has(arguments[0])) return;
+    if (P.readOnly) { P.heldReplies.push({ g: SH.G, epoch: SH.epoch, args: [...arguments] }); return; }
+    return reply.apply(this, arguments);
+  };
   const afterMessages = SH.UI.afterAction;
   SH.UI.afterAction = function () {
     if (!P.readOnly && SH.G && !SH.G.ended) {
+      const replies = P.heldReplies.splice(0);
+      replies.filter(m => m.g === SH.G && m.epoch === SH.epoch && !SH.Companions.has(m.args[0])).forEach(m => reply.apply(SH.Phone, m.args));
       const messages = P.heldMessages.splice(0);
       messages.filter(m => m.g === SH.G && m.epoch === SH.epoch).forEach(m => push.apply(SH.Phone, m.args));
     }
@@ -17689,7 +17698,7 @@ window.SH = window.SH || {};
     if (['1','2','3','4','5','6','7','8','9','m','M','p','P','?'].includes(e.key)) { e.preventDefault(); e.stopImmediatePropagation(); }
   }, true);
   const reset = SH.resetRuntime;
-  SH.resetRuntime = function () { P.pending = null; P.heldMessages = []; P.dismiss(); return reset.apply(this, arguments); };
+  SH.resetRuntime = function () { P.pending = null; P.heldMessages = []; P.heldReplies = []; P.dismiss(); return reset.apply(this, arguments); };
 })(window.SH);
 
 </script>
@@ -17707,7 +17716,7 @@ window.SH = window.SH || {};
     const t = document.createElement('template'); t.innerHTML = html;
     t.content.querySelectorAll('script,iframe,object,embed,form,button,input,textarea,link,style').forEach(e => e.remove());
     t.content.querySelectorAll('foreignObject,animate,animateMotion,animateTransform,set,use,image').forEach(e => e.remove());
-    t.content.querySelectorAll('*').forEach(e => [...e.attributes].forEach(a => { if (/^on/i.test(a.name) || ['src','srcdoc','href','style','id'].includes(a.name)) e.removeAttribute(a.name); }));
+    t.content.querySelectorAll('*').forEach(e => [...e.attributes].forEach(a => { if (/^on/i.test(a.name) || ['src','srcdoc','href','xlink:href','style','id','poster','background'].includes(a.name)) e.removeAttribute(a.name); }));
     return t.innerHTML;
   }
   AR.capture = function (ending) {
@@ -17725,11 +17734,20 @@ window.SH = window.SH || {};
     const a = document.createElement('a'), blob = new Blob([JSON.stringify({ format: 'smallhours-history', version: 1, runs: AR.read().concat(AR.pending ? [AR.pending] : []) })], { type: 'application/json' });
     const url = URL.createObjectURL(blob); a.href = url; a.download = 'SmallHours-history.json'; a.click(); setTimeout(() => URL.revokeObjectURL(url), 1000);
   };
+  function validLook(l) {
+    if (!l || typeof l !== 'object') return false;
+    const colours = ['skin','hair','shirt','legs','shoe','hatc','glasses','gloves'];
+    if (!['skin','hair','shirt'].every(k => /^#[0-9a-f]{3,8}$/i.test(l[k] || ''))) return false;
+    if (colours.some(k => l[k] != null && !/^#[0-9a-f]{3,8}$/i.test(l[k]))) return false;
+    const words = ['style','top','hat'];
+    if (words.some(k => l[k] != null && !/^[a-z0-9_-]{1,24}$/i.test(l[k]))) return false;
+    return Object.keys(l).every(k => colours.includes(k) || words.includes(k) || (typeof l[k] === 'number' && Number.isFinite(l[k]) && Math.abs(l[k]) <= 10) || typeof l[k] === 'boolean' || l[k] === null);
+  }
   AR.validate = function (d) {
     if (!d || d.format !== 'smallhours-history' || d.version !== 1 || !Array.isArray(d.runs) || d.runs.length > 200) throw Error('Not a supported history backup.');
     return d.runs.map(r => {
       if (!r || typeof r.id !== 'string' || typeof r.title !== 'string' || !Array.isArray(r.memories) || r.memories.length > 160 || typeof r.html !== 'string' || r.html.length > 500000) throw Error('A run in this backup is incomplete or invalid.');
-      if (!r.scene || !Array.isArray(r.scene.people) || r.scene.people.some(a => !a || !a.look || typeof a.name !== 'string') || r.memories.some(m => !m || typeof m.title !== 'string' || typeof m.text !== 'string' || !m.scene || !Array.isArray(m.scene.people) || m.scene.people.some(a => !a || !a.look || typeof a.name !== 'string'))) throw Error('The visual records in this backup are invalid.');
+      if (!r.scene || !Array.isArray(r.scene.people) || r.scene.people.some(a => !a || !validLook(a.look) || typeof a.name !== 'string') || r.memories.some(m => !m || typeof m.title !== 'string' || typeof m.text !== 'string' || !m.scene || !Array.isArray(m.scene.people) || m.scene.people.some(a => !a || !validLook(a.look) || typeof a.name !== 'string'))) throw Error('The visual records in this backup are invalid.');
       const clean = copy(r); clean.html = safeHTML(clean.html); return clean;
     });
   };
@@ -17878,6 +17896,8 @@ window.SH = window.SH || {};
   const I = SH.V15Icons = {};
   I.svg = key => `<svg class="sh-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${paths[key] || paths.star}"/></svg>`;
   I.key = text => {
+    text = String(text || '').toLowerCase();
+    if (/all options|all actions|menu/.test(text)) return 'list';
     if (/bed|sleep|nap|rest|🛏|🛌/i.test(text)) return 'bed';
     if (/door|leave|🚪/.test(text)) return 'door';
     if (/clothes|hoodie|👕|🧥/.test(text)) return 'clothes';
@@ -17896,7 +17916,7 @@ window.SH = window.SH || {};
     if (/wait|⏰|clock/.test(text)) return 'clock';
     return 'star';
   };
-  const phoneKeys = { messages: 'chat', calls: 'phone', chirp: 'chat', pip: 'star', people: 'people', browser: 'book', hustle: 'pen', bank: 'cash', wallet: 'cash', camera: 'picture', photos: 'picture', calendar: 'clock', clock: 'clock', notes: 'pen', atlas: 'map', maps: 'map', network: 'settings', finder: 'eye', weather: 'weather', music: 'headphones', skyforge: 'play', settings: 'settings', tubeyou: 'play' };
+  const phoneKeys = { messages: 'chat', calls: 'phone', chirp: 'chat', pip: 'star', people: 'people', browser: 'book', hustle: 'pen', bank: 'cash', wallet: 'cash', camera: 'picture', photos: 'picture', calendar: 'clock', clock: 'clock', notes: 'pen', atlas: 'map', maps: 'map', network: 'settings', finder: 'eye', weather: 'weather', music: 'headphones', skyforge: 'play', pocketpal: 'cash', tube: 'play', net: 'settings', settings: 'settings', tubeyou: 'play' };
   I.phone = function () {
     document.querySelectorAll('.homegrid .app').forEach(b => {
       const match = (b.getAttribute('onclick') || '').match(/open\('([^']+)'/), e = b.querySelector('.ic');
