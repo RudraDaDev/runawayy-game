@@ -1,6 +1,9 @@
 name: Acquire selected soundtrack
 on:
   workflow_dispatch:
+  push:
+    branches: [arena/01a0dd5d-runawayy-game]
+    paths: [.github/workflows/acquire-audio.yml]
 permissions:
   contents: read
 jobs:
